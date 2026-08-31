@@ -8,13 +8,15 @@
   },
   "exports": "./src/index.js",
   "scripts": {
-    "check": "node --check src/*.js && node --check bin/*.js && node --check tools/*.js && node --check tests/*.js",
+    "check": "node --check src/*.js && node --check bin/*.js && node --check tools/*.js && node --check tests/*.js && python3 -c \"import ast,pathlib; ast.parse(pathlib.Path('tools/python-check-boundaries.py').read_text())\"",
     "test": "node --test",
     "conformance": "node ./tools/conformance.js",
     "determinism": "node --test --test-name-pattern='deterministic|stable|identical'",
-    "verify": "npm run check && npm test && npm run conformance && npm run determinism",
+    "verify": "npm run check && npm test && npm run conformance && npm run determinism && npm run verify:av-exp-003",
     "benchmark:av-exp-001": "./benchmark/av-exp-001/reproduce.sh",
-    "benchmark:av-exp-002": "./benchmark/av-exp-002/reproduce.sh"
+    "benchmark:av-exp-002": "./benchmark/av-exp-002/reproduce.sh",
+    "benchmark:av-exp-003": "./benchmark/av-exp-003/reproduce.sh",
+    "verify:av-exp-003": "node ./benchmark/av-exp-003/verify-results.mjs"
   },
   "engines": {
     "node": ">=20"

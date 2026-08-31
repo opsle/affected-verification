@@ -1,0 +1,10 @@
+{
+  "schema": "opsle.affected-verification.preregistration-manifest.v1",
+  "experiment_id": "AV-EXP-003",
+  "revision": 1,
+  "files": {
+    "README.md": "sha256:675f9ad8656f3da569d86af726df8205effd9c935fc3fe0edf4263b53898023c",
+    "corpus.json": "sha256:7b6538532d07693be926854df9d655c0d3196d3a8db771e75972a449415f8af5",
+    "preregistration.json": "sha256:31bdc5f51232161d5b4c3fe31987f579e78be5c0ca4106522bea71d8581727fb"
+  }
+}

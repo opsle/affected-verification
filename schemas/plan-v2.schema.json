@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/opsle/affected-verification/schemas/plan-v2.schema.json",
+  "title": "Affected Verification plan v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "plan_identity", "change", "provenance",
+    "dependency_completeness", "affected_components", "selected_checks",
+    "skipped_checks", "risk", "uncertainty", "escalation",
+    "sufficiency", "argument"
+  ],
+  "properties": {
+    "schema": { "const": "opsle.affected-verification.plan.v2" },
+    "plan_identity": { "$ref": "#/$defs/identity" },
+    "change": { "type": "object" },
+    "provenance": { "type": "object" },
+    "dependency_completeness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checks_assessed", "forced_check_ids", "states", "agreement_implies_completeness"],
+      "properties": {
+        "checks_assessed": { "type": "integer", "minimum": 1 },
+        "forced_check_ids": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "states": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+        "agreement_implies_completeness": { "const": false }
+      }
+    },
+    "affected_components": { "type": "array" },
+    "selected_checks": { "type": "array", "items": { "$ref": "#/$defs/check" } },
+    "skipped_checks": { "type": "array", "items": { "$ref": "#/$defs/check" } },
+    "risk": { "type": "object" },
+    "uncertainty": { "type": "object" },
+    "escalation": { "type": "object" },
+    "sufficiency": {
+      "enum": [
+        "SUFFICIENT_TARGETED", "SUFFICIENT_BROADENED",
+        "FULL_VERIFICATION_REQUIRED", "INSUFFICIENT_EVIDENCE"
+      ]
+    },
+    "argument": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim", "unknown_is_safe_to_skip", "every_skip_explained",
+        "every_skip_dependency_complete"
+      ],
+      "properties": {
+        "claim": { "type": "string", "minLength": 1 },
+        "unknown_is_safe_to_skip": { "const": false },
+        "every_skip_explained": { "const": true },
+        "every_skip_dependency_complete": { "const": true }
+      }
+    }
+  },
+  "$defs": {
+    "identity": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "reason": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "detail", "evidence_refs"],
+      "properties": {
+        "code": { "type": "string", "minLength": 1 },
+        "detail": { "type": "string", "minLength": 1 },
+        "evidence_refs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "status", "relevant", "explanation", "evidence_refs", "source"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "kind": { "$ref": "#/$defs/boundaryKind" },
+        "status": { "enum": ["OPEN", "CLOSED", "IRRELEVANT"] },
+        "relevant": { "type": "boolean" },
+        "explanation": { "type": "string", "minLength": 1 },
+        "evidence_refs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "line", "construct"],
+          "properties": {
+            "path": { "type": "string", "minLength": 1 },
+            "line": { "type": "integer", "minimum": 1 },
+            "construct": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+    "boundaryKind": {
+      "enum": [
+        "SUBPROCESS", "CHILD_INTERPRETER", "DYNAMIC_IMPORT",
+        "PLUGIN_OR_ENTRY_POINT_DISCOVERY", "EXEC_EVAL_OR_CODE_GENERATION",
+        "RUNTIME_LOADED_MODULE", "REFLECTION_OR_REGISTRATION"
+      ]
+    },
+    "dependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state", "mechanisms", "boundaries", "evidence_coverage",
+        "unresolved_mechanisms", "explanation", "action", "forced_selection"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "COMPLETE_FOR_CHECK", "COMPLETE_WITH_DECLARED_BOUNDARIES",
+            "INCOMPLETE", "OPAQUE_BOUNDARY", "UNKNOWN"
+          ]
+        },
+        "mechanisms": { "type": "array", "items": { "type": "object" } },
+        "boundaries": { "type": "array", "items": { "$ref": "#/$defs/boundary" } },
+        "evidence_coverage": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "unresolved_mechanisms": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "explanation": { "type": "string", "minLength": 1 },
+        "action": { "enum": ["SELECT", "SKIP"] },
+        "forced_selection": { "type": "boolean" }
+      }
+    },
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "type", "command", "scope", "tags", "test_executions",
+        "reasons", "dependency_completeness"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": { "type": "string", "minLength": 1 },
+        "command": { "type": "string", "minLength": 1 },
+        "scope": { "type": "object" },
+        "tags": { "type": "array" },
+        "test_executions": { "type": "integer", "minimum": 0 },
+        "reasons": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/reason" } },
+        "dependency_completeness": { "$ref": "#/$defs/dependency" }
+      }
+    }
+  }
+}

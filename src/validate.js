@@ -1,5 +1,5 @@
-export const INPUT_SCHEMA = 'opsle.affected-verification.input.v1';
-export const PLAN_SCHEMA = 'opsle.affected-verification.plan.v1';
+export const INPUT_SCHEMA = 'opsle.affected-verification.input.v2';
+export const PLAN_SCHEMA = 'opsle.affected-verification.plan.v2';
 export const SHADOW_INPUT_SCHEMA = 'opsle.affected-verification.shadow-input.v1';
 export const SHADOW_OBSERVATION_SCHEMA = 'opsle.affected-verification.shadow-observation.v1';
 
@@ -26,6 +26,37 @@ const CHECK_TYPES = new Set([
 const TEST_CHECK_TYPES = new Set(['unit-test', 'integration-test', 'end-to-end-test']);
 
 const ESCALATIONS = new Set(['NONE', 'BROADEN', 'FULL', 'INVALIDATE']);
+const DEPENDENCY_COMPLETENESS = new Set([
+  'COMPLETE_FOR_CHECK',
+  'COMPLETE_WITH_DECLARED_BOUNDARIES',
+  'INCOMPLETE',
+  'OPAQUE_BOUNDARY',
+  'UNKNOWN',
+]);
+const DEPENDENCY_MECHANISMS = new Set([
+  'DECLARED_SCOPE',
+  'STATIC_IMPORT',
+  'NATIVE_SELECTOR',
+  'RUNTIME_TRACE',
+  'COVERAGE',
+  'SUBPROCESS',
+  'CHILD_INTERPRETER',
+  'DYNAMIC_IMPORT',
+  'PLUGIN_OR_ENTRY_POINT_DISCOVERY',
+  'EXEC_EVAL_OR_CODE_GENERATION',
+  'RUNTIME_LOADED_MODULE',
+  'REFLECTION_OR_REGISTRATION',
+]);
+const BOUNDARY_KINDS = new Set([
+  'SUBPROCESS',
+  'CHILD_INTERPRETER',
+  'DYNAMIC_IMPORT',
+  'PLUGIN_OR_ENTRY_POINT_DISCOVERY',
+  'EXEC_EVAL_OR_CODE_GENERATION',
+  'RUNTIME_LOADED_MODULE',
+  'REFLECTION_OR_REGISTRATION',
+]);
+const BOUNDARY_STATUSES = new Set(['OPEN', 'CLOSED', 'IRRELEVANT']);
 
 export class InputError extends Error {
   constructor(issues, code = 'INVALID_INPUT') {
@@ -109,7 +140,7 @@ function validateChange(raw, issues) {
 
 function validateEvidence(raw, changedPaths, issues) {
   const evidence = objectAt(raw, 'evidence', issues);
-  rejectUnknownKeys(evidence, ['identity', 'complete', 'providers', 'components', 'impacts'], 'evidence', issues);
+  rejectUnknownKeys(evidence, ['identity', 'complete', 'providers', 'components', 'impacts', 'check_dependencies'], 'evidence', issues);
   stringAt(evidence.identity, 'evidence.identity', issues);
   if (typeof evidence.complete !== 'boolean') issues.push('evidence.complete must be a boolean');
   const providers = arrayAt(evidence.providers, 'evidence.providers', issues, { nonempty: true });
@@ -161,6 +192,115 @@ function validateEvidence(raw, changedPaths, issues) {
   });
   uniqueBy(impacts, 'path', 'evidence.impacts', issues);
   return evidence;
+}
+
+function validateCheckDependencies(evidence, catalog, issues) {
+  const providerIds = new Set((evidence.providers ?? []).map((item) => item.id));
+  const checkIds = new Set((catalog.checks ?? []).map((item) => item.id));
+  const assessments = arrayAt(
+    evidence.check_dependencies,
+    'evidence.check_dependencies',
+    issues,
+    { nonempty: true },
+  );
+  assessments.forEach((rawAssessment, index) => {
+    const path = `evidence.check_dependencies[${index}]`;
+    const assessment = objectAt(rawAssessment, path, issues);
+    rejectUnknownKeys(
+      assessment,
+      ['check_id', 'completeness', 'mechanisms', 'boundaries', 'explanation'],
+      path,
+      issues,
+    );
+    stringAt(assessment.check_id, `${path}.check_id`, issues);
+    if (!checkIds.has(assessment.check_id)) {
+      issues.push(`${path}.check_id references unknown check ${assessment.check_id}`);
+    }
+    if (!DEPENDENCY_COMPLETENESS.has(assessment.completeness)) {
+      issues.push(`${path}.completeness is unsupported`);
+    }
+    stringAt(assessment.explanation, `${path}.explanation`, issues);
+
+    const mechanisms = arrayAt(
+      assessment.mechanisms,
+      `${path}.mechanisms`,
+      issues,
+      { nonempty: true },
+    );
+    mechanisms.forEach((rawMechanism, mechanismIndex) => {
+      const mechanismPath = `${path}.mechanisms[${mechanismIndex}]`;
+      const mechanism = objectAt(rawMechanism, mechanismPath, issues);
+      rejectUnknownKeys(mechanism, ['kind', 'evidence_refs', 'positive'], mechanismPath, issues);
+      if (!DEPENDENCY_MECHANISMS.has(mechanism.kind)) {
+        issues.push(`${mechanismPath}.kind is unsupported`);
+      }
+      if (typeof mechanism.positive !== 'boolean') {
+        issues.push(`${mechanismPath}.positive must be a boolean`);
+      }
+      const refs = stringArray(mechanism.evidence_refs, `${mechanismPath}.evidence_refs`, issues);
+      if (refs.length === 0) issues.push(`${mechanismPath}.evidence_refs must not be empty`);
+      refs.forEach((ref) => {
+        if (!providerIds.has(ref)) issues.push(`${mechanismPath}.evidence_refs references unknown provider ${ref}`);
+      });
+    });
+    uniqueBy(mechanisms, 'kind', `${path}.mechanisms`, issues);
+
+    const boundaries = arrayAt(assessment.boundaries, `${path}.boundaries`, issues);
+    boundaries.forEach((rawBoundary, boundaryIndex) => {
+      const boundaryPath = `${path}.boundaries[${boundaryIndex}]`;
+      const boundary = objectAt(rawBoundary, boundaryPath, issues);
+      rejectUnknownKeys(
+        boundary,
+        ['id', 'kind', 'status', 'relevant', 'explanation', 'evidence_refs', 'source'],
+        boundaryPath,
+        issues,
+      );
+      stringAt(boundary.id, `${boundaryPath}.id`, issues);
+      if (!BOUNDARY_KINDS.has(boundary.kind)) issues.push(`${boundaryPath}.kind is unsupported`);
+      if (!BOUNDARY_STATUSES.has(boundary.status)) issues.push(`${boundaryPath}.status is unsupported`);
+      if (typeof boundary.relevant !== 'boolean') issues.push(`${boundaryPath}.relevant must be a boolean`);
+      stringAt(boundary.explanation, `${boundaryPath}.explanation`, issues);
+      const refs = stringArray(boundary.evidence_refs, `${boundaryPath}.evidence_refs`, issues);
+      if (refs.length === 0) issues.push(`${boundaryPath}.evidence_refs must not be empty`);
+      refs.forEach((ref) => {
+        if (!providerIds.has(ref)) issues.push(`${boundaryPath}.evidence_refs references unknown provider ${ref}`);
+      });
+      const source = objectAt(boundary.source, `${boundaryPath}.source`, issues);
+      rejectUnknownKeys(source, ['path', 'line', 'construct'], `${boundaryPath}.source`, issues);
+      stringAt(source.path, `${boundaryPath}.source.path`, issues);
+      stringAt(source.construct, `${boundaryPath}.source.construct`, issues);
+      if (!Number.isSafeInteger(source.line) || source.line < 1) {
+        issues.push(`${boundaryPath}.source.line must be a positive safe integer`);
+      }
+      if (boundary.status === 'OPEN' && boundary.relevant !== true) {
+        issues.push(`${boundaryPath} OPEN boundary must be relevant`);
+      }
+      if (boundary.status === 'IRRELEVANT' && boundary.relevant !== false) {
+        issues.push(`${boundaryPath} IRRELEVANT boundary must not be relevant`);
+      }
+    });
+    uniqueBy(boundaries, 'id', `${path}.boundaries`, issues);
+
+    const open = boundaries.filter((item) => item?.status === 'OPEN' && item?.relevant === true);
+    if (assessment.completeness === 'OPAQUE_BOUNDARY' && open.length === 0) {
+      issues.push(`${path} OPAQUE_BOUNDARY requires a relevant OPEN boundary`);
+    }
+    if (['COMPLETE_FOR_CHECK', 'COMPLETE_WITH_DECLARED_BOUNDARIES'].includes(assessment.completeness)
+      && (open.length > 0 || mechanisms.length === 0)) {
+      issues.push(`${path} complete evidence requires mechanisms and no relevant OPEN boundary`);
+    }
+    if (assessment.completeness === 'COMPLETE_WITH_DECLARED_BOUNDARIES'
+      && boundaries.filter((item) => item?.relevant === true).length === 0) {
+      issues.push(`${path} COMPLETE_WITH_DECLARED_BOUNDARIES requires a relevant declared boundary`);
+    }
+  });
+  uniqueBy(assessments, 'check_id', 'evidence.check_dependencies', issues);
+  for (const checkId of [...checkIds].sort()) {
+    if (!assessments.some((item) => item?.check_id === checkId)) {
+      issues.push(`evidence.check_dependencies is missing check ${checkId}`);
+    }
+  }
+  return assessments;
 }
 
 function validateCatalog(raw, componentIds, issues) {
@@ -234,7 +374,8 @@ export function validateInput(input) {
   const changedPaths = new Set((change.paths ?? []).map((item) => item.path));
   const evidence = validateEvidence(root.evidence, changedPaths, issues);
   const componentIds = new Set((evidence.components ?? []).map((item) => item.id));
-  validateCatalog(root.catalog, componentIds, issues);
+  const catalog = validateCatalog(root.catalog, componentIds, issues);
+  validateCheckDependencies(evidence, catalog, issues);
   validatePolicy(root.policy, issues);
   if (issues.length) throw new InputError(issues);
   return root;

@@ -1,0 +1,140 @@
+{
+  "schema": "opsle.affected-verification.python-check-boundary-catalog.v1",
+  "target": {
+    "repository": "https://github.com/pallets/click.git",
+    "sha": "36baa15ff831b939a22bc527cd76ce653ef6f66d"
+  },
+  "checks_assessed": 2016,
+  "assessment_catalog_identity": "sha256:8e869495df22c076d14c7e95890127a0fd7f7770233d9788ba197e1d63edb8d7",
+  "completeness_counts": {
+    "COMPLETE_FOR_CHECK": 2014,
+    "OPAQUE_BOUNDARY": 2
+  },
+  "opaque_check_ids": [
+    "pytest:tests/test_imports.py::test_light_imports",
+    "pytest:tests/test_types.py::test_path_dash_no_byteswarning"
+  ],
+  "opaque_assessments": [
+    {
+      "boundaries": [
+        {
+          "evidence_refs": [
+            "python-boundary-inspector"
+          ],
+          "explanation": "subprocess.Popen crosses a CHILD_INTERPRETER boundary not closed by ordinary static import evidence.",
+          "id": "tests/test_imports.py:test_light_imports:70:CHILD_INTERPRETER",
+          "kind": "CHILD_INTERPRETER",
+          "relevant": true,
+          "source": {
+            "construct": "subprocess.Popen",
+            "line": 70,
+            "path": "tests/test_imports.py"
+          },
+          "status": "OPEN"
+        },
+        {
+          "evidence_refs": [
+            "python-boundary-inspector"
+          ],
+          "explanation": "subprocess.Popen crosses a SUBPROCESS boundary not closed by ordinary static import evidence.",
+          "id": "tests/test_imports.py:test_light_imports:70:SUBPROCESS",
+          "kind": "SUBPROCESS",
+          "relevant": true,
+          "source": {
+            "construct": "subprocess.Popen",
+            "line": 70,
+            "path": "tests/test_imports.py"
+          },
+          "status": "OPEN"
+        }
+      ],
+      "check_id": "pytest:tests/test_imports.py::test_light_imports",
+      "completeness": "OPAQUE_BOUNDARY",
+      "explanation": "One or more relevant alternate execution boundaries remain open.",
+      "mechanisms": [
+        {
+          "evidence_refs": [
+            "python-boundary-inspector"
+          ],
+          "kind": "CHILD_INTERPRETER",
+          "positive": false
+        },
+        {
+          "evidence_refs": [
+            "python-boundary-inspector"
+          ],
+          "kind": "STATIC_IMPORT",
+          "positive": false
+        },
+        {
+          "evidence_refs": [
+            "python-boundary-inspector"
+          ],
+          "kind": "SUBPROCESS",
+          "positive": false
+        }
+      ]
+    },
+    {
+      "boundaries": [
+        {
+          "evidence_refs": [
+            "python-boundary-inspector"
+          ],
+          "explanation": "subprocess.run crosses a CHILD_INTERPRETER boundary not closed by ordinary static import evidence.",
+          "id": "tests/test_types.py:test_path_dash_no_byteswarning:145:CHILD_INTERPRETER",
+          "kind": "CHILD_INTERPRETER",
+          "relevant": true,
+          "source": {
+            "construct": "subprocess.run",
+            "line": 145,
+            "path": "tests/test_types.py"
+          },
+          "status": "OPEN"
+        },
+        {
+          "evidence_refs": [
+            "python-boundary-inspector"
+          ],
+          "explanation": "subprocess.run crosses a SUBPROCESS boundary not closed by ordinary static import evidence.",
+          "id": "tests/test_types.py:test_path_dash_no_byteswarning:145:SUBPROCESS",
+          "kind": "SUBPROCESS",
+          "relevant": true,
+          "source": {
+            "construct": "subprocess.run",
+            "line": 145,
+            "path": "tests/test_types.py"
+          },
+          "status": "OPEN"
+        }
+      ],
+      "check_id": "pytest:tests/test_types.py::test_path_dash_no_byteswarning",
+      "completeness": "OPAQUE_BOUNDARY",
+      "explanation": "One or more relevant alternate execution boundaries remain open.",
+      "mechanisms": [
+        {
+          "evidence_refs": [
+            "python-boundary-inspector"
+          ],
+          "kind": "CHILD_INTERPRETER",
+          "positive": false
+        },
+        {
+          "evidence_refs": [
+            "python-boundary-inspector"
+          ],
+          "kind": "STATIC_IMPORT",
+          "positive": false
+        },
+        {
+          "evidence_refs": [
+            "python-boundary-inspector"
+          ],
+          "kind": "SUBPROCESS",
+          "positive": false
+        }
+      ]
+    }
+  ],
+  "identity": "sha256:bc096fdfb64f7d9bf1eeb762a1eee75002db1e39a179b16b7b0dcbfaa9f67026"
+}

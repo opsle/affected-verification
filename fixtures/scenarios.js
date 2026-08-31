@@ -49,8 +49,15 @@ const rules = [
 ];
 
 function input({ path, component, riskTags = [], complete = true, confidence = 'KNOWN', target }) {
+  const checkDependencies = checks.map((check) => ({
+    check_id: check.id,
+    completeness: 'COMPLETE_FOR_CHECK',
+    mechanisms: [{ kind: 'DECLARED_SCOPE', evidence_refs: ['synthetic-graph'], positive: false }],
+    boundaries: [],
+    explanation: 'Synthetic fixture declares complete check-local scope coverage.',
+  }));
   return {
-    schema: 'opsle.affected-verification.input.v1',
+    schema: 'opsle.affected-verification.input.v2',
     change: {
       base_revision: 'base000000000000000000000000000000000000',
       target_revision: target,
@@ -62,6 +69,7 @@ function input({ path, component, riskTags = [], complete = true, confidence = '
       providers: [{ id: 'synthetic-graph', kind: 'NORMALIZED_FIXTURE', version: '1.0.0', identity: 'sha256:fixture-provider' }],
       components,
       impacts: [{ path, components: component ? [component] : [], confidence, reason: confidence === 'KNOWN' ? 'Synthetic path ownership' : 'No defensible owner mapping' }],
+      check_dependencies: checkDependencies,
     },
     catalog: { identity: 'catalog:synthetic-v1', complete: true, checks },
     policy: { identity: 'policy:synthetic-v1', version: '1.0.0', rules },
@@ -83,6 +91,8 @@ largeSkipInput.catalog = {
     'unrelated.large-suite',
   ].includes(check.id)),
 };
+largeSkipInput.evidence.check_dependencies = largeSkipInput.evidence.check_dependencies
+  .filter((item) => largeSkipInput.catalog.checks.some((check) => check.id === item.check_id));
 
 export const scenarios = [
   {

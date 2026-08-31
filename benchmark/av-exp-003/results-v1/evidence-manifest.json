@@ -1,0 +1,59 @@
+{
+  "schema": "opsle.affected-verification.evidence-manifest.v1",
+  "experiment_id": "AV-EXP-003",
+  "files": [
+    {
+      "path": "boundary-evidence.json",
+      "sha256": "sha256:c51dc57c51fe6ddb08b28f1d18a6dcf043adf6a170081e38c0edc024937c066f"
+    },
+    {
+      "path": "repair-regression-matrix.json",
+      "sha256": "sha256:28eea2734c60b7d35e0661ae556ffab53e2e5fe6faa34c6d3e457cec65a1c5fd"
+    },
+    {
+      "path": "summary.json",
+      "sha256": "sha256:6179f2863e075ffabcc6c4b4ed8005729aa0310d8d48a4239a0f7c1b6a5db1ef"
+    },
+    {
+      "path": "value-receipts/AV3-001.json",
+      "sha256": "sha256:7a209d4280a7d7ff75d30f62c5087f8dacf2df17ec9ee34738df9cf4ae611eef"
+    },
+    {
+      "path": "value-receipts/AV3-002.json",
+      "sha256": "sha256:f9f9778c772110b4f1c2d9baa3ec2dc1a201c99d9f069f2e237323ed875587db"
+    },
+    {
+      "path": "value-receipts/AV3-003.json",
+      "sha256": "sha256:7c24a0f1be3b36b6c6188cb5af4074c2352b77a1a36b6a881ccabefb7f5f2b49"
+    },
+    {
+      "path": "value-receipts/AV3-004.json",
+      "sha256": "sha256:9eb8eeceef99a35a99934eb961fb5ba9df0e6dd38e51e5597b679cbb0191a5b4"
+    },
+    {
+      "path": "value-receipts/AV3-005.json",
+      "sha256": "sha256:b41f67eb4b19fbf5861396bfa5409898be09355884f70467ed37f02177dbf63b"
+    },
+    {
+      "path": "value-receipts/AV3-006.json",
+      "sha256": "sha256:5196aa9deedf478f312743bb8df4c6dac075f9d1580348193bfe647946d7dc19"
+    },
+    {
+      "path": "value-receipts/AV3-007.json",
+      "sha256": "sha256:7a1b1a9b98df91f3d867363b0355070a1c0ca2a1b4e60ce7179d3ee733961b78"
+    },
+    {
+      "path": "value-receipts/AV3-008.json",
+      "sha256": "sha256:3c7652ea98ff700a642fdc53a104ea420d4ed0e61259a94fbe61b90d3a8e3956"
+    },
+    {
+      "path": "value-receipts/AV3-009.json",
+      "sha256": "sha256:278803120b85a3bf788d4e91f726ff1e8f3b377b73c3a2dfa5f032d5dd986ebf"
+    },
+    {
+      "path": "value-receipts/AV3-010.json",
+      "sha256": "sha256:d2c650190bf83e38f0aac84858b344dea70e27310498428f7dab1ca22e582188"
+    }
+  ],
+  "identity": "sha256:932292a4f47372cab963db85772bb3d6c1e4fa536edd7b99f9686b72afd7e93c"
+}

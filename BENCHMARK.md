@@ -2,11 +2,13 @@
 
 AV-EXP-001 completed the first preregistered real-repository `SHADOW`
 calibration. AV-EXP-002 completed a second Python/pytest-testmon calibration
-and exposed one AV selection miss. See
-[benchmark/av-exp-001/REPORT.md](benchmark/av-exp-001/REPORT.md) and
-[benchmark/av-exp-002/REPORT.md](benchmark/av-exp-002/REPORT.md) for the bounded
-results and immutable artifact identities. The method below remains
-authoritative for future runs.
+and exposed one AV selection miss. AV-EXP-003 preregistered and evaluated the
+opaque-dependency-boundary repair without changing that historical FAIL. See
+[benchmark/av-exp-001/REPORT.md](benchmark/av-exp-001/REPORT.md),
+[benchmark/av-exp-002/REPORT.md](benchmark/av-exp-002/REPORT.md), and
+[benchmark/av-exp-003/REPORT.md](benchmark/av-exp-003/REPORT.md) for the bounded
+calibrations, repair, regression matrix, and exact precision cost. The method
+below remains authoritative for future runs.
 
 ## Central question
 
@@ -78,3 +80,10 @@ AV-EXP-002 tested Click at
 arms selected 86 of 87 oracle-relevant checks and missed
 `tests/test_imports.py::test_light_imports` for a subprocess/runtime-import
 hazard. FULL remained authoritative, and the trust stage remains `SHADOW`.
+
+AV-EXP-003 added check-level dependency-completeness evidence and a bounded
+Python boundary inspector. The exact AV2-006 replay selected the formerly
+missed check in both AV arms; ten adversarial cases and both frozen prior
+corpora had zero repaired AV misses. The repair added 6 and 7 test executions
+across the two AV-EXP-002 arms and 7 checks across the ten synthetic repair
+cases. This is a SHADOW defect-repair result, not a safety or trust claim.

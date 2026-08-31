@@ -60,7 +60,7 @@ test('AV-EXP-002 rejects unexplained skips', () => {
 
 test('global collection integrity scope covers changed source without forcing every test', () => {
   const input = {
-    schema: 'opsle.affected-verification.input.v1',
+    schema: 'opsle.affected-verification.input.v2',
     change: {
       base_revision: 'base', target_revision: 'patch',
       paths: [{ path: 'src/pkg.py', regions: [], risk_tags: [] }],
@@ -74,6 +74,15 @@ test('global collection integrity scope covers changed source without forcing ev
         { id: 'testnode:unrelated', dependencies: [] },
       ],
       impacts: [{ path: 'src/pkg.py', components: ['file:src/pkg.py'], confidence: 'KNOWN' }],
+      check_dependencies: [
+        'check:collection', 'pytest:related', 'pytest:unrelated',
+      ].map((checkId) => ({
+        check_id: checkId,
+        completeness: 'COMPLETE_FOR_CHECK',
+        mechanisms: [{ kind: 'STATIC_IMPORT', evidence_refs: ['ast'], positive: false }],
+        boundaries: [],
+        explanation: 'Test fixture static evidence is complete for this check.',
+      })),
     },
     catalog: {
       identity: 'catalog', complete: true,
