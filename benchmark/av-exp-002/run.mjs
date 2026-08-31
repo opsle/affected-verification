@@ -115,12 +115,18 @@ function verifyPreregistration() {
 }
 
 function collectNodeIds(worktree, rawDir, id, extraArgs = [], extraEnv = {}) {
+  fs.mkdirSync(rawDir, { recursive: true });
   const reportFile = path.join(rawDir, `${id}.pytest.json`);
   const execution = run(path.join(worktree, '.venv/bin/pytest'), [
     '--override-ini=addopts=', '-p', 'pytest_av_catalog', ...extraArgs, '-q',
   ], {
     cwd: worktree,
-    env: { PYTHONPATH: here, AV2_PYTEST_REPORT: reportFile, ...extraEnv },
+    env: {
+      PYTHONPATH: here,
+      PYTHONDONTWRITEBYTECODE: '1',
+      AV2_PYTEST_REPORT: reportFile,
+      ...extraEnv,
+    },
     timeout: 15 * 60 * 1000,
   });
   const command = persistExecution(rawDir, id, execution);
@@ -591,6 +597,11 @@ function rawManifest(root) {
 }
 
 const prereg = verifyPreregistration();
+const amendmentFiles = ['001-report-directory.md'];
+const amendments = amendmentFiles.map((name) => ({
+  name,
+  identity: sha256File(path.join(here, 'amendments', name)),
+}));
 const preregistrationSha = git(repoRoot, ['log', '-1', '--format=%H', '--', 'benchmark/av-exp-002/preregistration-v1']);
 if (!preregistrationSha) throw new Error('preregistration must be committed before result execution');
 const prepared = prepareTarget(prereg);
@@ -610,6 +621,7 @@ const resultWithoutIdentity = {
   target: { repository: TARGET_URL, sha: TARGET_SHA, license: 'BSD-3-Clause' },
   preregistration_sha: preregistrationSha,
   preregistration_identity: prereg.preregistration.identity,
+  amendments,
   catalog_identity: prereg.catalog.identity,
   corpus_identity: prereg.scenarios.identity,
   baseline_identity: baselineSummary.identity,
