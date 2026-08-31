@@ -1,0 +1,17 @@
+{
+  "schema": "opsle.affected-verification.av-exp-002.selector.v1",
+  "arm_id": "ECOSYSTEM_SELECTOR",
+  "tool": "pytest-testmon",
+  "version": "2.2.0",
+  "contract": "Runtime coverage and source/block change based pytest test selection using a persisted .testmondata database; tests only.",
+  "baseline": "Run the frozen 2,016-node catalog once at the exact target SHA with --testmon, preserve .testmondata, and restore that byte identity before each scenario.",
+  "catalog_filter": "pytest_av_catalog.py excludes the same stress-marked nodes as target addopts without using -m, because pytest-testmon documents that -m disables selection.",
+  "invocation": ".venv/bin/pytest --override-ini=addopts= -p pytest_av_catalog --testmon --collect-only -q",
+  "asymmetry": "The selector database receives clean baseline runtime coverage. AV_CORE does not receive it. AV_WITH_SELECTOR_EVIDENCE receives only the normalized selected node IDs and database readiness evidence.",
+  "limitations": [
+    "tests only",
+    "runtime paths not executed during baseline are not dependency evidence",
+    "database freshness and environment identity are required"
+  ],
+  "identity": "sha256:fdd2b00fa631660f159f8c21c7d4a4dcffa180f82185b359fdc773fc660d5590"
+}

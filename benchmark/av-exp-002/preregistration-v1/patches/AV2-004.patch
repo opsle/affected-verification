@@ -1,0 +1,11 @@
+diff --git a/tests/test_parser.py b/tests/test_parser.py
+--- a/tests/test_parser.py
++++ b/tests/test_parser.py
+@@ -4,6 +4,7 @@ import click
+ from click.parser import _OptionParser
+ from click.shell_completion import split_arg_string
+ 
++# AV-EXP-002 benign test-only change.
+ 
+ @pytest.mark.parametrize(
+     ("value", "expect"),

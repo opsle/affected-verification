@@ -1,0 +1,12 @@
+diff --git a/pyproject.toml b/pyproject.toml
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -2,7 +2,7 @@
+ name = "click"
+ version = "8.5.1.dev"
+ description = "Composable command line interface toolkit"
+-readme = "README.md"
++readme = "MISSING_AV2_README.md"
+ license = "BSD-3-Clause"
+ license-files = ["LICENSE.txt"]
+ maintainers = [{name = "Pallets", email = "contact@palletsprojects.com"}]

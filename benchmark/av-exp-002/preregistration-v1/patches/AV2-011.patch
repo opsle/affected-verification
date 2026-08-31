@@ -1,0 +1,11 @@
+diff --git a/tests/conftest.py b/tests/conftest.py
+--- a/tests/conftest.py
++++ b/tests/conftest.py
+@@ -3,6 +3,7 @@ import pytest
+ from click.testing import CliRunner
+ 
+ 
++# AV-EXP-002 shared-fixture configuration drift.
+ @pytest.fixture(scope="function")
+ def runner(request):
+     return CliRunner()

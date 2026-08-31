@@ -1,0 +1,7 @@
+diff --git a/src/click/_av_unknown.py b/src/click/_av_unknown.py
+new file mode 100644
+--- /dev/null
++++ b/src/click/_av_unknown.py
+@@ -0,0 +1,2 @@
++# Synthetic unknown source path with an invalid definition.
++def broken(:

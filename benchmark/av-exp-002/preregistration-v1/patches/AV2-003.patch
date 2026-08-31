@@ -1,0 +1,12 @@
+diff --git a/src/click/utils.py b/src/click/utils.py
+--- a/src/click/utils.py
++++ b/src/click/utils.py
+@@ -57,7 +57,7 @@ def make_str(value: t.Any) -> str:
+             return value.decode(sys.getfilesystemencoding())
+         except UnicodeError:
+             return value.decode("utf-8", "replace")
+-    return str(value)
++    return str(value).upper()
+ 
+ 
+ def _make_default_short_help(help: str, max_length: int = 45) -> str:

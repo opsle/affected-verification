@@ -1,0 +1,27 @@
+{
+  "schema": "opsle.affected-verification.preregistration-manifest.v1",
+  "experiment_id": "AV-EXP-002",
+  "files": {
+    "environment.json": "sha256:1e75a5e4fefbc8c2bf17a54b0f650ca74511b7a9a67aa60ab43419022caaa0d1",
+    "catalog.json": "sha256:2abc56752867d57f2edf3b2ba2102e4e9f8d6b05cc8d1a52f7507f95557e371e",
+    "selector.json": "sha256:0e04274b16073bd5e36c2d8292e761ddb2cf867bdb2947dcc8666bc29aa64236",
+    "policy.json": "sha256:26c8c210ce6a442a35de5878a786f541d040eee82ab79a9791a38d403a403878",
+    "scenarios.json": "sha256:6882fff3822ed40a83df62cf64e9331a0d754ff34c9f9e17e5e3832e68bb60e8",
+    "comparison.json": "sha256:4f4bed11ef67270fb2ecb753b278d84bf0794d20518ad518e9c562cc8d60fae0",
+    "preregistration.json": "sha256:f376d4b39662f5dfee107c87eebc40482a9cf36b75cd04ec6f7a1ba0f7f51876",
+    "README.md": "sha256:187ed2e282fb8d67c83462deee51c1b2e7ac5ce00384a40b85311b4538caea97",
+    "candidate-evaluation.md": "sha256:7002c086769a20e5fe3e6b8bb82d18035100c4fc554860b6d2f4a5a3d7c7e4b5",
+    "patches/AV2-001.patch": "sha256:0479261866009f87e4712246a66a67d30d7b5d68db9bd76ae6d28fd62839137e",
+    "patches/AV2-002.patch": "sha256:8992b2118654a6106218af27719c53344c78472798348149d16d20905f638f83",
+    "patches/AV2-003.patch": "sha256:16132238415dd97474636357ba6acfc6a031fabe308f9be3d8ab516cea0cd188",
+    "patches/AV2-004.patch": "sha256:a62b878bcad74acff16a7cc0d59392510d507961e965a95eac94cf5da5d00c96",
+    "patches/AV2-005.patch": "sha256:b4fa9c3e5debca06ffed132e29d81beaf3f994599d0096489f08884bd4a3f9b3",
+    "patches/AV2-006.patch": "sha256:2a8ce7f3f0cf01d07599be7e929649e0dd0e9454198ef87766c496edd502ab17",
+    "patches/AV2-007.patch": "sha256:19bc3a8f7a1e92307d342020a92acb22221a30e277a57c149257a716d349ef34",
+    "patches/AV2-008.patch": "sha256:64602601a3d19218ad465cd7f9bf90d00e6355b9cfa07b39e07fbc77e3b4df3e",
+    "patches/AV2-009.patch": "sha256:2acff246455b565bebebf8379b714ddd48c218df754cdc6ff8162b4ce61a04d4",
+    "patches/AV2-010.patch": "sha256:1750b3327f006df402ba0a7304f3ff353c63136da11a433ae291ab182d438746",
+    "patches/AV2-011.patch": "sha256:8bcec77ed3eab91715cbe16e98ce76ba563b54ec6134166b2384530f554e9c2b"
+  },
+  "identity": "sha256:607e19c98ccd12841c4ed7e2db2ffd2cc47e8f0da1236a365e24178d163c9642"
+}
