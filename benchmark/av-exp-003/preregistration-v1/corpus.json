@@ -1,0 +1,61 @@
+{
+  "schema": "opsle.affected-verification.repair-corpus.v1",
+  "experiment_id": "AV-EXP-003",
+  "scenarios": [
+    {
+      "id": "AV3-001",
+      "form": "SUBPROCESS_DEPENDENCY",
+      "expected": "force-select only the check with an open subprocess boundary"
+    },
+    {
+      "id": "AV3-002",
+      "form": "DYNAMIC_IMPORT",
+      "expected": "force-select the check with an open dynamic-import boundary"
+    },
+    {
+      "id": "AV3-003",
+      "form": "PLUGIN_OR_REGISTRY_DISCOVERY",
+      "expected": "force-select the check with unclosed discovery evidence"
+    },
+    {
+      "id": "AV3-004",
+      "form": "COMPLETE_STATIC_IMPORT",
+      "expected": "retain targeted selection and defensible unrelated skips"
+    },
+    {
+      "id": "AV3-005",
+      "form": "IRRELEVANT_SUBPROCESS",
+      "expected": "do not broaden checks whose own dependency evidence is complete"
+    },
+    {
+      "id": "AV3-006",
+      "form": "INCOMPLETE_BOUNDARY_METADATA",
+      "expected": "fail closed by selecting the affected check"
+    },
+    {
+      "id": "AV3-007",
+      "form": "NATIVE_SELECTOR_MISS_WITH_OPEN_BOUNDARY",
+      "expected": "boundary policy selects despite selector omission"
+    },
+    {
+      "id": "AV3-008",
+      "form": "NATIVE_POSITIVE_EVIDENCE",
+      "expected": "positive selector evidence selects without completeness inference"
+    },
+    {
+      "id": "AV3-009",
+      "form": "EXEC_EVAL_OR_CODE_GENERATION",
+      "expected": "unsupported or open classification fails closed"
+    },
+    {
+      "id": "AV3-010",
+      "form": "DECLARED_BOUNDARY_CLOSED",
+      "expected": "closed boundary plus complete evidence permits unrelated skip"
+    }
+  ],
+  "frozen_replays": [
+    "AV-EXP-001 results-v2",
+    "AV-EXP-002 results-v1",
+    "exact AV2-006 at Click 36baa15ff831b939a22bc527cd76ce653ef6f66d"
+  ]
+}

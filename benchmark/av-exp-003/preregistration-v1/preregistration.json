@@ -1,0 +1,95 @@
+{
+  "schema": "opsle.affected-verification.repair-preregistration.v1",
+  "experiment_id": "AV-EXP-003",
+  "title": "Opaque Dependency Boundary Repair",
+  "revision": 1,
+  "stage": "DEFECT_REPAIR_SHADOW",
+  "trust_stage": "OBSERVE/SHADOW",
+  "known_outcome_disclosure": "AV-EXP-002 AV2-006 is already known and permanently remains a FAIL; this preregistration freezes generalized repair criteria rather than claiming blindness.",
+  "failure_being_repaired": {
+    "experiment": "AV-EXP-002",
+    "scenario": "AV2-006",
+    "check": "pytest:tests/test_imports.py::test_light_imports",
+    "historical_outcome": "MISS in AV_CORE and AV_WITH_SELECTOR_EVIDENCE",
+    "mechanism": "The check observes runtime imports through a subprocess/child interpreter. Static Python dependency evidence and pytest-testmon omitted the relationship, while AV treated the evidence as complete enough to skip."
+  },
+  "hypothesis": "Affected Verification may skip a check only when available evidence defends completeness for every declared dependency mechanism capable of connecting the change to that check. An unmodeled, open, malformed, unsupported, or opaque boundary forces selection of that check unless another identified evidence source closes the boundary.",
+  "dependency_completeness": {
+    "states": {
+      "COMPLETE_FOR_CHECK": "Evidence covers the check's declared dependency mechanisms and has no unresolved boundary.",
+      "COMPLETE_WITH_DECLARED_BOUNDARIES": "All relevant alternate boundaries are declared and each is closed by identified positive evidence.",
+      "INCOMPLETE": "One or more declared mechanisms lack complete evidence.",
+      "OPAQUE_BOUNDARY": "A relevant alternate execution boundary is open and ordinary absence evidence cannot traverse it.",
+      "UNKNOWN": "No defensible completeness classification is available."
+    },
+    "rule": "NO_PROOF_OF_COMPLETENESS_IS_NOT_PROOF_OF_NO_DEPENDENCY",
+    "agreement_rule": "Agreement among static, native, coverage, or runtime selectors does not raise completeness unless evidence independently establishes coverage of the relevant mechanisms."
+  },
+  "opaque_boundary_definition": {
+    "definition": "A check-level execution or discovery mechanism whose source sensitivity may cross a boundary not represented by the evidence used to justify a skip.",
+    "minimum_taxonomy": [
+      "SUBPROCESS",
+      "CHILD_INTERPRETER",
+      "DYNAMIC_IMPORT",
+      "PLUGIN_OR_ENTRY_POINT_DISCOVERY",
+      "EXEC_EVAL_OR_CODE_GENERATION",
+      "RUNTIME_LOADED_MODULE",
+      "REFLECTION_OR_REGISTRATION"
+    ],
+    "non_equivalence": "API presence alone does not make every check opaque. Classification is check-local, relevance-qualified, and provenance-bound; explicitly irrelevant uses do not broaden other checks.",
+    "automatic_detection": "Bounded deterministic Python source inspection may emit boundary candidates. Uncertainty or unsupported syntax is not guessed: explicit project metadata is permitted and missing or malformed metadata fails closed."
+  },
+  "check_level_skip_argument": [
+    "enumerate dependency mechanisms that may make the check sensitive",
+    "identify evidence sources covering each mechanism",
+    "classify completeness independently from source agreement",
+    "establish why changed regions cannot affect the check",
+    "establish that configured policy permits the skip"
+  ],
+  "safe_default": "If the check-level argument is incomplete, select that check. Broaden beyond the check only when catalog or policy evidence independently requires it.",
+  "acceptance_criteria": [
+    "The exact frozen AV2-006 replay selects test_light_imports in both repaired AV arms for a generalized opaque-boundary/completeness reason.",
+    "No repository, target, scenario, changed-file, or test-name special case participates in core selection.",
+    "All ten adversarial scenarios match their frozen expectations and execute their full oracle catalogs in SHADOW.",
+    "AV-EXP-001 and AV-EXP-002 frozen corpora gain no newly missed AV-relevant check.",
+    "Ordinary complete static dependency and irrelevant-subprocess negative controls remain targeted.",
+    "Every forced selection and every skip exposes completeness, mechanism coverage, provenance, and explanation.",
+    "Plan identity and result identities remain deterministic.",
+    "Visible Value reports verification added by safety policy as well as verification skipped, without a general failure-prevention or safety claim."
+  ],
+  "negative_controls": [
+    "complete ordinary static import",
+    "irrelevant subprocess use in a different check",
+    "closed declared alternate boundary",
+    "renamed repository, check, scenario, and changed path produce the same structural decision"
+  ],
+  "workload_metrics": [
+    "prior and repaired test checks selected",
+    "prior and repaired test executions selected",
+    "additional checks and test executions due to safety repair",
+    "tests and test executions still skipped",
+    "non-test check differences by class",
+    "targeted scenarios retained",
+    "scenarios broadened",
+    "full-verification escalations"
+  ],
+  "measurement_classes": {
+    "deterministic counts": "EXACT",
+    "known AV2-006 replay now selected": "OBSERVED",
+    "general failure prevented": "PROHIBITED",
+    "system safe": "PROHIBITED"
+  },
+  "stop_conditions": [
+    "any new miss of a previously captured AV-relevant check",
+    "any adversarial oracle-relevant check omitted",
+    "target, repository, scenario, changed-path, or check-name special casing",
+    "repaired benchmark outcome observed before this preregistration commit",
+    "full oracle bypassed or incomplete",
+    "AV-EXP-002 result rewritten or reinterpreted",
+    "malformed or unsupported boundary evidence accepted optimistically",
+    "lifecycle or trust advanced because of this repair",
+    "unpreserved result-affecting harness defect"
+  ],
+  "claim_limit": "A PASS means only that the known miss is selected by the repair, the frozen generalized corpus passes, no regression miss is observed in frozen corpora, and exact precision cost is measured. It does not solve dynamic Python dependencies or authorize production trust.",
+  "provider_policy": "Current interactive Codex session and bounded Codex children only; no external model/provider workloads and no production systems."
+}
