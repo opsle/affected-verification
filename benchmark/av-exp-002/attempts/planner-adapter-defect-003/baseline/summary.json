@@ -1,0 +1,23 @@
+{
+  "target_sha": "36baa15ff831b939a22bc527cd76ce653ef6f66d",
+  "catalog_identity": "sha256:28ed20abf60e7c785052308298dc6ed647b7a20a737513e8fb3c76aa62d9094c",
+  "repetitions": [
+    {
+      "identity": "sha256:808621f2fd095bac84116371050c7539571d165ebb44bd9d8930e2508fe0864e",
+      "failed_check_ids": [],
+      "pytest_node_count": 2016
+    },
+    {
+      "identity": "sha256:808621f2fd095bac84116371050c7539571d165ebb44bd9d8930e2508fe0864e",
+      "failed_check_ids": [],
+      "pytest_node_count": 2016
+    },
+    {
+      "identity": "sha256:808621f2fd095bac84116371050c7539571d165ebb44bd9d8930e2508fe0864e",
+      "failed_check_ids": [],
+      "pytest_node_count": 2016
+    }
+  ],
+  "stable": true,
+  "identity": "sha256:0b2117b1448acc7e3a12cad1ce480bcd028576bd564cc0da05c7005d090def32"
+}

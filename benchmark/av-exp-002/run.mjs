@@ -320,8 +320,11 @@ function createPlan(worktree, scenario, selectorState, selectorNodes, prereg, us
     id: check.id,
     type: plannerType(check),
     command: check.invocation,
-    scope: { components: [check.verification_class === 'PYTEST_NODE'
-      ? `testnode:${check.id.slice('pytest:'.length)}` : `check:${check.id}`] },
+    scope: { components: [check.id === 'check:pytest-collection'
+      ? '*'
+      : check.verification_class === 'PYTEST_NODE'
+        ? `testnode:${check.id.slice('pytest:'.length)}`
+        : `check:${check.id}`] },
     tags: plannerTag(check),
     test_executions: check.verification_class === 'PYTEST_NODE' ? 1 : 0,
   }));
@@ -602,7 +605,11 @@ function rawManifest(root) {
 }
 
 const prereg = verifyPreregistration();
-const amendmentFiles = ['001-report-directory.md', '002-pytest-report-and-pyright-resolution.md'];
+const amendmentFiles = [
+  '001-report-directory.md',
+  '002-pytest-report-and-pyright-resolution.md',
+  '003-planner-catalog-coverage-scope.md',
+];
 const amendments = amendmentFiles.map((name) => ({
   name,
   identity: sha256File(path.join(here, 'amendments', name)),

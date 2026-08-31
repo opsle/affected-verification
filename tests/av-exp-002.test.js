@@ -9,7 +9,7 @@ import {
   validatePlanSkips,
   validateResultBundle,
 } from '../benchmark/av-exp-002/lib.mjs';
-import { contentIdentity } from '../src/index.js';
+import { contentIdentity, planVerification } from '../src/index.js';
 
 function envelope() {
   return {
@@ -56,6 +56,39 @@ test('AV-EXP-002 rejects unexplained skips', () => {
     skipped_checks: [{ id: 'check:x', reasons: [] }],
     argument: { every_skip_explained: true },
   }), (error) => error.code === 'UNEXPLAINED_SKIP');
+});
+
+test('global collection integrity scope covers changed source without forcing every test', () => {
+  const input = {
+    schema: 'opsle.affected-verification.input.v1',
+    change: {
+      base_revision: 'base', target_revision: 'patch',
+      paths: [{ path: 'src/pkg.py', regions: [], risk_tags: [] }],
+    },
+    evidence: {
+      identity: 'evidence', complete: true,
+      providers: [{ id: 'ast', kind: 'python-imports', version: '1', identity: 'graph' }],
+      components: [
+        { id: 'file:src/pkg.py', dependencies: [] },
+        { id: 'testnode:related', dependencies: ['file:src/pkg.py'] },
+        { id: 'testnode:unrelated', dependencies: [] },
+      ],
+      impacts: [{ path: 'src/pkg.py', components: ['file:src/pkg.py'], confidence: 'KNOWN' }],
+    },
+    catalog: {
+      identity: 'catalog', complete: true,
+      checks: [
+        { id: 'check:collection', type: 'test-infrastructure', command: 'pytest --collect-only', scope: { components: ['*'] }, tags: ['collection'], test_executions: 0 },
+        { id: 'pytest:related', type: 'unit-test', command: 'pytest related', scope: { components: ['testnode:related'] }, tags: ['pytest-node'], test_executions: 1 },
+        { id: 'pytest:unrelated', type: 'unit-test', command: 'pytest unrelated', scope: { components: ['testnode:unrelated'] }, tags: ['pytest-node'], test_executions: 1 },
+      ],
+    },
+    policy: { identity: 'policy', version: '1', rules: [] },
+  };
+  const plan = planVerification(input);
+  assert.equal(plan.sufficiency, 'SUFFICIENT_TARGETED');
+  assert.deepEqual(plan.selected_checks.map((check) => check.id), ['check:collection', 'pytest:related']);
+  assert.equal(plan.argument.every_skip_explained, true);
 });
 
 function resultBundle() {
