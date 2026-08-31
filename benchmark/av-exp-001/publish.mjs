@@ -12,7 +12,9 @@ import {
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, '../..');
-const resultsDir = path.join(here, 'results-v2');
+const resultsDir = process.argv[2]
+  ? path.resolve(process.argv[2])
+  : path.join(here, 'results-v2');
 const catalog = JSON.parse(fs.readFileSync(path.join(here, 'preregistration-v1', 'catalog.json'), 'utf8'));
 
 function readJson(file) {

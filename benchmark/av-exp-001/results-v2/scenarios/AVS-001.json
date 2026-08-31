@@ -1,0 +1,501 @@
+{
+  "schema": "opsle.affected-verification.shadow-benchmark-result.v1",
+  "result_identity": "sha256:3e6ebed6ae6e53abf9ef0b6548890ea142a91aece05590dbf9c38177ae099dc6",
+  "experiment_id": "AV-EXP-001",
+  "benchmark_revision": "0544362d7659093b7f0b4f89ee8f68023fd269c3+sha256:80a04b99ad73e86ecb2e7c85dda3a11ddbe99cdf200ca38e2c1effe498184357+sha256:51437d6c3bfdd1461a9679a5055ab5c34d9eb603ba95b67f86f8516f8b93a25e+sha256:44f420409b719b5ddfaac04928e215572873475c8d8e720e4755e043b878dfde",
+  "trust_stage": "SHADOW",
+  "target": {
+    "repository": "https://github.com/pmndrs/zustand.git",
+    "sha": "b57db4f86ef179285da216eeb291266da82c361c"
+  },
+  "scenario": {
+    "id": "AVS-001",
+    "identity": "sha256:2bf27420ee4f1aad3159696d1cf5f43601f62f1d20ea0ff3ff42af3fe90a0406",
+    "patch_sha256": "sha256:8abdffcc1f1248e99db416778bf173edb49937314c36c187ecf766e0e8293628",
+    "changed_paths": [
+      "src/middleware/ssrSafe.ts"
+    ]
+  },
+  "verification_catalog_identity": "sha256:8c5b224deaa7077690341248a18a2155310e2b16072e1607a9b4cd546e3a0914",
+  "planner": {
+    "version": "sha256:cf92bde63f3a396a44f342b8f25a187fa38d3b3037af4c24e60fe7c0ef38d950",
+    "policy_identity": "sha256:4ccefdc16896069237909f2e367ecd6d8a33b2aeca946a895b7da016e4452d88"
+  },
+  "native_selector": {
+    "identity": "sha256:f9f8f41244923a6daa6f86b0818889c955b6b26362432b76ae4ee361f10171d6",
+    "version": "4.1.10"
+  },
+  "baseline_identity": "sha256:8844d3be4b27f9abd9bab7c6b04d34fc6a1e7cfe36a21e6deec2b315633d3465",
+  "full_run": {
+    "identity": "sha256:ae94be762366dc9b66f937b737ab9247720e26c314962c91808239bfacaf5819",
+    "executed_check_ids": [
+      "check:build",
+      "check:format",
+      "check:lint",
+      "check:typecheck",
+      "test:tests/basic.test.tsx",
+      "test:tests/devtools.test.tsx",
+      "test:tests/immer.test.tsx",
+      "test:tests/middlewareTypes.test.tsx",
+      "test:tests/persistAsync.test.tsx",
+      "test:tests/persistSync.test.tsx",
+      "test:tests/shallow.test.tsx",
+      "test:tests/ssr.test.tsx",
+      "test:tests/subscribe.test.tsx",
+      "test:tests/types.test.tsx",
+      "test:tests/vanilla/basic.test.ts",
+      "test:tests/vanilla/shallow.test.tsx",
+      "test:tests/vanilla/subscribe.test.tsx"
+    ],
+    "failed_check_ids": [],
+    "complete": true
+  },
+  "oracle": {
+    "identity": "sha256:f4114feb4fae190f0d63c32c8b95cf5efca8ae10658be6d3e175054c355fa896",
+    "relevant_check_ids": [],
+    "claim": "Relevant within this frozen verification catalog."
+  },
+  "arms": {
+    "FULL": {
+      "selected_check_ids": [
+        "check:build",
+        "check:format",
+        "check:lint",
+        "check:typecheck",
+        "test:tests/basic.test.tsx",
+        "test:tests/devtools.test.tsx",
+        "test:tests/immer.test.tsx",
+        "test:tests/middlewareTypes.test.tsx",
+        "test:tests/persistAsync.test.tsx",
+        "test:tests/persistSync.test.tsx",
+        "test:tests/shallow.test.tsx",
+        "test:tests/ssr.test.tsx",
+        "test:tests/subscribe.test.tsx",
+        "test:tests/types.test.tsx",
+        "test:tests/vanilla/basic.test.ts",
+        "test:tests/vanilla/shallow.test.tsx",
+        "test:tests/vanilla/subscribe.test.tsx"
+      ],
+      "skipped_checks": [],
+      "selection_misses": []
+    },
+    "NATIVE": {
+      "plan_identity": null,
+      "selected_check_ids": [
+        "test:tests/devtools.test.tsx",
+        "test:tests/middlewareTypes.test.tsx",
+        "test:tests/persistAsync.test.tsx",
+        "test:tests/persistSync.test.tsx",
+        "test:tests/subscribe.test.tsx",
+        "test:tests/types.test.tsx",
+        "test:tests/vanilla/subscribe.test.tsx"
+      ],
+      "skipped_checks": [
+        {
+          "check_id": "check:build",
+          "reason": "The native Vitest related arm does not select non-test catalog checks.",
+          "evidence_refs": [
+            "native-selector-output",
+            "native-selector:zustand-vitest-related-v1"
+          ]
+        },
+        {
+          "check_id": "check:format",
+          "reason": "The native Vitest related arm does not select non-test catalog checks.",
+          "evidence_refs": [
+            "native-selector-output",
+            "native-selector:zustand-vitest-related-v1"
+          ]
+        },
+        {
+          "check_id": "check:lint",
+          "reason": "The native Vitest related arm does not select non-test catalog checks.",
+          "evidence_refs": [
+            "native-selector-output",
+            "native-selector:zustand-vitest-related-v1"
+          ]
+        },
+        {
+          "check_id": "check:typecheck",
+          "reason": "The native Vitest related arm does not select non-test catalog checks.",
+          "evidence_refs": [
+            "native-selector-output",
+            "native-selector:zustand-vitest-related-v1"
+          ]
+        },
+        {
+          "check_id": "test:tests/basic.test.tsx",
+          "reason": "Not selected by the frozen Vitest related output.",
+          "evidence_refs": [
+            "native-selector-output",
+            "native-selector:zustand-vitest-related-v1"
+          ]
+        },
+        {
+          "check_id": "test:tests/immer.test.tsx",
+          "reason": "Not selected by the frozen Vitest related output.",
+          "evidence_refs": [
+            "native-selector-output",
+            "native-selector:zustand-vitest-related-v1"
+          ]
+        },
+        {
+          "check_id": "test:tests/shallow.test.tsx",
+          "reason": "Not selected by the frozen Vitest related output.",
+          "evidence_refs": [
+            "native-selector-output",
+            "native-selector:zustand-vitest-related-v1"
+          ]
+        },
+        {
+          "check_id": "test:tests/ssr.test.tsx",
+          "reason": "Not selected by the frozen Vitest related output.",
+          "evidence_refs": [
+            "native-selector-output",
+            "native-selector:zustand-vitest-related-v1"
+          ]
+        },
+        {
+          "check_id": "test:tests/vanilla/basic.test.ts",
+          "reason": "Not selected by the frozen Vitest related output.",
+          "evidence_refs": [
+            "native-selector-output",
+            "native-selector:zustand-vitest-related-v1"
+          ]
+        },
+        {
+          "check_id": "test:tests/vanilla/shallow.test.tsx",
+          "reason": "Not selected by the frozen Vitest related output.",
+          "evidence_refs": [
+            "native-selector-output",
+            "native-selector:zustand-vitest-related-v1"
+          ]
+        }
+      ],
+      "sufficiency": null,
+      "uncertainty": null,
+      "escalation": null,
+      "selection_misses": []
+    },
+    "AV_CORE": {
+      "plan_identity": "sha256:acdca341676531844ba188e0526a99a928a6bb2b81790aff0499e5112b19563b",
+      "selected_check_ids": [
+        "check:build",
+        "check:format",
+        "check:lint",
+        "check:typecheck",
+        "test:tests/devtools.test.tsx",
+        "test:tests/middlewareTypes.test.tsx",
+        "test:tests/persistAsync.test.tsx",
+        "test:tests/persistSync.test.tsx",
+        "test:tests/subscribe.test.tsx",
+        "test:tests/types.test.tsx",
+        "test:tests/vanilla/subscribe.test.tsx"
+      ],
+      "skipped_checks": [
+        {
+          "check_id": "test:tests/basic.test.tsx",
+          "reason": "OUTSIDE_TRANSITIVE_IMPACT_SET: Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+          "evidence_refs": [
+            "impact-evidence",
+            "verification-catalog",
+            "verification-policy"
+          ]
+        },
+        {
+          "check_id": "test:tests/immer.test.tsx",
+          "reason": "OUTSIDE_TRANSITIVE_IMPACT_SET: Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+          "evidence_refs": [
+            "impact-evidence",
+            "verification-catalog",
+            "verification-policy"
+          ]
+        },
+        {
+          "check_id": "test:tests/shallow.test.tsx",
+          "reason": "OUTSIDE_TRANSITIVE_IMPACT_SET: Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+          "evidence_refs": [
+            "impact-evidence",
+            "verification-catalog",
+            "verification-policy"
+          ]
+        },
+        {
+          "check_id": "test:tests/ssr.test.tsx",
+          "reason": "OUTSIDE_TRANSITIVE_IMPACT_SET: Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+          "evidence_refs": [
+            "impact-evidence",
+            "verification-catalog",
+            "verification-policy"
+          ]
+        },
+        {
+          "check_id": "test:tests/vanilla/basic.test.ts",
+          "reason": "OUTSIDE_TRANSITIVE_IMPACT_SET: Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+          "evidence_refs": [
+            "impact-evidence",
+            "verification-catalog",
+            "verification-policy"
+          ]
+        },
+        {
+          "check_id": "test:tests/vanilla/shallow.test.tsx",
+          "reason": "OUTSIDE_TRANSITIVE_IMPACT_SET: Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+          "evidence_refs": [
+            "impact-evidence",
+            "verification-catalog",
+            "verification-policy"
+          ]
+        }
+      ],
+      "sufficiency": "SUFFICIENT_TARGETED",
+      "uncertainty": {
+        "state": "NONE",
+        "reasons": []
+      },
+      "escalation": {
+        "state": "NONE",
+        "reasons": []
+      },
+      "selection_misses": []
+    },
+    "AV_WITH_NATIVE_EVIDENCE": {
+      "plan_identity": "sha256:00abb5ebc497826b40d48eac06aa6e9f3bd0e8944ac6749c5493ebe5845f1c1a",
+      "selected_check_ids": [
+        "check:build",
+        "check:format",
+        "check:lint",
+        "check:typecheck",
+        "test:tests/devtools.test.tsx",
+        "test:tests/middlewareTypes.test.tsx",
+        "test:tests/persistAsync.test.tsx",
+        "test:tests/persistSync.test.tsx",
+        "test:tests/subscribe.test.tsx",
+        "test:tests/types.test.tsx",
+        "test:tests/vanilla/subscribe.test.tsx"
+      ],
+      "skipped_checks": [
+        {
+          "check_id": "test:tests/basic.test.tsx",
+          "reason": "OUTSIDE_TRANSITIVE_IMPACT_SET: Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+          "evidence_refs": [
+            "impact-evidence",
+            "verification-catalog",
+            "verification-policy"
+          ]
+        },
+        {
+          "check_id": "test:tests/immer.test.tsx",
+          "reason": "OUTSIDE_TRANSITIVE_IMPACT_SET: Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+          "evidence_refs": [
+            "impact-evidence",
+            "verification-catalog",
+            "verification-policy"
+          ]
+        },
+        {
+          "check_id": "test:tests/shallow.test.tsx",
+          "reason": "OUTSIDE_TRANSITIVE_IMPACT_SET: Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+          "evidence_refs": [
+            "impact-evidence",
+            "verification-catalog",
+            "verification-policy"
+          ]
+        },
+        {
+          "check_id": "test:tests/ssr.test.tsx",
+          "reason": "OUTSIDE_TRANSITIVE_IMPACT_SET: Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+          "evidence_refs": [
+            "impact-evidence",
+            "verification-catalog",
+            "verification-policy"
+          ]
+        },
+        {
+          "check_id": "test:tests/vanilla/basic.test.ts",
+          "reason": "OUTSIDE_TRANSITIVE_IMPACT_SET: Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+          "evidence_refs": [
+            "impact-evidence",
+            "verification-catalog",
+            "verification-policy"
+          ]
+        },
+        {
+          "check_id": "test:tests/vanilla/shallow.test.tsx",
+          "reason": "OUTSIDE_TRANSITIVE_IMPACT_SET: Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+          "evidence_refs": [
+            "impact-evidence",
+            "verification-catalog",
+            "verification-policy"
+          ]
+        }
+      ],
+      "sufficiency": "SUFFICIENT_TARGETED",
+      "uncertainty": {
+        "state": "NONE",
+        "reasons": []
+      },
+      "escalation": {
+        "state": "NONE",
+        "reasons": []
+      },
+      "selection_misses": []
+    }
+  },
+  "workload": {
+    "units_not_combined": true,
+    "arms": {
+      "FULL": {
+        "test_files": {
+          "available": 13,
+          "selected": 13,
+          "skipped": 0
+        },
+        "test_executions": {
+          "available": 224,
+          "selected": 224,
+          "skipped": 0
+        },
+        "non_test_checks": {
+          "build": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          },
+          "lint": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          },
+          "other": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          },
+          "typecheck": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          }
+        }
+      },
+      "NATIVE": {
+        "test_files": {
+          "available": 13,
+          "selected": 7,
+          "skipped": 6
+        },
+        "test_executions": {
+          "available": 224,
+          "selected": 166,
+          "skipped": 58
+        },
+        "non_test_checks": {
+          "build": {
+            "available": 1,
+            "selected": 0,
+            "skipped": 1
+          },
+          "lint": {
+            "available": 1,
+            "selected": 0,
+            "skipped": 1
+          },
+          "other": {
+            "available": 1,
+            "selected": 0,
+            "skipped": 1
+          },
+          "typecheck": {
+            "available": 1,
+            "selected": 0,
+            "skipped": 1
+          }
+        }
+      },
+      "AV_CORE": {
+        "test_files": {
+          "available": 13,
+          "selected": 7,
+          "skipped": 6
+        },
+        "test_executions": {
+          "available": 224,
+          "selected": 166,
+          "skipped": 58
+        },
+        "non_test_checks": {
+          "build": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          },
+          "lint": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          },
+          "other": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          },
+          "typecheck": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          }
+        }
+      },
+      "AV_WITH_NATIVE_EVIDENCE": {
+        "test_files": {
+          "available": 13,
+          "selected": 7,
+          "skipped": 6
+        },
+        "test_executions": {
+          "available": 224,
+          "selected": 166,
+          "skipped": 58
+        },
+        "non_test_checks": {
+          "build": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          },
+          "lint": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          },
+          "other": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          },
+          "typecheck": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          }
+        }
+      }
+    }
+  },
+  "evidence_hashes": [
+    "benchmark/av-exp-001/results-v2/raw/AVS-001/AVS-001-build.stderr.log=sha256:1407c9871d446f122a2df8ed5b9a49679b59f8460a43abcf1d60775c8bfc47e5",
+    "benchmark/av-exp-001/results-v2/raw/AVS-001/AVS-001-build.stdout.log=sha256:6c54a31158edf228b7bf3b925df87a264d73bd9493103a56903a9398ad8809bf",
+    "benchmark/av-exp-001/results-v2/raw/AVS-001/AVS-001-format.stderr.log=sha256:18a39320051637915e489a32b00ab2f976d0c1a2a414a01b30e9a99a6b0bb544",
+    "benchmark/av-exp-001/results-v2/raw/AVS-001/AVS-001-format.stdout.log=sha256:4f63fd1da0ca68bc946ef26cb79f61f0ef42c30bf2dd190973b334c5427ed2f5",
+    "benchmark/av-exp-001/results-v2/raw/AVS-001/AVS-001-lint.stderr.log=sha256:050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1",
+    "benchmark/av-exp-001/results-v2/raw/AVS-001/AVS-001-lint.stdout.log=sha256:58ef5a2a260cafd97cb6361e4e77d25bb33b7709e25f21c442fd3f13fb224c85",
+    "benchmark/av-exp-001/results-v2/raw/AVS-001/AVS-001-native.stderr.log=sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "benchmark/av-exp-001/results-v2/raw/AVS-001/AVS-001-native.stdout.log=sha256:f85b2371e413f9a4fdc25219cbd6f2bb5fa5110ddbe52a04d6eaf4449b5200bc",
+    "benchmark/av-exp-001/results-v2/raw/AVS-001/AVS-001-native.vitest.json=sha256:078a86b4b552baa2b3741278100c5fc4e8a851a3ead5944fcf4a2eefd55a04cd",
+    "benchmark/av-exp-001/results-v2/raw/AVS-001/AVS-001-tests.stderr.log=sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "benchmark/av-exp-001/results-v2/raw/AVS-001/AVS-001-tests.stdout.log=sha256:75e2c58e85848de2c701315547d4a87433799dc40e34ea2794c2cb0e34872786",
+    "benchmark/av-exp-001/results-v2/raw/AVS-001/AVS-001-typecheck.stderr.log=sha256:8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92",
+    "benchmark/av-exp-001/results-v2/raw/AVS-001/AVS-001-typecheck.stdout.log=sha256:2369b65deb9f22fe17ce278db91e9da845c43ee603f567f2b722650fc0fbf408"
+  ]
+}

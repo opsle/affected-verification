@@ -1,0 +1,72 @@
+{
+  "schema": "opsle.affected-verification.shadow-benchmark-summary.v1",
+  "experiment_id": "AV-EXP-001",
+  "preregistration_sha": "0544362d7659093b7f0b4f89ee8f68023fd269c3",
+  "amendment_identities": [
+    "sha256:80a04b99ad73e86ecb2e7c85dda3a11ddbe99cdf200ca38e2c1effe498184357",
+    "sha256:51437d6c3bfdd1461a9679a5055ab5c34d9eb603ba95b67f86f8516f8b93a25e",
+    "sha256:44f420409b719b5ddfaac04928e215572873475c8d8e720e4755e043b878dfde"
+  ],
+  "target": {
+    "repository": "https://github.com/pmndrs/zustand.git",
+    "sha": "b57db4f86ef179285da216eeb291266da82c361c"
+  },
+  "catalog_identity": "sha256:8c5b224deaa7077690341248a18a2155310e2b16072e1607a9b4cd546e3a0914",
+  "baseline_identity": "sha256:8844d3be4b27f9abd9bab7c6b04d34fc6a1e7cfe36a21e6deec2b315633d3465",
+  "scenario_count": 10,
+  "scenarios_with_relevant_failures": 6,
+  "selector_results": {
+    "NATIVE": {
+      "relevant_checks": 8,
+      "selected_relevant_checks": 6,
+      "missed_relevant_checks": 2,
+      "relevant_check_recall": "6/8",
+      "scenario_level_miss_count": 2,
+      "escalations": 0,
+      "misses": [
+        {
+          "scenario_id": "AVS-003",
+          "check_id": "check:lint"
+        },
+        {
+          "scenario_id": "AVS-008",
+          "check_id": "check:typecheck"
+        }
+      ]
+    },
+    "AV_CORE": {
+      "relevant_checks": 8,
+      "selected_relevant_checks": 8,
+      "missed_relevant_checks": 0,
+      "relevant_check_recall": "8/8",
+      "scenario_level_miss_count": 0,
+      "escalations": 3,
+      "misses": []
+    },
+    "AV_WITH_NATIVE_EVIDENCE": {
+      "relevant_checks": 8,
+      "selected_relevant_checks": 8,
+      "missed_relevant_checks": 0,
+      "relevant_check_recall": "8/8",
+      "scenario_level_miss_count": 0,
+      "escalations": 3,
+      "misses": []
+    }
+  },
+  "scenario_result_identities": {
+    "AVS-001": "sha256:3e6ebed6ae6e53abf9ef0b6548890ea142a91aece05590dbf9c38177ae099dc6",
+    "AVS-002": "sha256:9983b2c3e339832345833973047d2b82cd64a6ac73cccc20c8b6296591206aea",
+    "AVS-003": "sha256:53a2aea03ffdef08ca6dd1b23cff3d0ed4aedd6852391f10b2e58e2402bcfd21",
+    "AVS-004": "sha256:c3d0467e7a6b9fa28b7e9b4962852bede567df11afe98803fea2a3f5278244b5",
+    "AVS-005": "sha256:e444ee43832766ed3f0ddbe31abeb482db406470c8383b8a62c43990c6e5bc54",
+    "AVS-006": "sha256:46b992361c52479864d4e4c4717c60b796cfe43e30e1d410a30eeb85bdfe4f76",
+    "AVS-007": "sha256:9c37dc3a4327be5e8dbc6ad3bad481d9da3f02ff36f125a56113b7b0d34316f2",
+    "AVS-008": "sha256:0ddb7ee3383c06f31bb30b81052b6ab2baae1c1c5630423ebc38cd2fd616e7cc",
+    "AVS-009": "sha256:214cbe9d27e743feca1dfcb0a89b821d2589096a527c8f0e858a14b7b89673c5",
+    "AVS-010": "sha256:ce2de6cf4415d4636cf9db1a9ea62a9ab03502e4cc3e462cd2e32beca222c07a"
+  },
+  "trust_stage": "SHADOW",
+  "trust_decision": "REMAIN_SHADOW",
+  "claim_limit": "No miss was observed only if the miss count is zero; either outcome is bounded to this frozen calibration corpus.",
+  "summary_identity": "sha256:68b8582a9ce7b86bfa5431d89d2dea07f8c34b88d1d0350bab25c99fa5b236df"
+}

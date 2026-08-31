@@ -13,7 +13,7 @@
     "conformance": "node ./tools/conformance.js",
     "determinism": "node --test --test-name-pattern='deterministic|stable|identical'",
     "verify": "npm run check && npm test && npm run conformance && npm run determinism",
-    "benchmark:av-exp-001": "node benchmark/av-exp-001/run.mjs all"
+    "benchmark:av-exp-001": "./benchmark/av-exp-001/reproduce.sh"
   },
   "engines": {
     "node": ">=20"

@@ -1,0 +1,8 @@
+{
+  "scenario_id": "AVS-001",
+  "full_run_identity": "sha256:ae94be762366dc9b66f937b737ab9247720e26c314962c91808239bfacaf5819",
+  "baseline_identity": "sha256:8844d3be4b27f9abd9bab7c6b04d34fc6a1e7cfe36a21e6deec2b315633d3465",
+  "relevant_check_ids": [],
+  "definition": "Clean PASS changed to scenario FAIL; relevant within this frozen verification catalog.",
+  "identity": "sha256:f4114feb4fae190f0d63c32c8b95cf5efca8ae10658be6d3e175054c355fa896"
+}

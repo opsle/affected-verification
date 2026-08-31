@@ -1,0 +1,18 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "exec",
+    "vitest",
+    "run",
+    "--reporter=json",
+    "--outputFile=/home/deploy/apps/opsle-bootstrap/repos/affected-verification/benchmark/av-exp-001/results-v2/raw/baseline-1/baseline-1-tests.vitest.json"
+  ],
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms_observed": 4721.619,
+  "spawn_error": null,
+  "stdout_sha256": "sha256:8750fb1268e678f7f5e3930697105fbc75341acb6427c13b179e5f9e2a357fcc",
+  "stderr_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

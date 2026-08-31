@@ -1,0 +1,27 @@
+{
+  "schema": "opsle.affected-verification.shadow-benchmark-reproduction.v1",
+  "experiment_id": "AV-EXP-001",
+  "published_results": "benchmark/av-exp-001/results-v2",
+  "reproduction_results": "/tmp/av-exp-001-results-v2-repro",
+  "published": {
+    "baseline_identity": "sha256:8844d3be4b27f9abd9bab7c6b04d34fc6a1e7cfe36a21e6deec2b315633d3465",
+    "summary_identity": "sha256:68b8582a9ce7b86bfa5431d89d2dea07f8c34b88d1d0350bab25c99fa5b236df",
+    "analysis_identity": "sha256:c431d8849edce79d6121a290f49288ed2710e406600d8b66d3588e6b82c73a1d"
+  },
+  "reproduced": {
+    "baseline_identity": "sha256:8844d3be4b27f9abd9bab7c6b04d34fc6a1e7cfe36a21e6deec2b315633d3465",
+    "summary_identity": "sha256:68b8582a9ce7b86bfa5431d89d2dea07f8c34b88d1d0350bab25c99fa5b236df",
+    "analysis_identity": "sha256:c431d8849edce79d6121a290f49288ed2710e406600d8b66d3588e6b82c73a1d"
+  },
+  "checks": {
+    "baseline_identity_equal": true,
+    "all_ten_scenario_result_identities_equal": true,
+    "summary_identity_equal": true,
+    "analysis_identity_equal": true
+  },
+  "result": "PASS",
+  "limitations": [
+    "The reproduction used the same host, target clone cache, implementation, and operator session; it verifies deterministic replay, not an independent qualifying replication of general safety or benefit.",
+    "Raw evidence bundle identities differ because raw reports contain OBSERVED timing and output-location telemetry."
+  ]
+}

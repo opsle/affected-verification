@@ -1,6 +1,9 @@
-# Benchmark and research plan
+# Benchmark and research record
 
-No benchmark has run and no result is claimed.
+AV-EXP-001 completed the first preregistered real-repository `SHADOW`
+calibration. See [benchmark/av-exp-001/REPORT.md](benchmark/av-exp-001/REPORT.md)
+for the bounded result and immutable artifact identities. The method below
+remains authoritative for future runs.
 
 ## Central question
 
@@ -59,6 +62,10 @@ Unlike verification types are not added into one deceptive percentage. Counterfa
 - How frequently do native and composed selectors miss relevant full-run failures?
 - Does adding policy and non-test checks produce value above native selectors?
 
-## Initial experiment sequence
+## Experiment sequence
 
 First, freeze a real public repository with a trustworthy full-verification baseline and run in `OBSERVE`/`SHADOW`. Compare plan identities and full outcomes without replacing CI. Only after the oracle, catalog completeness, adapter fidelity, and miss classifications are independently reviewable should a bounded trust decision be considered.
+
+AV-EXP-001 satisfied that first calibration step for Zustand at
+`b57db4f86ef179285da216eeb291266da82c361c`. It remains `SHADOW`; its absence
+of observed AV misses in ten scenarios is not a bounded-trust decision.

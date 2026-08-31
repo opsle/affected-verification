@@ -1,0 +1,12 @@
+title = "Affected Verification secret-scan policy"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Public immutable Git object identities used by AV-EXP-001"
+regexTarget = "match"
+regexes = [
+  '''b57db4f86ef179285da216eeb291266da82c361c''',
+  '''0544362d7659093b7f0b4f89ee8f68023fd269c3''',
+]
