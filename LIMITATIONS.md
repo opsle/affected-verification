@@ -12,4 +12,3 @@
 - No production trust stage is justified. This repository is at most `PROTOTYPED`.
 - No time, token, monetary, correctness, failure-prevention, or causal savings claim is supported.
 - Context Firewall, Decision Evidence, Agent Trajectory Profiler, Gearbox, and Opsle Tasks are external consumers or validators, not dependencies.
-

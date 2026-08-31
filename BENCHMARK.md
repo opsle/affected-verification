@@ -62,4 +62,3 @@ Unlike verification types are not added into one deceptive percentage. Counterfa
 ## Initial experiment sequence
 
 First, freeze a real public repository with a trustworthy full-verification baseline and run in `OBSERVE`/`SHADOW`. Compare plan identities and full outcomes without replacing CI. Only after the oracle, catalog completeness, adapter fidelity, and miss classifications are independently reviewable should a bounded trust decision be considered.
-

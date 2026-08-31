@@ -29,4 +29,3 @@ export function tamperPlan(plan) {
   tampered.selected_checks[0].command = 'changed-after-planning';
   return tampered;
 }
-

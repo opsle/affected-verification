@@ -9,4 +9,3 @@ export {
   SHADOW_OBSERVATION_SCHEMA,
   InputError,
 } from './validate.js';
-

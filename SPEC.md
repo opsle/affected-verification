@@ -1,7 +1,7 @@
 # Affected Verification specification
 
-Status: normative prototype contract  
-Plan identity: `opsle.affected-verification.plan.v1`  
+Status: normative prototype contract
+Plan identity: `opsle.affected-verification.plan.v1`
 Input identity: `opsle.affected-verification.input.v1`
 
 ## 1. Canonical definition

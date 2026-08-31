@@ -25,4 +25,3 @@ The prototype's defensible distinction is narrower: it combines potentially hete
 ## Novelty ceiling
 
 No novelty is claimed. Future comparison must include full verification, native affected tooling, Affected Verification, and Affected Verification consuming native tooling. Value exists only if the composed argument improves workload without increasing relevant misses under controlled shadow evidence.
-
