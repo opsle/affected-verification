@@ -493,7 +493,8 @@ function scenarioRun(worktree, scenario, prereg, baselineSummary, selectorBaseli
   const statusPaths = git(worktree, ['status', '--porcelain', '--untracked-files=all'])
     .split('\n')
     .filter((line) => line.startsWith('?? '))
-    .map((line) => line.slice(3));
+    .map((line) => line.slice(3))
+    .filter((changedPath) => changedPath !== '.testmondata');
   const changedPaths = [...new Set([...trackedPaths, ...statusPaths])].sort();
   if (JSON.stringify(changedPaths) !== JSON.stringify([...scenario.changed_paths].sort())) {
     throw new Error(`changed path mismatch: ${scenario.id}`);
@@ -615,6 +616,7 @@ const amendmentFiles = [
   '002-pytest-report-and-pyright-resolution.md',
   '003-planner-catalog-coverage-scope.md',
   '004-added-path-change-identity.md',
+  '005-selector-state-exclusion.md',
 ];
 const amendments = amendmentFiles.map((name) => ({
   name,
