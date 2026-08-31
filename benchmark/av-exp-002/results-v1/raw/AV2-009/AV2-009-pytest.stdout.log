@@ -1,0 +1,103 @@
+........................................................................ [  3%]
+........................................................................ [  7%]
+........................................................................ [ 10%]
+........................................................................ [ 14%]
+........................................................................ [ 17%]
+........................................................................ [ 21%]
+........................................................................ [ 25%]
+........................................................................ [ 28%]
+........................................................................ [ 32%]
+....................s..s.s........s........s.....s................s..... [ 35%]
+...s..................s....ss....s...................................... [ 39%]
+.s.........s..............................s.s........................... [ 42%]
+.......s.......s.......s.....s.........................s.ss............. [ 46%]
+........................................................................ [ 50%]
+........................................................................ [ 53%]
+........................................................................ [ 57%]
+....................s................................................... [ 60%]
+........................................................................ [ 64%]
+.......................................................x................ [ 67%]
+......................F................................................. [ 71%]
+.....................F.................................................. [ 75%]
+........................................................................ [ 78%]
+........................................................................ [ 82%]
+........................................................................ [ 85%]
+........................................................................ [ 89%]
+........................................................................ [ 92%]
+........................................................................ [ 96%]
+........................................................................ [100%]
+=================================== FAILURES ===================================
+_______________ test_version_option_ambiguous_import_name_errors _______________
+
+runner = <click.testing.CliRunner object at 0x7f46c2aca430>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f46c82d6040>
+
+    def test_version_option_ambiguous_import_name_errors(runner, monkeypatch):
+        """When an import name maps to multiple installed distributions, the
+        user must disambiguate. The error names the candidates.
+        """
+        import importlib.metadata
+    
+        def fake_version(name):
+            raise importlib.metadata.PackageNotFoundError(name)
+    
+        monkeypatch.setattr(importlib.metadata, "version", fake_version)
+        monkeypatch.setattr(
+            importlib.metadata,
+            "packages_distributions",
+            lambda: {"plug": ["foo-plug", "bar-plug"]},
+        )
+    
+        @click.command()
+        @click.version_option(package_name="plug")
+        def cli():
+            pass
+    
+        result = runner.invoke(cli, ["--version"])
+        assert result.exit_code != 0
+        msg = str(result.exception)
+>       assert "multiple installed distributions" in msg
+E       assert 'multiple installed distributions' in "'plug' is not installed. Try passing 'package_name' instead."
+
+tests/test_basic.py:917: AssertionError
+___________ test_version_option_resolves_import_name_to_distribution ___________
+
+runner = <click.testing.CliRunner object at 0x7f46c86071c0>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f46c8607700>
+
+    def test_version_option_resolves_import_name_to_distribution(runner, monkeypatch):
+        """When ``package_name`` (detected or passed) is an import name that
+        differs from its installed distribution name (``PIL`` vs ``Pillow``),
+        ``version_option`` resolves it via ``packages_distributions()`` instead
+        of raising ``RuntimeError``.
+        """
+        import importlib.metadata
+    
+        def fake_version(name):
+            if name == "pillow":
+                return "10.4.0"
+            raise importlib.metadata.PackageNotFoundError(name)
+    
+        monkeypatch.setattr(importlib.metadata, "version", fake_version)
+        monkeypatch.setattr(
+            importlib.metadata,
+            "packages_distributions",
+            lambda: {"PIL": ["pillow"]},
+        )
+    
+        @click.command()
+        @click.version_option(package_name="PIL")
+        def cli():
+            pass
+    
+        result = runner.invoke(cli, ["--version"], prog_name="imageapp")
+>       assert result.exit_code == 0
+E       assert 1 == 0
+E        +  where 1 = <Result RuntimeError("'PIL' is not installed. Try passing 'package_name' instead.")>.exit_code
+
+tests/test_basic.py:889: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_basic.py::test_version_option_ambiguous_import_name_errors - assert 'multiple installed distributions' in "'plug' is not installed. Try passing 'package_name' instead."
+FAILED tests/test_basic.py::test_version_option_resolves_import_name_to_distribution - assert 1 == 0
+ +  where 1 = <Result RuntimeError("'PIL' is not installed. Try passing 'package_name' instead.")>.exit_code
+2 failed, 1989 passed, 24 skipped, 31000 deselected, 1 xfailed in 6.92s

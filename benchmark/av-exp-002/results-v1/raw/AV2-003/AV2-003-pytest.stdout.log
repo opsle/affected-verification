@@ -1,0 +1,2207 @@
+...........s...........s........s.........s..............s.............. [  3%]
+..............................................s...s..................s.. [  7%]
+..s..................s..s............s..................s........ss..... [ 10%]
+....................s...............ss..s...ss..s...............s....... [ 14%]
+........................................................................ [ 17%]
+........................................................................ [ 21%]
+.......................................................................F [ 25%]
+..F.F...FFF........F.F...F.............................................. [ 28%]
+..................F..................................................... [ 32%]
+........................................................................ [ 35%]
+........................................................................ [ 39%]
+...........F.FF..F.FxFFFFF...F.......................................... [ 42%]
+......................F................................................. [ 46%]
+..........................F...F.......................F................. [ 50%]
+.......................................F.........FF..........F....F..... [ 53%]
+..FF.FF.............F...............F..................FF......F........ [ 57%]
+........F...F...F...F.............FF..............F..................... [ 60%]
+......................................F.F........FFFF.....F....F........ [ 64%]
+.F........s............................................................. [ 67%]
+........................................................................ [ 71%]
+........................................................................ [ 75%]
+........................................................................ [ 78%]
+........................................................................ [ 82%]
+........................................................................ [ 85%]
+........................................................................ [ 89%]
+........................................................................ [ 92%]
+..................F..................................................... [ 96%]
+........................................................................ [100%]
+=================================== FAILURES ===================================
+_ test_formatting_usage_error_help_hint[help_names5-extra_options5-Try 'cli foo --help' for help.] _
+
+runner = <click.testing.CliRunner object at 0x76c8d14fa0b0>
+help_names = ['-h', '--help', '--info']
+extra_options = [<function option.<locals>.decorator at 0x76c8d17a4c20>]
+expected_hint = "Try 'cli foo --help' for help."
+
+    @pytest.mark.parametrize(
+        ("help_names", "extra_options", "expected_hint"),
+        [
+            # No shadowing, longest name is picked.
+            (["-h", "--help"], [], "Try 'cli foo --help' for help."),
+            # -h shadowed by a subcommand option, --help still available.
+            (
+                ["-h", "--help"],
+                [click.option("--host", "-h")],
+                "Try 'cli foo --help' for help.",
+            ),
+            # --help shadowed, -h still available.
+            (
+                ["-h", "--help"],
+                [click.option("--help-file", "--help")],
+                "Try 'cli foo -h' for help.",
+            ),
+            # Both names shadowed: no hint line at all.
+            (
+                ["-h", "--help"],
+                [click.option("--host", "-h"), click.option("--help-file", "--help")],
+                None,
+            ),
+            # Single custom help name, not shadowed.
+            (["--man"], [], "Try 'cli foo --man' for help."),
+            # Three help names, one shadowed, longest survivor picked.
+            (
+                ["-h", "--help", "--info"],
+                [click.option("--info-file", "--info")],
+                "Try 'cli foo --help' for help.",
+            ),
+        ],
+    )
+    def test_formatting_usage_error_help_hint(
+        runner, help_names, extra_options, expected_hint
+    ):
+        """The error hint should only show non-shadowed help option names,
+        picking the longest for readability.
+    
+        https://github.com/pallets/click/issues/2790
+        """
+    
+        @click.group(context_settings={"help_option_names": help_names})
+        def cli():
+            pass
+    
+        @cli.command()
+        @click.argument("required_arg")
+        def foo(required_arg, **kwargs):
+            pass
+    
+        for option in extra_options:
+            option(foo)
+    
+        result = runner.invoke(cli, ["foo"])
+        assert result.exit_code == 2
+        lines = result.output.splitlines()
+>       assert lines[0] == "Usage: cli foo [OPTIONS] REQUIRED_ARG"
+E       AssertionError: assert 'Usage: cli [...AND [ARGS]...' == 'Usage: cli f... REQUIRED_ARG'
+E         
+E         - Usage: cli foo [OPTIONS] REQUIRED_ARG
+E         + Usage: cli [OPTIONS] COMMAND [ARGS]...
+
+tests/test_formatting.py:309: AssertionError
+_______________________ test_wrapping_long_command_name ________________________
+
+runner = <click.testing.CliRunner object at 0x76c8d130fa10>
+
+    def test_wrapping_long_command_name(runner):
+        @click.group()
+        def cli():
+            """Top level command"""
+    
+        @cli.group()
+        def a_very_very_very_long():
+            """Second level"""
+    
+        @a_very_very_very_long.command()
+        @click.argument("first")
+        @click.argument("second")
+        @click.argument("third")
+        @click.argument("fourth")
+        @click.argument("fifth")
+        @click.argument("sixth")
+        def command():
+            """A command."""
+    
+        result = runner.invoke(
+            cli, ["a-very-very-very-long", "command", "--help"], terminal_width=54
+        )
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_formatting.py:112: AssertionError
+_ test_formatting_usage_error_help_hint[help_names4-extra_options4-Try 'cli foo --man' for help.] _
+
+runner = <click.testing.CliRunner object at 0x76c8d12f7e70>
+help_names = ['--man'], extra_options = []
+expected_hint = "Try 'cli foo --man' for help."
+
+    @pytest.mark.parametrize(
+        ("help_names", "extra_options", "expected_hint"),
+        [
+            # No shadowing, longest name is picked.
+            (["-h", "--help"], [], "Try 'cli foo --help' for help."),
+            # -h shadowed by a subcommand option, --help still available.
+            (
+                ["-h", "--help"],
+                [click.option("--host", "-h")],
+                "Try 'cli foo --help' for help.",
+            ),
+            # --help shadowed, -h still available.
+            (
+                ["-h", "--help"],
+                [click.option("--help-file", "--help")],
+                "Try 'cli foo -h' for help.",
+            ),
+            # Both names shadowed: no hint line at all.
+            (
+                ["-h", "--help"],
+                [click.option("--host", "-h"), click.option("--help-file", "--help")],
+                None,
+            ),
+            # Single custom help name, not shadowed.
+            (["--man"], [], "Try 'cli foo --man' for help."),
+            # Three help names, one shadowed, longest survivor picked.
+            (
+                ["-h", "--help", "--info"],
+                [click.option("--info-file", "--info")],
+                "Try 'cli foo --help' for help.",
+            ),
+        ],
+    )
+    def test_formatting_usage_error_help_hint(
+        runner, help_names, extra_options, expected_hint
+    ):
+        """The error hint should only show non-shadowed help option names,
+        picking the longest for readability.
+    
+        https://github.com/pallets/click/issues/2790
+        """
+    
+        @click.group(context_settings={"help_option_names": help_names})
+        def cli():
+            pass
+    
+        @cli.command()
+        @click.argument("required_arg")
+        def foo(required_arg, **kwargs):
+            pass
+    
+        for option in extra_options:
+            option(foo)
+    
+        result = runner.invoke(cli, ["foo"])
+        assert result.exit_code == 2
+        lines = result.output.splitlines()
+>       assert lines[0] == "Usage: cli foo [OPTIONS] REQUIRED_ARG"
+E       AssertionError: assert 'Usage: cli [...AND [ARGS]...' == 'Usage: cli f... REQUIRED_ARG'
+E         
+E         - Usage: cli foo [OPTIONS] REQUIRED_ARG
+E         + Usage: cli [OPTIONS] COMMAND [ARGS]...
+
+tests/test_formatting.py:309: AssertionError
+_ test_formatting_usage_error_help_hint[help_names1-extra_options1-Try 'cli foo --help' for help.] _
+
+runner = <click.testing.CliRunner object at 0x76c8d12f75b0>
+help_names = ['-h', '--help']
+extra_options = [<function option.<locals>.decorator at 0x76c8d17a49a0>]
+expected_hint = "Try 'cli foo --help' for help."
+
+    @pytest.mark.parametrize(
+        ("help_names", "extra_options", "expected_hint"),
+        [
+            # No shadowing, longest name is picked.
+            (["-h", "--help"], [], "Try 'cli foo --help' for help."),
+            # -h shadowed by a subcommand option, --help still available.
+            (
+                ["-h", "--help"],
+                [click.option("--host", "-h")],
+                "Try 'cli foo --help' for help.",
+            ),
+            # --help shadowed, -h still available.
+            (
+                ["-h", "--help"],
+                [click.option("--help-file", "--help")],
+                "Try 'cli foo -h' for help.",
+            ),
+            # Both names shadowed: no hint line at all.
+            (
+                ["-h", "--help"],
+                [click.option("--host", "-h"), click.option("--help-file", "--help")],
+                None,
+            ),
+            # Single custom help name, not shadowed.
+            (["--man"], [], "Try 'cli foo --man' for help."),
+            # Three help names, one shadowed, longest survivor picked.
+            (
+                ["-h", "--help", "--info"],
+                [click.option("--info-file", "--info")],
+                "Try 'cli foo --help' for help.",
+            ),
+        ],
+    )
+    def test_formatting_usage_error_help_hint(
+        runner, help_names, extra_options, expected_hint
+    ):
+        """The error hint should only show non-shadowed help option names,
+        picking the longest for readability.
+    
+        https://github.com/pallets/click/issues/2790
+        """
+    
+        @click.group(context_settings={"help_option_names": help_names})
+        def cli():
+            pass
+    
+        @cli.command()
+        @click.argument("required_arg")
+        def foo(required_arg, **kwargs):
+            pass
+    
+        for option in extra_options:
+            option(foo)
+    
+        result = runner.invoke(cli, ["foo"])
+        assert result.exit_code == 2
+        lines = result.output.splitlines()
+>       assert lines[0] == "Usage: cli foo [OPTIONS] REQUIRED_ARG"
+E       AssertionError: assert 'Usage: cli [...AND [ARGS]...' == 'Usage: cli f... REQUIRED_ARG'
+E         
+E         - Usage: cli foo [OPTIONS] REQUIRED_ARG
+E         + Usage: cli [OPTIONS] COMMAND [ARGS]...
+
+tests/test_formatting.py:309: AssertionError
+_ test_formatting_usage_error_help_hint[help_names0-extra_options0-Try 'cli foo --help' for help.] _
+
+runner = <click.testing.CliRunner object at 0x76c8d130e900>
+help_names = ['-h', '--help'], extra_options = []
+expected_hint = "Try 'cli foo --help' for help."
+
+    @pytest.mark.parametrize(
+        ("help_names", "extra_options", "expected_hint"),
+        [
+            # No shadowing, longest name is picked.
+            (["-h", "--help"], [], "Try 'cli foo --help' for help."),
+            # -h shadowed by a subcommand option, --help still available.
+            (
+                ["-h", "--help"],
+                [click.option("--host", "-h")],
+                "Try 'cli foo --help' for help.",
+            ),
+            # --help shadowed, -h still available.
+            (
+                ["-h", "--help"],
+                [click.option("--help-file", "--help")],
+                "Try 'cli foo -h' for help.",
+            ),
+            # Both names shadowed: no hint line at all.
+            (
+                ["-h", "--help"],
+                [click.option("--host", "-h"), click.option("--help-file", "--help")],
+                None,
+            ),
+            # Single custom help name, not shadowed.
+            (["--man"], [], "Try 'cli foo --man' for help."),
+            # Three help names, one shadowed, longest survivor picked.
+            (
+                ["-h", "--help", "--info"],
+                [click.option("--info-file", "--info")],
+                "Try 'cli foo --help' for help.",
+            ),
+        ],
+    )
+    def test_formatting_usage_error_help_hint(
+        runner, help_names, extra_options, expected_hint
+    ):
+        """The error hint should only show non-shadowed help option names,
+        picking the longest for readability.
+    
+        https://github.com/pallets/click/issues/2790
+        """
+    
+        @click.group(context_settings={"help_option_names": help_names})
+        def cli():
+            pass
+    
+        @cli.command()
+        @click.argument("required_arg")
+        def foo(required_arg, **kwargs):
+            pass
+    
+        for option in extra_options:
+            option(foo)
+    
+        result = runner.invoke(cli, ["foo"])
+        assert result.exit_code == 2
+        lines = result.output.splitlines()
+>       assert lines[0] == "Usage: cli foo [OPTIONS] REQUIRED_ARG"
+E       AssertionError: assert 'Usage: cli [...AND [ARGS]...' == 'Usage: cli f... REQUIRED_ARG'
+E         
+E         - Usage: cli foo [OPTIONS] REQUIRED_ARG
+E         + Usage: cli [OPTIONS] COMMAND [ARGS]...
+
+tests/test_formatting.py:309: AssertionError
+______________________ test_formatting_usage_error_nested ______________________
+
+runner = <click.testing.CliRunner object at 0x76c8d130f620>
+
+    def test_formatting_usage_error_nested(runner):
+        @click.group()
+        def cmd():
+            pass
+    
+        @cmd.command()
+        @click.argument("bar")
+        def foo(bar):
+            click.echo(f"foo:{bar}")
+    
+        result = runner.invoke(cmd, ["foo"])
+        assert result.exit_code == 2
+>       assert result.output.splitlines() == [
+            "Usage: cmd foo [OPTIONS] BAR",
+            "Try 'cmd foo --help' for help.",
+            "",
+            "Error: Missing argument 'BAR'.",
+        ]
+E       assert ['Usage: cmd ...mmand 'FOO'."] == ['Usage: cmd ...ument 'BAR'."]
+E         
+E         At index 0 diff: 'Usage: cmd [OPTIONS] COMMAND [ARGS]...' != 'Usage: cmd foo [OPTIONS] BAR'
+E         
+E         Full diff:
+E           [
+E         -     'Usage: cmd foo [OPTIONS] BAR',
+E         ?                ----           ^
+E         +     'Usage: cmd [OPTIONS] COMMAND [ARGS]...',
+E         ?                           ^^^^^^^^^  ++++++
+E         -     "Try 'cmd foo --help' for help.",
+E         ?              ----
+E         +     "Try 'cmd --help' for help.",
+E               '',
+E         -     "Error: Missing argument 'BAR'.",
+E         +     "Error: No such command 'FOO'.",
+E           ]
+
+tests/test_formatting.py:213: AssertionError
+_ test_formatting_usage_error_help_hint[help_names2-extra_options2-Try 'cli foo -h' for help.] _
+
+runner = <click.testing.CliRunner object at 0x76c8d14f9240>
+help_names = ['-h', '--help']
+extra_options = [<function option.<locals>.decorator at 0x76c8d17a4a40>]
+expected_hint = "Try 'cli foo -h' for help."
+
+    @pytest.mark.parametrize(
+        ("help_names", "extra_options", "expected_hint"),
+        [
+            # No shadowing, longest name is picked.
+            (["-h", "--help"], [], "Try 'cli foo --help' for help."),
+            # -h shadowed by a subcommand option, --help still available.
+            (
+                ["-h", "--help"],
+                [click.option("--host", "-h")],
+                "Try 'cli foo --help' for help.",
+            ),
+            # --help shadowed, -h still available.
+            (
+                ["-h", "--help"],
+                [click.option("--help-file", "--help")],
+                "Try 'cli foo -h' for help.",
+            ),
+            # Both names shadowed: no hint line at all.
+            (
+                ["-h", "--help"],
+                [click.option("--host", "-h"), click.option("--help-file", "--help")],
+                None,
+            ),
+            # Single custom help name, not shadowed.
+            (["--man"], [], "Try 'cli foo --man' for help."),
+            # Three help names, one shadowed, longest survivor picked.
+            (
+                ["-h", "--help", "--info"],
+                [click.option("--info-file", "--info")],
+                "Try 'cli foo --help' for help.",
+            ),
+        ],
+    )
+    def test_formatting_usage_error_help_hint(
+        runner, help_names, extra_options, expected_hint
+    ):
+        """The error hint should only show non-shadowed help option names,
+        picking the longest for readability.
+    
+        https://github.com/pallets/click/issues/2790
+        """
+    
+        @click.group(context_settings={"help_option_names": help_names})
+        def cli():
+            pass
+    
+        @cli.command()
+        @click.argument("required_arg")
+        def foo(required_arg, **kwargs):
+            pass
+    
+        for option in extra_options:
+            option(foo)
+    
+        result = runner.invoke(cli, ["foo"])
+        assert result.exit_code == 2
+        lines = result.output.splitlines()
+>       assert lines[0] == "Usage: cli foo [OPTIONS] REQUIRED_ARG"
+E       AssertionError: assert 'Usage: cli [...AND [ARGS]...' == 'Usage: cli f... REQUIRED_ARG'
+E         
+E         - Usage: cli foo [OPTIONS] REQUIRED_ARG
+E         + Usage: cli [OPTIONS] COMMAND [ARGS]...
+
+tests/test_formatting.py:309: AssertionError
+______________________ test_wrapping_long_options_strings ______________________
+
+runner = <click.testing.CliRunner object at 0x76c8d12622e0>
+
+    def test_wrapping_long_options_strings(runner):
+        @click.group()
+        def cli():
+            """Top level command"""
+    
+        @cli.group()
+        def a_very_long():
+            """Second level"""
+    
+        @a_very_long.command()
+        @click.argument("first")
+        @click.argument("second")
+        @click.argument("third")
+        @click.argument("fourth")
+        @click.argument("fifth")
+        @click.argument("sixth")
+        def command():
+            """A command."""
+    
+        # 54 is chosen as a length where the second line is one character
+        # longer than the maximum length.
+        result = runner.invoke(cli, ["a-very-long", "command", "--help"], terminal_width=54)
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_formatting.py:77: AssertionError
+____ test_formatting_usage_error_help_hint[help_names3-extra_options3-None] ____
+
+runner = <click.testing.CliRunner object at 0x76c8d1455080>
+help_names = ['-h', '--help']
+extra_options = [<function option.<locals>.decorator at 0x76c8d17a4ae0>, <function option.<locals>.decorator at 0x76c8d17a4b80>]
+expected_hint = None
+
+    @pytest.mark.parametrize(
+        ("help_names", "extra_options", "expected_hint"),
+        [
+            # No shadowing, longest name is picked.
+            (["-h", "--help"], [], "Try 'cli foo --help' for help."),
+            # -h shadowed by a subcommand option, --help still available.
+            (
+                ["-h", "--help"],
+                [click.option("--host", "-h")],
+                "Try 'cli foo --help' for help.",
+            ),
+            # --help shadowed, -h still available.
+            (
+                ["-h", "--help"],
+                [click.option("--help-file", "--help")],
+                "Try 'cli foo -h' for help.",
+            ),
+            # Both names shadowed: no hint line at all.
+            (
+                ["-h", "--help"],
+                [click.option("--host", "-h"), click.option("--help-file", "--help")],
+                None,
+            ),
+            # Single custom help name, not shadowed.
+            (["--man"], [], "Try 'cli foo --man' for help."),
+            # Three help names, one shadowed, longest survivor picked.
+            (
+                ["-h", "--help", "--info"],
+                [click.option("--info-file", "--info")],
+                "Try 'cli foo --help' for help.",
+            ),
+        ],
+    )
+    def test_formatting_usage_error_help_hint(
+        runner, help_names, extra_options, expected_hint
+    ):
+        """The error hint should only show non-shadowed help option names,
+        picking the longest for readability.
+    
+        https://github.com/pallets/click/issues/2790
+        """
+    
+        @click.group(context_settings={"help_option_names": help_names})
+        def cli():
+            pass
+    
+        @cli.command()
+        @click.argument("required_arg")
+        def foo(required_arg, **kwargs):
+            pass
+    
+        for option in extra_options:
+            option(foo)
+    
+        result = runner.invoke(cli, ["foo"])
+        assert result.exit_code == 2
+        lines = result.output.splitlines()
+>       assert lines[0] == "Usage: cli foo [OPTIONS] REQUIRED_ARG"
+E       AssertionError: assert 'Usage: cli [...AND [ARGS]...' == 'Usage: cli f... REQUIRED_ARG'
+E         
+E         - Usage: cli foo [OPTIONS] REQUIRED_ARG
+E         + Usage: cli [OPTIONS] COMMAND [ARGS]...
+
+tests/test_formatting.py:309: AssertionError
+____________________________ test_flag_default_map _____________________________
+
+runner = <click.testing.CliRunner object at 0x76c8d12616a0>
+
+    def test_flag_default_map(runner):
+        """test flag with default map"""
+    
+        @click.group()
+        def cli():
+            pass
+    
+        @cli.command()
+        @click.option("--name/--no-name", is_flag=True, show_default=True, help="name flag")
+        def foo(name):
+            click.echo(name)
+    
+        result = runner.invoke(cli, ["foo"])
+>       assert "False" in result.output
+E       assert 'False' in "Usage: cli [OPTIONS] COMMAND [ARGS]...\nTry 'cli --help' for help.\n\nError: No such command 'FOO'.\n"
+E        +  where "Usage: cli [OPTIONS] COMMAND [ARGS]...\nTry 'cli --help' for help.\n\nError: No such command 'FOO'.\n" = <Result SystemExit(2)>.output
+
+tests/test_defaults.py:123: AssertionError
+___________________ test_pipeline[args2-foo \n bar-expect2] ____________________
+
+runner = <click.testing.CliRunner object at 0x76c8d0965550>
+args = ['-f', '-', 'strip', 'uppercase'], input = 'foo \n bar'
+expect = ['FOO', 'BAR']
+
+    @pytest.mark.parametrize(
+        ("args", "input", "expect"),
+        [
+            (["-f", "-"], "foo\nbar", ["foo", "bar"]),
+            (["-f", "-", "strip"], "foo \n bar", ["foo", "bar"]),
+            (["-f", "-", "strip", "uppercase"], "foo \n bar", ["FOO", "BAR"]),
+        ],
+    )
+    def test_pipeline(runner, args, input, expect):
+        @click.group(chain=True, invoke_without_command=True)
+        @click.option("-f", type=click.File("r"))
+        def cli(f):
+            pass
+    
+        @cli.result_callback()
+        def process_pipeline(processors, f):
+            iterator = (x.rstrip("\r\n") for x in f)
+            for processor in processors:
+                iterator = processor(iterator)
+            for item in iterator:
+                click.echo(item)
+    
+        @cli.command("uppercase")
+        def make_uppercase():
+            def processor(iterator):
+                for line in iterator:
+                    yield line.upper()
+    
+            return processor
+    
+        @cli.command("strip")
+        def make_strip():
+            def processor(iterator):
+                for line in iterator:
+                    yield line.strip()
+    
+            return processor
+    
+        result = runner.invoke(cli, args, input=input)
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_chain.py:166: AssertionError
+___________________ test_pipeline[args1-foo \n bar-expect1] ____________________
+
+runner = <click.testing.CliRunner object at 0x76c8cbd854e0>
+args = ['-f', '-', 'strip'], input = 'foo \n bar', expect = ['foo', 'bar']
+
+    @pytest.mark.parametrize(
+        ("args", "input", "expect"),
+        [
+            (["-f", "-"], "foo\nbar", ["foo", "bar"]),
+            (["-f", "-", "strip"], "foo \n bar", ["foo", "bar"]),
+            (["-f", "-", "strip", "uppercase"], "foo \n bar", ["FOO", "BAR"]),
+        ],
+    )
+    def test_pipeline(runner, args, input, expect):
+        @click.group(chain=True, invoke_without_command=True)
+        @click.option("-f", type=click.File("r"))
+        def cli(f):
+            pass
+    
+        @cli.result_callback()
+        def process_pipeline(processors, f):
+            iterator = (x.rstrip("\r\n") for x in f)
+            for processor in processors:
+                iterator = processor(iterator)
+            for item in iterator:
+                click.echo(item)
+    
+        @cli.command("uppercase")
+        def make_uppercase():
+            def processor(iterator):
+                for line in iterator:
+                    yield line.upper()
+    
+            return processor
+    
+        @cli.command("strip")
+        def make_strip():
+            def processor(iterator):
+                for line in iterator:
+                    yield line.strip()
+    
+            return processor
+    
+        result = runner.invoke(cli, args, input=input)
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_chain.py:166: AssertionError
+__________________________ test_chaining_with_options __________________________
+
+runner = <click.testing.CliRunner object at 0x76c8cbd84b40>
+
+    def test_chaining_with_options(runner):
+        @click.group(chain=True)
+        def cli():
+            pass
+    
+        @cli.command("sdist")
+        @click.option("--format")
+        def sdist(format):
+            click.echo(f"sdist called {format}")
+    
+        @cli.command("bdist")
+        @click.option("--format")
+        def bdist(format):
+            click.echo(f"bdist called {format}")
+    
+        result = runner.invoke(cli, ["bdist", "--format=1", "sdist", "--format=2"])
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_chain.py:84: AssertionError
+_____________________ test_chaining_help[args2-SDIST HELP] _____________________
+
+runner = <click.testing.CliRunner object at 0x76c8d09a44b0>
+args = ['sdist', '--help'], expect = 'SDIST HELP'
+
+    @pytest.mark.parametrize(
+        ("args", "expect"),
+        [
+            (["--help"], "COMMAND1 [ARGS]... [COMMAND2 [ARGS]...]..."),
+            (["--help"], "ROOT HELP"),
+            (["sdist", "--help"], "SDIST HELP"),
+            (["bdist", "--help"], "BDIST HELP"),
+            (["bdist", "sdist", "--help"], "SDIST HELP"),
+        ],
+    )
+    def test_chaining_help(runner, args, expect):
+        @click.group(chain=True)
+        def cli():
+            """ROOT HELP"""
+            pass
+    
+        @cli.command("sdist")
+        def sdist():
+            """SDIST HELP"""
+            click.echo("sdist called")
+    
+        @cli.command("bdist")
+        def bdist():
+            """BDIST HELP"""
+            click.echo("bdist called")
+    
+        result = runner.invoke(cli, args)
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_chain.py:64: AssertionError
+_____________________________ test_basic_chaining ______________________________
+
+runner = <click.testing.CliRunner object at 0x76c8d121e040>
+
+    def test_basic_chaining(runner):
+        @click.group(chain=True)
+        def cli():
+            pass
+    
+        @cli.command("sdist")
+        def sdist():
+            click.echo("sdist called")
+    
+        @cli.command("bdist")
+        def bdist():
+            click.echo("bdist called")
+    
+        result = runner.invoke(cli, ["bdist", "sdist", "bdist"])
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_chain.py:29: AssertionError
+___________________________ test_group_arg_behavior ____________________________
+
+runner = <click.testing.CliRunner object at 0x76c8cb55d630>
+
+    def test_group_arg_behavior(runner):
+        with pytest.raises(RuntimeError):
+    
+            @click.group(chain=True)
+            @click.argument("forbidden", required=False)
+            def bad_cli():
+                pass
+    
+        with pytest.raises(RuntimeError):
+    
+            @click.group(chain=True)
+            @click.argument("forbidden", nargs=-1)
+            def bad_cli2():
+                pass
+    
+        @click.group(chain=True)
+        @click.argument("arg")
+        def cli(arg):
+            click.echo(f"cli:{arg}")
+    
+        @cli.command()
+        def a():
+            click.echo("a")
+    
+        result = runner.invoke(cli, ["foo", "a"])
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_chain.py:217: AssertionError
+_________________________ test_chaining_with_arguments _________________________
+
+runner = <click.testing.CliRunner object at 0x76c8cb55d8d0>
+
+    def test_chaining_with_arguments(runner):
+        @click.group(chain=True)
+        def cli():
+            pass
+    
+        @cli.command("sdist")
+        @click.argument("format")
+        def sdist(format):
+            click.echo(f"sdist called {format}")
+    
+        @cli.command("bdist")
+        @click.argument("format")
+        def bdist(format):
+            click.echo(f"bdist called {format}")
+    
+        result = runner.invoke(cli, ["bdist", "1", "sdist", "2"])
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_chain.py:123: AssertionError
+_____________________ test_chaining_help[args4-SDIST HELP] _____________________
+
+runner = <click.testing.CliRunner object at 0x76c8cb55d780>
+args = ['bdist', 'sdist', '--help'], expect = 'SDIST HELP'
+
+    @pytest.mark.parametrize(
+        ("args", "expect"),
+        [
+            (["--help"], "COMMAND1 [ARGS]... [COMMAND2 [ARGS]...]..."),
+            (["--help"], "ROOT HELP"),
+            (["sdist", "--help"], "SDIST HELP"),
+            (["bdist", "--help"], "BDIST HELP"),
+            (["bdist", "sdist", "--help"], "SDIST HELP"),
+        ],
+    )
+    def test_chaining_help(runner, args, expect):
+        @click.group(chain=True)
+        def cli():
+            """ROOT HELP"""
+            pass
+    
+        @cli.command("sdist")
+        def sdist():
+            """SDIST HELP"""
+            click.echo("sdist called")
+    
+        @cli.command("bdist")
+        def bdist():
+            """BDIST HELP"""
+            click.echo("bdist called")
+    
+        result = runner.invoke(cli, args)
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_chain.py:64: AssertionError
+_____________________ test_chaining_help[args3-BDIST HELP] _____________________
+
+runner = <click.testing.CliRunner object at 0x76c8cbdc2ba0>
+args = ['bdist', '--help'], expect = 'BDIST HELP'
+
+    @pytest.mark.parametrize(
+        ("args", "expect"),
+        [
+            (["--help"], "COMMAND1 [ARGS]... [COMMAND2 [ARGS]...]..."),
+            (["--help"], "ROOT HELP"),
+            (["sdist", "--help"], "SDIST HELP"),
+            (["bdist", "--help"], "BDIST HELP"),
+            (["bdist", "sdist", "--help"], "SDIST HELP"),
+        ],
+    )
+    def test_chaining_help(runner, args, expect):
+        @click.group(chain=True)
+        def cli():
+            """ROOT HELP"""
+            pass
+    
+        @cli.command("sdist")
+        def sdist():
+            """SDIST HELP"""
+            click.echo("sdist called")
+    
+        @cli.command("bdist")
+        def bdist():
+            """BDIST HELP"""
+            click.echo("bdist called")
+    
+        result = runner.invoke(cli, args)
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_chain.py:64: AssertionError
+_____________________________ test_args_and_chain ______________________________
+
+runner = <click.testing.CliRunner object at 0x76c8cbd854e0>
+
+    def test_args_and_chain(runner):
+        @click.group(chain=True)
+        def cli():
+            debug()
+    
+        @cli.command()
+        def a():
+            debug()
+    
+        @cli.command()
+        def b():
+            debug()
+    
+        @cli.command()
+        def c():
+            debug()
+    
+        result = runner.invoke(cli, ["a", "b", "c"])
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_chain.py:188: AssertionError
+_________________________ test_nested_subcommand_help __________________________
+
+runner = <click.testing.CliRunner object at 0x76c8d15e55c0>
+
+    def test_nested_subcommand_help(runner):
+        @click.group()
+        @click.argument("arg1")
+        @click.option("--opt1")
+        def cli(arg1, opt1):
+            pass
+    
+        @cli.group()
+        @click.argument("arg2")
+        @click.option("--opt2")
+        def cmd(arg2, opt2):
+            pass
+    
+        @cmd.command()
+        def subcmd():
+            click.echo("subcommand")
+    
+        result = runner.invoke(cli, ["arg1", "cmd", "arg2", "subcmd", "--help"])
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_arguments.py:662: AssertionError
+_____________________________ test_subcommand_help _____________________________
+
+runner = <click.testing.CliRunner object at 0x76c8d1550590>
+
+    def test_subcommand_help(runner):
+        @click.group()
+        @click.argument("name")
+        @click.argument("val")
+        @click.option("--opt")
+        @click.pass_context
+        def cli(ctx, name, val, opt):
+            ctx.obj = dict(name=name, val=val)
+    
+        @cli.command()
+        @click.pass_obj
+        def cmd(obj):
+            click.echo(f"CMD for {obj['name']} with value {obj['val']}")
+    
+        result = runner.invoke(cli, ["foo", "bar", "cmd", "--help"])
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_arguments.py:640: AssertionError
+___________________________ test_group_commands_dict ___________________________
+
+runner = <click.testing.CliRunner object at 0x76c8d160e190>
+
+    def test_group_commands_dict(runner):
+        """A Group can be built with a dict of commands."""
+    
+        @click.command()
+        def sub():
+            click.echo("sub", nl=False)
+    
+        cli = click.Group(commands={"other": sub})
+        result = runner.invoke(cli, ["other"])
+>       assert result.output == "sub"
+E       assert "Usage: root ...nd 'OTHER'.\n" == 'sub'
+E         
+E         - sub
+E         + Usage: root [OPTIONS] COMMAND [ARGS]...
+E         + Try 'root --help' for help.
+E         + 
+E         + Error: No such command 'OTHER'.
+
+tests/test_basic.py:176: AssertionError
+_______________________________ test_basic_group _______________________________
+
+runner = <click.testing.CliRunner object at 0x76c8d15852b0>
+
+    def test_basic_group(runner):
+        @click.group()
+        def cli():
+            """This is the root."""
+            click.echo("ROOT EXECUTED")
+    
+        @cli.command()
+        def subcommand():
+            """This is a subcommand."""
+            click.echo("SUBCOMMAND EXECUTED")
+    
+        result = runner.invoke(cli, ["--help"])
+        assert not result.exception
+        assert "COMMAND [ARGS]..." in result.output
+        assert "This is the root" in result.output
+        assert "This is a subcommand." in result.output
+        assert result.exit_code == 0
+        assert "ROOT EXECUTED" not in result.output
+    
+        result = runner.invoke(cli, ["subcommand"])
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_basic.py:161: AssertionError
+_____________________________ test_group_from_list _____________________________
+
+runner = <click.testing.CliRunner object at 0x76c8d156fc40>
+
+    def test_group_from_list(runner):
+        """A Group can be built with a list of commands."""
+    
+        @click.command()
+        def sub():
+            click.echo("sub", nl=False)
+    
+        cli = click.Group(commands=[sub])
+        result = runner.invoke(cli, ["sub"])
+>       assert result.output == "sub"
+E       assert "Usage: root ...mand 'SUB'.\n" == 'sub'
+E         
+E         - sub
+E         + Usage: root [OPTIONS] COMMAND [ARGS]...
+E         + Try 'root --help' for help.
+E         + 
+E         + Error: No such command 'SUB'.
+
+tests/test_basic.py:188: AssertionError
+________________________ test_group_command_same_option ________________________
+
+    def test_group_command_same_option():
+        cli = Group(
+            "cli", params=[Option(["-a"])], commands=[Command("x", params=[Option(["-a"])])]
+        )
+        assert _get_words(cli, [], "-") == ["-a", "--help"]
+        assert _get_words(cli, ["-a", "a"], "-") == ["--help"]
+>       assert _get_words(cli, ["-a", "a", "x"], "-") == ["-a", "--help"]
+E       AssertionError: assert ['--help'] == ['-a', '--help']
+E         
+E         At index 0 diff: '--help' != '-a'
+E         Right contains one more item: '--help'
+E         
+E         Full diff:
+E           [
+E         -     '-a',
+E               '--help',
+E           ]
+
+tests/test_shell_completion.py:85: AssertionError
+______________________ test_nested_group[args2--expect2] _______________________
+
+args = ['get', 'full'], word = '', expect = ['data']
+
+    @pytest.mark.parametrize(
+        ("args", "word", "expect"),
+        [
+            ([], "", ["get"]),
+            (["get"], "", ["full"]),
+            (["get", "full"], "", ["data"]),
+            (["get", "full"], "-", ["--verbose", "--help"]),
+            (["get", "full", "data"], "", []),
+            (["get", "full", "data"], "-", ["-a", "--help"]),
+        ],
+    )
+    def test_nested_group(args: list[str], word: str, expect: list[str]) -> None:
+        cli = Group(
+            "cli",
+            commands=[
+                Group(
+                    "get",
+                    commands=[
+                        Group(
+                            "full",
+                            params=[Option(["--verbose"])],
+                            commands=[Command("data", params=[Option(["-a"])])],
+                        )
+                    ],
+                )
+            ],
+        )
+>       assert _get_words(cli, args, word) == expect
+E       AssertionError: assert ['get'] == ['data']
+E         
+E         At index 0 diff: 'get' != 'data'
+E         
+E         Full diff:
+E           [
+E         -     'data',
+E         ?      ^^ -
+E         +     'get',
+E         ?      ^^
+E           ]
+
+tests/test_shell_completion.py:76: AssertionError
+______________________ test_nested_group[args5---expect5] ______________________
+
+args = ['get', 'full', 'data'], word = '-', expect = ['-a', '--help']
+
+    @pytest.mark.parametrize(
+        ("args", "word", "expect"),
+        [
+            ([], "", ["get"]),
+            (["get"], "", ["full"]),
+            (["get", "full"], "", ["data"]),
+            (["get", "full"], "-", ["--verbose", "--help"]),
+            (["get", "full", "data"], "", []),
+            (["get", "full", "data"], "-", ["-a", "--help"]),
+        ],
+    )
+    def test_nested_group(args: list[str], word: str, expect: list[str]) -> None:
+        cli = Group(
+            "cli",
+            commands=[
+                Group(
+                    "get",
+                    commands=[
+                        Group(
+                            "full",
+                            params=[Option(["--verbose"])],
+                            commands=[Command("data", params=[Option(["-a"])])],
+                        )
+                    ],
+                )
+            ],
+        )
+>       assert _get_words(cli, args, word) == expect
+E       AssertionError: assert ['--help'] == ['-a', '--help']
+E         
+E         At index 0 diff: '--help' != '-a'
+E         Right contains one more item: '--help'
+E         
+E         Full diff:
+E           [
+E         -     '-a',
+E               '--help',
+E           ]
+
+tests/test_shell_completion.py:76: AssertionError
+_________________________________ test_chained _________________________________
+
+    def test_chained():
+        cli = Group(
+            "cli",
+            chain=True,
+            commands=[
+                Command("set", params=[Option(["-y"])]),
+                Command("start"),
+                Group("get", commands=[Command("full")]),
+            ],
+        )
+        assert _get_words(cli, [], "") == ["get", "set", "start"]
+        assert _get_words(cli, [], "s") == ["set", "start"]
+>       assert _get_words(cli, ["set", "start"], "") == ["get"]
+E       AssertionError: assert ['get', 'set', 'start'] == ['get']
+E         
+E         Left contains 2 more items, first extra item: 'set'
+E         
+E         Full diff:
+E           [
+E               'get',
+E         +     'set',
+E         +     'start',
+E           ]
+
+tests/test_shell_completion.py:101: AssertionError
+_______________________________ test_help_option _______________________________
+
+    def test_help_option():
+        cli = Group("cli", commands=[Command("with"), Command("no", add_help_option=False)])
+        assert _get_words(cli, ["with"], "--") == ["--help"]
+>       assert _get_words(cli, ["no"], "--") == []
+E       AssertionError: assert ['--help'] == []
+E         
+E         Left contains one more item: '--help'
+E         
+E         Full diff:
+E         - []
+E         + [
+E         +     '--help',
+E         + ]
+
+tests/test_shell_completion.py:111: AssertionError
+_________________________________ test_hidden __________________________________
+
+    def test_hidden():
+        cli = Group(
+            "cli",
+            commands=[
+                Command(
+                    "hidden",
+                    add_help_option=False,
+                    hidden=True,
+                    params=[
+                        Option(["-a"]),
+                        Option(["-b"], type=Choice(["a", "b"]), hidden=True),
+                    ],
+                )
+            ],
+        )
+        assert "hidden" not in _get_words(cli, [], "")
+        assert "hidden" not in _get_words(cli, [], "hidden")
+>       assert _get_words(cli, ["hidden"], "-") == ["-a"]
+E       AssertionError: assert ['--help'] == ['-a']
+E         
+E         At index 0 diff: '--help' != '-a'
+E         
+E         Full diff:
+E           [
+E         -     '-a',
+E         +     '--help',
+E           ]
+
+tests/test_shell_completion.py:325: AssertionError
+______________________ test_nested_group[args3---expect3] ______________________
+
+args = ['get', 'full'], word = '-', expect = ['--verbose', '--help']
+
+    @pytest.mark.parametrize(
+        ("args", "word", "expect"),
+        [
+            ([], "", ["get"]),
+            (["get"], "", ["full"]),
+            (["get", "full"], "", ["data"]),
+            (["get", "full"], "-", ["--verbose", "--help"]),
+            (["get", "full", "data"], "", []),
+            (["get", "full", "data"], "-", ["-a", "--help"]),
+        ],
+    )
+    def test_nested_group(args: list[str], word: str, expect: list[str]) -> None:
+        cli = Group(
+            "cli",
+            commands=[
+                Group(
+                    "get",
+                    commands=[
+                        Group(
+                            "full",
+                            params=[Option(["--verbose"])],
+                            commands=[Command("data", params=[Option(["-a"])])],
+                        )
+                    ],
+                )
+            ],
+        )
+>       assert _get_words(cli, args, word) == expect
+E       AssertionError: assert ['--help'] == ['--verbose', '--help']
+E         
+E         At index 0 diff: '--help' != '--verbose'
+E         Right contains one more item: '--help'
+E         
+E         Full diff:
+E           [
+E         -     '--verbose',
+E               '--help',
+E           ]
+
+tests/test_shell_completion.py:76: AssertionError
+______________________ test_nested_group[args1--expect1] _______________________
+
+args = ['get'], word = '', expect = ['full']
+
+    @pytest.mark.parametrize(
+        ("args", "word", "expect"),
+        [
+            ([], "", ["get"]),
+            (["get"], "", ["full"]),
+            (["get", "full"], "", ["data"]),
+            (["get", "full"], "-", ["--verbose", "--help"]),
+            (["get", "full", "data"], "", []),
+            (["get", "full", "data"], "-", ["-a", "--help"]),
+        ],
+    )
+    def test_nested_group(args: list[str], word: str, expect: list[str]) -> None:
+        cli = Group(
+            "cli",
+            commands=[
+                Group(
+                    "get",
+                    commands=[
+                        Group(
+                            "full",
+                            params=[Option(["--verbose"])],
+                            commands=[Command("data", params=[Option(["-a"])])],
+                        )
+                    ],
+                )
+            ],
+        )
+>       assert _get_words(cli, args, word) == expect
+E       AssertionError: assert ['get'] == ['full']
+E         
+E         At index 0 diff: 'get' != 'full'
+E         
+E         Full diff:
+E           [
+E         -     'full',
+E         +     'get',
+E           ]
+
+tests/test_shell_completion.py:76: AssertionError
+______________________ test_nested_group[args4--expect4] _______________________
+
+args = ['get', 'full', 'data'], word = '', expect = []
+
+    @pytest.mark.parametrize(
+        ("args", "word", "expect"),
+        [
+            ([], "", ["get"]),
+            (["get"], "", ["full"]),
+            (["get", "full"], "", ["data"]),
+            (["get", "full"], "-", ["--verbose", "--help"]),
+            (["get", "full", "data"], "", []),
+            (["get", "full", "data"], "-", ["-a", "--help"]),
+        ],
+    )
+    def test_nested_group(args: list[str], word: str, expect: list[str]) -> None:
+        cli = Group(
+            "cli",
+            commands=[
+                Group(
+                    "get",
+                    commands=[
+                        Group(
+                            "full",
+                            params=[Option(["--verbose"])],
+                            commands=[Command("data", params=[Option(["-a"])])],
+                        )
+                    ],
+                )
+            ],
+        )
+>       assert _get_words(cli, args, word) == expect
+E       AssertionError: assert ['get'] == []
+E         
+E         Left contains one more item: 'get'
+E         
+E         Full diff:
+E         - []
+E         + [
+E         +     'get',
+E         + ]
+
+tests/test_shell_completion.py:76: AssertionError
+______________________________ test_default_maps _______________________________
+
+runner = <click.testing.CliRunner object at 0x76c8cb5fa2e0>
+
+    def test_default_maps(runner):
+        @click.group()
+        def cli():
+            pass
+    
+        @cli.command()
+        @click.option("--name", default="normal")
+        def foo(name):
+            click.echo(name)
+    
+        result = runner.invoke(cli, ["foo"], default_map={"foo": {"name": "changed"}})
+    
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_commands.py:116: AssertionError
+_______________ test_group_invoke_collects_used_option_prefixes ________________
+
+runner = <click.testing.CliRunner object at 0x76c8d154d9b0>
+
+    def test_group_invoke_collects_used_option_prefixes(runner):
+        opt_prefixes = set()
+    
+        @click.group()
+        @click.option("~t", is_flag=True)
+        def group(t):
+            pass
+    
+        @group.command()
+        @click.option("+p", is_flag=True)
+        @click.pass_context
+        def command1(ctx, p):
+            nonlocal opt_prefixes
+            opt_prefixes = ctx._opt_prefixes
+    
+        @group.command()
+        @click.option("!e", is_flag=True)
+        def command2(e):
+            pass
+    
+        runner.invoke(group, ["command1"])
+>       assert opt_prefixes == {"-", "--", "~", "+"}
+E       AssertionError: assert set() == {'+', '-', '--', '~'}
+E         
+E         Extra items in the right set:
+E         '~'
+E         '-'
+E         '--'
+E         '+'
+E         
+E         Full diff:
+E         + set()
+E         - {
+E         -     '+',
+E         -     '-',
+E         -     '--',
+E         -     '~',
+E         - }
+
+tests/test_commands.py:656: AssertionError
+__________ test_suggest_possible_commands[pause-Did you mean 'push'?] __________
+
+runner = <click.testing.CliRunner object at 0x76c8d12ee350>, value = 'pause'
+expect = "Did you mean 'push'?"
+
+    @pytest.mark.parametrize(
+        ("value", "expect"),
+        [
+            ("pause", "Did you mean 'push'?"),
+            ("decline", "(Did you mean one of: 'declare', 'refine'?)"),
+        ],
+    )
+    def test_suggest_possible_commands(runner, value, expect):
+        cli = click.Group()
+    
+        @cli.command()
+        def push():
+            pass
+    
+        @cli.command()
+        def declare():
+            pass
+    
+        @cli.command()
+        def refine():
+            pass
+    
+        result = runner.invoke(cli, [value])
+>       assert expect in result.output
+E       assert "Did you mean 'push'?" in "Usage: root [OPTIONS] COMMAND [ARGS]...\nTry 'root --help' for help.\n\nError: No such command 'PAUSE'.\n"
+E        +  where "Usage: root [OPTIONS] COMMAND [ARGS]...\nTry 'root --help' for help.\n\nError: No such command 'PAUSE'.\n" = <Result SystemExit(2)>.output
+
+tests/test_commands.py:700: AssertionError
+_ test_suggest_possible_commands[decline-(Did you mean one of: 'declare', 'refine'?)] _
+
+runner = <click.testing.CliRunner object at 0x76c8d154d4e0>, value = 'decline'
+expect = "(Did you mean one of: 'declare', 'refine'?)"
+
+    @pytest.mark.parametrize(
+        ("value", "expect"),
+        [
+            ("pause", "Did you mean 'push'?"),
+            ("decline", "(Did you mean one of: 'declare', 'refine'?)"),
+        ],
+    )
+    def test_suggest_possible_commands(runner, value, expect):
+        cli = click.Group()
+    
+        @cli.command()
+        def push():
+            pass
+    
+        @cli.command()
+        def declare():
+            pass
+    
+        @cli.command()
+        def refine():
+            pass
+    
+        result = runner.invoke(cli, [value])
+>       assert expect in result.output
+E       assert "(Did you mean one of: 'declare', 'refine'?)" in "Usage: root [OPTIONS] COMMAND [ARGS]...\nTry 'root --help' for help.\n\nError: No such command 'DECLINE'.\n"
+E        +  where "Usage: root [OPTIONS] COMMAND [ARGS]...\nTry 'root --help' for help.\n\nError: No such command 'DECLINE'.\n" = <Result SystemExit(2)>.output
+
+tests/test_commands.py:700: AssertionError
+_________________________ test_group_add_command_name __________________________
+
+runner = <click.testing.CliRunner object at 0x76c8d154e3c0>
+
+    def test_group_add_command_name(runner):
+        cli = click.Group("cli")
+        cmd = click.Command("a", params=[click.Option(["-x"], required=True)])
+        cli.add_command(cmd, "b")
+        # Check that the command is accessed through the registered name,
+        # not the original name.
+        result = runner.invoke(cli, ["b"], default_map={"b": {"x": 3}})
+>       assert result.exit_code == 0
+E       assert 2 == 0
+E        +  where 2 = <Result SystemExit(2)>.exit_code
+
+tests/test_commands.py:356: AssertionError
+________________ test_group_with_args[args2-0-obj=obj1\nmove\n] ________________
+
+runner = <click.testing.CliRunner object at 0x76c8d12ed2b0>
+args = ['obj1', 'move'], exit_code = 0, expect = 'obj=obj1\nmove\n'
+
+    @pytest.mark.parametrize(
+        ("args", "exit_code", "expect"),
+        [
+            (["obj1"], 2, "Error: Missing command."),
+            (["obj1", "--help"], 0, "Show this message and exit."),
+            (["obj1", "move"], 0, "obj=obj1\nmove\n"),
+            ([], 2, "Show this message and exit."),
+        ],
+    )
+    def test_group_with_args(runner, args, exit_code, expect):
+        @click.group()
+        @click.argument("obj")
+        def cli(obj):
+            click.echo(f"obj={obj}")
+    
+        @cli.command()
+        def move():
+            click.echo("move")
+    
+        result = runner.invoke(cli, args)
+>       assert result.exit_code == exit_code
+E       assert 2 == 0
+E        +  where 2 = <Result SystemExit(2)>.exit_code
+
+tests/test_commands.py:140: AssertionError
+______________________________ test_custom_parser ______________________________
+
+runner = <click.testing.CliRunner object at 0x76c8d154e660>
+
+    def test_custom_parser(runner):
+        import optparse
+    
+        @click.group()
+        def cli():
+            pass
+    
+        class OptParseCommand(click.Command):
+            def __init__(self, name, parser, callback):
+                super().__init__(name)
+                self.parser = parser
+                self.callback = callback
+    
+            def parse_args(self, ctx, args):
+                try:
+                    opts, args = parser.parse_args(args)
+                except Exception as e:
+                    ctx.fail(str(e))
+                ctx.args = args
+                ctx.params = vars(opts)
+    
+            def get_usage(self, ctx):
+                return self.parser.get_usage()
+    
+            def get_help(self, ctx):
+                return self.parser.format_help()
+    
+            def invoke(self, ctx):
+                ctx.invoke(self.callback, ctx.args, **ctx.params)
+    
+        parser = optparse.OptionParser(usage="Usage: foo test [OPTIONS]")
+        parser.add_option(
+            "-f", "--file", dest="filename", help="write report to FILE", metavar="FILE"
+        )
+        parser.add_option(
+            "-q",
+            "--quiet",
+            action="store_false",
+            dest="verbose",
+            default=True,
+            help="don't print status messages to stdout",
+        )
+    
+        def test_callback(args, filename, verbose):
+            click.echo(" ".join(args))
+            click.echo(filename)
+            click.echo(verbose)
+    
+        cli.add_command(OptParseCommand("test", parser, test_callback))
+    
+        result = runner.invoke(cli, ["test", "-f", "f.txt", "-q", "q1.txt", "q2.txt"])
+>       assert result.exception is None
+E       assert SystemExit(2) is None
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_commands.py:195: AssertionError
+_____________________________ test_unknown_command _____________________________
+
+runner = <click.testing.CliRunner object at 0x76c8d154e890>
+
+    def test_unknown_command(runner):
+        result = runner.invoke(click.Group(), "unknown")
+        assert result.exception
+>       assert "No such command 'unknown'." in result.output
+E       assert "No such command 'unknown'." in "Usage: root [OPTIONS] COMMAND [ARGS]...\nTry 'root --help' for help.\n\nError: No such command 'UNKNOWN'.\n"
+E        +  where "Usage: root [OPTIONS] COMMAND [ARGS]...\nTry 'root --help' for help.\n\nError: No such command 'UNKNOWN'.\n" = <Result SystemExit(2)>.output
+
+tests/test_commands.py:674: AssertionError
+__________________________ test_other_command_forward __________________________
+
+runner = <click.testing.CliRunner object at 0x76c8cb5fa970>
+
+    def test_other_command_forward(runner):
+        cli = click.Group()
+    
+        @cli.command()
+        @click.option("--count", default=1)
+        def test(count):
+            click.echo(f"Count: {count:d}")
+    
+        @cli.command()
+        @click.option("--count", default=1)
+        @click.pass_context
+        def dist(ctx, count):
+            ctx.forward(test)
+            ctx.invoke(test, count=42)
+    
+        result = runner.invoke(cli, ["dist"])
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_commands.py:40: AssertionError
+______________________ test_forwarded_params_consistency _______________________
+
+runner = <click.testing.CliRunner object at 0x76c8d12ed010>
+
+    def test_forwarded_params_consistency(runner):
+        cli = click.Group()
+    
+        @cli.command()
+        @click.option("-a")
+        @click.pass_context
+        def first(ctx, **kwargs):
+            click.echo(f"{ctx.params}")
+    
+        @cli.command()
+        @click.option("-a")
+        @click.option("-b")
+        @click.pass_context
+        def second(ctx, **kwargs):
+            click.echo(f"{ctx.params}")
+            ctx.forward(first)
+    
+        result = runner.invoke(cli, ["second", "-a", "foo", "-b", "bar"])
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_commands.py:62: AssertionError
+___________________________ test_invoked_subcommand ____________________________
+
+runner = <click.testing.CliRunner object at 0x76c8cb5fa4a0>
+
+    def test_invoked_subcommand(runner):
+        @click.group(invoke_without_command=True)
+        @click.pass_context
+        def cli(ctx):
+            if ctx.invoked_subcommand is None:
+                click.echo("no subcommand, use default")
+                ctx.invoke(sync)
+            else:
+                click.echo("invoke subcommand")
+    
+        @cli.command()
+        def sync():
+            click.echo("in subcommand")
+    
+        result = runner.invoke(cli, ["sync"])
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_commands.py:294: AssertionError
+___________________________ test_object_propagation ____________________________
+
+runner = <click.testing.CliRunner object at 0x76c8cb5fb310>
+
+    def test_object_propagation(runner):
+        for chain in False, True:
+    
+            @click.group(chain=chain)
+            @click.option("--debug/--no-debug", default=False)
+            @click.pass_context
+            def cli(ctx, debug):
+                if ctx.obj is None:
+                    ctx.obj = {}
+                ctx.obj["DEBUG"] = debug
+    
+            @cli.command()
+            @click.pass_context
+            def sync(ctx):
+                click.echo(f"Debug is {'on' if ctx.obj['DEBUG'] else 'off'}")
+    
+            result = runner.invoke(cli, ["sync"])
+>           assert result.exception is None
+E           assert SystemExit(2) is None
+E            +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_commands.py:227: AssertionError
+________________________________ test_pass_obj _________________________________
+
+runner = <click.testing.CliRunner object at 0x76c8cb8f9940>
+
+    def test_pass_obj(runner):
+        @click.group()
+        @click.pass_context
+        def cli(ctx):
+            ctx.obj = "test"
+    
+        @cli.command()
+        @click.pass_obj
+        def test(obj):
+            click.echo(obj)
+    
+        result = runner.invoke(cli, ["test"])
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_context.py:332: AssertionError
+________________________ test_make_pass_meta_decorator _________________________
+
+runner = <click.testing.CliRunner object at 0x76c8cb5fb930>
+
+    def test_make_pass_meta_decorator(runner):
+        @click.group()
+        @click.pass_context
+        def cli(ctx):
+            ctx.meta["value"] = "good"
+    
+        @cli.command()
+        @pass_meta_key("value")
+        def show(value):
+            return value
+    
+        result = runner.invoke(cli, ["show"], standalone_mode=False)
+>       assert result.return_value == "good"
+E       assert None == 'good'
+E        +  where None = <Result NoSuchCommand("No such command 'SHOW'.")>.return_value
+
+tests/test_context.py:174: AssertionError
+___________________________ test_get_context_objects ___________________________
+
+runner = <click.testing.CliRunner object at 0x76c8d1496820>
+
+    def test_get_context_objects(runner):
+        class Foo:
+            def __init__(self):
+                self.title = "default"
+    
+        pass_foo = click.make_pass_decorator(Foo, ensure=True)
+    
+        @click.group()
+        @click.pass_context
+        def cli(ctx):
+            ctx.obj = Foo()
+            ctx.obj.title = "test"
+    
+        @cli.command()
+        @pass_foo
+        def test(foo):
+            click.echo(foo.title)
+    
+        result = runner.invoke(cli, ["test"])
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_context.py:58: AssertionError
+________________________ test_make_pass_decorator_args _________________________
+
+runner = <click.testing.CliRunner object at 0x76c8d12eda90>
+
+    def test_make_pass_decorator_args(runner):
+        """
+        Test to check that make_pass_decorator doesn't consume arguments based on
+        invocation order.
+        """
+    
+        class Foo:
+            title = "foocmd"
+    
+        pass_foo = click.make_pass_decorator(Foo)
+    
+        @click.group()
+        @click.pass_context
+        def cli(ctx):
+            ctx.obj = Foo()
+    
+        @cli.command()
+        @click.pass_context
+        @pass_foo
+        def test1(foo, ctx):
+            click.echo(foo.title)
+    
+        @cli.command()
+        @pass_foo
+        @click.pass_context
+        def test2(ctx, foo):
+            click.echo(foo.title)
+    
+        result = runner.invoke(cli, ["test1"])
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_context.py:692: AssertionError
+_________________________ test_ensure_context_objects __________________________
+
+runner = <click.testing.CliRunner object at 0x76c8d12ec910>
+
+    def test_ensure_context_objects(runner):
+        class Foo:
+            def __init__(self):
+                self.title = "default"
+    
+        pass_foo = click.make_pass_decorator(Foo, ensure=True)
+    
+        @click.group()
+        @pass_foo
+        def cli(foo):
+            pass
+    
+        @cli.command()
+        @pass_foo
+        def test(foo):
+            click.echo(foo.title)
+    
+        result = runner.invoke(cli, ["test"])
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_context.py:35: AssertionError
+_____________________ test_propagate_show_default_setting ______________________
+
+runner = <click.testing.CliRunner object at 0x76c8d12ecc90>
+
+    def test_propagate_show_default_setting(runner):
+        """A context's ``show_default`` setting defaults to the value from
+        the parent context.
+        """
+        group = click.Group(
+            commands={
+                "sub": click.Command("sub", params=[click.Option(["-a"], default="a")]),
+            },
+            context_settings={"show_default": True},
+        )
+        result = runner.invoke(group, ["sub", "--help"])
+>       assert "[default: a]" in result.output
+E       assert '[default: a]' in "Usage: root [OPTIONS] COMMAND [ARGS]...\nTry 'root --help' for help.\n\nError: No such command 'SUB'.\n"
+E        +  where "Usage: root [OPTIONS] COMMAND [ARGS]...\nTry 'root --help' for help.\n\nError: No such command 'SUB'.\n" = <Result SystemExit(2)>.output
+
+tests/test_context.py:711: AssertionError
+_____________________ test_get_context_objects_no_ensuring _____________________
+
+runner = <click.testing.CliRunner object at 0x76c8d154eeb0>
+
+    def test_get_context_objects_no_ensuring(runner):
+        class Foo:
+            def __init__(self):
+                self.title = "default"
+    
+        pass_foo = click.make_pass_decorator(Foo)
+    
+        @click.group()
+        @click.pass_context
+        def cli(ctx):
+            ctx.obj = Foo()
+            ctx.obj.title = "test"
+    
+        @cli.command()
+        @pass_foo
+        def test(foo):
+            click.echo(foo.title)
+    
+        result = runner.invoke(cli, ["test"])
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_context.py:81: AssertionError
+_______________________ test_get_context_objects_missing _______________________
+
+runner = <click.testing.CliRunner object at 0x76c8cb82b5b0>
+
+    def test_get_context_objects_missing(runner):
+        class Foo:
+            pass
+    
+        pass_foo = click.make_pass_decorator(Foo)
+    
+        @click.group()
+        @click.pass_context
+        def cli(ctx):
+            pass
+    
+        @cli.command()
+        @pass_foo
+        def test(foo):
+            click.echo(foo.title)
+    
+        result = runner.invoke(cli, ["test"])
+        assert result.exception is not None
+>       assert isinstance(result.exception, RuntimeError)
+E       assert False
+E        +  where False = isinstance(SystemExit(2), RuntimeError)
+E        +    where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_context.py:103: AssertionError
+_____________________________ test_group_no_parens _____________________________
+
+runner = <click.testing.CliRunner object at 0x76c8d14ec9f0>
+
+    def test_group_no_parens(runner):
+        @click.group
+        def grp():
+            click.echo("grp1")
+    
+        @grp.command
+        def cmd1():
+            click.echo("cmd1")
+    
+        @grp.group
+        def grp2():
+            click.echo("grp2")
+    
+        @grp2.command
+        def cmd2():
+            click.echo("cmd2")
+    
+        result = runner.invoke(grp, ["cmd1"])
+>       assert result.exception is None
+E       assert SystemExit(2) is None
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_command_decorators.py:54: AssertionError
+_________________ test_show_envvar_auto_prefix_dash_in_command _________________
+
+runner = <click.testing.CliRunner object at 0x76c8d0933ee0>
+
+    def test_show_envvar_auto_prefix_dash_in_command(runner):
+        @click.group()
+        def cli():
+            pass
+    
+        @cli.command()
+        @click.option("--baz", show_envvar=True)
+        def foo_bar(baz):
+            pass
+    
+        result = runner.invoke(cli, ["foo-bar", "--help"], auto_envvar_prefix="TEST")
+>       assert not result.exception
+E       assert not SystemExit(2)
+E        +  where SystemExit(2) = <Result SystemExit(2)>.exception
+
+tests/test_options.py:791: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_formatting.py::test_formatting_usage_error_help_hint[help_names5-extra_options5-Try 'cli foo --help' for help.] - AssertionError: assert 'Usage: cli [...AND [ARGS]...' == 'Usage: cli f... REQUIRED_ARG'
+  
+  - Usage: cli foo [OPTIONS] REQUIRED_ARG
+  + Usage: cli [OPTIONS] COMMAND [ARGS]...
+FAILED tests/test_formatting.py::test_wrapping_long_command_name - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_formatting.py::test_formatting_usage_error_help_hint[help_names4-extra_options4-Try 'cli foo --man' for help.] - AssertionError: assert 'Usage: cli [...AND [ARGS]...' == 'Usage: cli f... REQUIRED_ARG'
+  
+  - Usage: cli foo [OPTIONS] REQUIRED_ARG
+  + Usage: cli [OPTIONS] COMMAND [ARGS]...
+FAILED tests/test_formatting.py::test_formatting_usage_error_help_hint[help_names1-extra_options1-Try 'cli foo --help' for help.] - AssertionError: assert 'Usage: cli [...AND [ARGS]...' == 'Usage: cli f... REQUIRED_ARG'
+  
+  - Usage: cli foo [OPTIONS] REQUIRED_ARG
+  + Usage: cli [OPTIONS] COMMAND [ARGS]...
+FAILED tests/test_formatting.py::test_formatting_usage_error_help_hint[help_names0-extra_options0-Try 'cli foo --help' for help.] - AssertionError: assert 'Usage: cli [...AND [ARGS]...' == 'Usage: cli f... REQUIRED_ARG'
+  
+  - Usage: cli foo [OPTIONS] REQUIRED_ARG
+  + Usage: cli [OPTIONS] COMMAND [ARGS]...
+FAILED tests/test_formatting.py::test_formatting_usage_error_nested - assert ['Usage: cmd ...mmand 'FOO'."] == ['Usage: cmd ...ument 'BAR'."]
+  
+  At index 0 diff: 'Usage: cmd [OPTIONS] COMMAND [ARGS]...' != 'Usage: cmd foo [OPTIONS] BAR'
+  
+  Full diff:
+    [
+  -     'Usage: cmd foo [OPTIONS] BAR',
+  ?                ----           ^
+  +     'Usage: cmd [OPTIONS] COMMAND [ARGS]...',
+  ?                           ^^^^^^^^^  ++++++
+  -     "Try 'cmd foo --help' for help.",
+  ?              ----
+  +     "Try 'cmd --help' for help.",
+        '',
+  -     "Error: Missing argument 'BAR'.",
+  +     "Error: No such command 'FOO'.",
+    ]
+FAILED tests/test_formatting.py::test_formatting_usage_error_help_hint[help_names2-extra_options2-Try 'cli foo -h' for help.] - AssertionError: assert 'Usage: cli [...AND [ARGS]...' == 'Usage: cli f... REQUIRED_ARG'
+  
+  - Usage: cli foo [OPTIONS] REQUIRED_ARG
+  + Usage: cli [OPTIONS] COMMAND [ARGS]...
+FAILED tests/test_formatting.py::test_wrapping_long_options_strings - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_formatting.py::test_formatting_usage_error_help_hint[help_names3-extra_options3-None] - AssertionError: assert 'Usage: cli [...AND [ARGS]...' == 'Usage: cli f... REQUIRED_ARG'
+  
+  - Usage: cli foo [OPTIONS] REQUIRED_ARG
+  + Usage: cli [OPTIONS] COMMAND [ARGS]...
+FAILED tests/test_defaults.py::test_flag_default_map - assert 'False' in "Usage: cli [OPTIONS] COMMAND [ARGS]...\nTry 'cli --help' for help.\n\nError: No such command 'FOO'.\n"
+ +  where "Usage: cli [OPTIONS] COMMAND [ARGS]...\nTry 'cli --help' for help.\n\nError: No such command 'FOO'.\n" = <Result SystemExit(2)>.output
+FAILED tests/test_chain.py::test_pipeline[args2-foo \n bar-expect2] - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_chain.py::test_pipeline[args1-foo \n bar-expect1] - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_chain.py::test_chaining_with_options - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_chain.py::test_chaining_help[args2-SDIST HELP] - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_chain.py::test_basic_chaining - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_chain.py::test_group_arg_behavior - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_chain.py::test_chaining_with_arguments - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_chain.py::test_chaining_help[args4-SDIST HELP] - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_chain.py::test_chaining_help[args3-BDIST HELP] - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_chain.py::test_args_and_chain - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_arguments.py::test_nested_subcommand_help - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_arguments.py::test_subcommand_help - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_basic.py::test_group_commands_dict - assert "Usage: root ...nd 'OTHER'.\n" == 'sub'
+  
+  - sub
+  + Usage: root [OPTIONS] COMMAND [ARGS]...
+  + Try 'root --help' for help.
+  + 
+  + Error: No such command 'OTHER'.
+FAILED tests/test_basic.py::test_basic_group - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_basic.py::test_group_from_list - assert "Usage: root ...mand 'SUB'.\n" == 'sub'
+  
+  - sub
+  + Usage: root [OPTIONS] COMMAND [ARGS]...
+  + Try 'root --help' for help.
+  + 
+  + Error: No such command 'SUB'.
+FAILED tests/test_shell_completion.py::test_group_command_same_option - AssertionError: assert ['--help'] == ['-a', '--help']
+  
+  At index 0 diff: '--help' != '-a'
+  Right contains one more item: '--help'
+  
+  Full diff:
+    [
+  -     '-a',
+        '--help',
+    ]
+FAILED tests/test_shell_completion.py::test_nested_group[args2--expect2] - AssertionError: assert ['get'] == ['data']
+  
+  At index 0 diff: 'get' != 'data'
+  
+  Full diff:
+    [
+  -     'data',
+  ?      ^^ -
+  +     'get',
+  ?      ^^
+    ]
+FAILED tests/test_shell_completion.py::test_nested_group[args5---expect5] - AssertionError: assert ['--help'] == ['-a', '--help']
+  
+  At index 0 diff: '--help' != '-a'
+  Right contains one more item: '--help'
+  
+  Full diff:
+    [
+  -     '-a',
+        '--help',
+    ]
+FAILED tests/test_shell_completion.py::test_chained - AssertionError: assert ['get', 'set', 'start'] == ['get']
+  
+  Left contains 2 more items, first extra item: 'set'
+  
+  Full diff:
+    [
+        'get',
+  +     'set',
+  +     'start',
+    ]
+FAILED tests/test_shell_completion.py::test_help_option - AssertionError: assert ['--help'] == []
+  
+  Left contains one more item: '--help'
+  
+  Full diff:
+  - []
+  + [
+  +     '--help',
+  + ]
+FAILED tests/test_shell_completion.py::test_hidden - AssertionError: assert ['--help'] == ['-a']
+  
+  At index 0 diff: '--help' != '-a'
+  
+  Full diff:
+    [
+  -     '-a',
+  +     '--help',
+    ]
+FAILED tests/test_shell_completion.py::test_nested_group[args3---expect3] - AssertionError: assert ['--help'] == ['--verbose', '--help']
+  
+  At index 0 diff: '--help' != '--verbose'
+  Right contains one more item: '--help'
+  
+  Full diff:
+    [
+  -     '--verbose',
+        '--help',
+    ]
+FAILED tests/test_shell_completion.py::test_nested_group[args1--expect1] - AssertionError: assert ['get'] == ['full']
+  
+  At index 0 diff: 'get' != 'full'
+  
+  Full diff:
+    [
+  -     'full',
+  +     'get',
+    ]
+FAILED tests/test_shell_completion.py::test_nested_group[args4--expect4] - AssertionError: assert ['get'] == []
+  
+  Left contains one more item: 'get'
+  
+  Full diff:
+  - []
+  + [
+  +     'get',
+  + ]
+FAILED tests/test_commands.py::test_default_maps - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_commands.py::test_group_invoke_collects_used_option_prefixes - AssertionError: assert set() == {'+', '-', '--', '~'}
+  
+  Extra items in the right set:
+  '~'
+  '-'
+  '--'
+  '+'
+  
+  Full diff:
+  + set()
+  - {
+  -     '+',
+  -     '-',
+  -     '--',
+  -     '~',
+  - }
+FAILED tests/test_commands.py::test_suggest_possible_commands[pause-Did you mean 'push'?] - assert "Did you mean 'push'?" in "Usage: root [OPTIONS] COMMAND [ARGS]...\nTry 'root --help' for help.\n\nError: No such command 'PAUSE'.\n"
+ +  where "Usage: root [OPTIONS] COMMAND [ARGS]...\nTry 'root --help' for help.\n\nError: No such command 'PAUSE'.\n" = <Result SystemExit(2)>.output
+FAILED tests/test_commands.py::test_suggest_possible_commands[decline-(Did you mean one of: 'declare', 'refine'?)] - assert "(Did you mean one of: 'declare', 'refine'?)" in "Usage: root [OPTIONS] COMMAND [ARGS]...\nTry 'root --help' for help.\n\nError: No such command 'DECLINE'.\n"
+ +  where "Usage: root [OPTIONS] COMMAND [ARGS]...\nTry 'root --help' for help.\n\nError: No such command 'DECLINE'.\n" = <Result SystemExit(2)>.output
+FAILED tests/test_commands.py::test_group_add_command_name - assert 2 == 0
+ +  where 2 = <Result SystemExit(2)>.exit_code
+FAILED tests/test_commands.py::test_group_with_args[args2-0-obj=obj1\nmove\n] - assert 2 == 0
+ +  where 2 = <Result SystemExit(2)>.exit_code
+FAILED tests/test_commands.py::test_custom_parser - assert SystemExit(2) is None
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_commands.py::test_unknown_command - assert "No such command 'unknown'." in "Usage: root [OPTIONS] COMMAND [ARGS]...\nTry 'root --help' for help.\n\nError: No such command 'UNKNOWN'.\n"
+ +  where "Usage: root [OPTIONS] COMMAND [ARGS]...\nTry 'root --help' for help.\n\nError: No such command 'UNKNOWN'.\n" = <Result SystemExit(2)>.output
+FAILED tests/test_commands.py::test_other_command_forward - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_commands.py::test_forwarded_params_consistency - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_commands.py::test_invoked_subcommand - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_commands.py::test_object_propagation - assert SystemExit(2) is None
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_context.py::test_pass_obj - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_context.py::test_make_pass_meta_decorator - assert None == 'good'
+ +  where None = <Result NoSuchCommand("No such command 'SHOW'.")>.return_value
+FAILED tests/test_context.py::test_get_context_objects - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_context.py::test_make_pass_decorator_args - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_context.py::test_ensure_context_objects - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_context.py::test_propagate_show_default_setting - assert '[default: a]' in "Usage: root [OPTIONS] COMMAND [ARGS]...\nTry 'root --help' for help.\n\nError: No such command 'SUB'.\n"
+ +  where "Usage: root [OPTIONS] COMMAND [ARGS]...\nTry 'root --help' for help.\n\nError: No such command 'SUB'.\n" = <Result SystemExit(2)>.output
+FAILED tests/test_context.py::test_get_context_objects_no_ensuring - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_context.py::test_get_context_objects_missing - assert False
+ +  where False = isinstance(SystemExit(2), RuntimeError)
+ +    where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_command_decorators.py::test_group_no_parens - assert SystemExit(2) is None
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+FAILED tests/test_options.py::test_show_envvar_auto_prefix_dash_in_command - assert not SystemExit(2)
+ +  where SystemExit(2) = <Result SystemExit(2)>.exception
+56 failed, 1935 passed, 24 skipped, 31000 deselected, 1 xfailed in 7.54s

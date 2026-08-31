@@ -1,0 +1,44 @@
+Module name: "click"
+Package directory: "/tmp/av-exp-002-run.v987Ig/click/src/click"
+Module directory: "/tmp/av-exp-002-run.v987Ig/click/src/click"
+Path of py.typed file: "/tmp/av-exp-002-run.v987Ig/click/src/click/py.typed"
+
+Public modules: 12
+   click
+   click.core
+   click.decorators
+   click.exceptions
+   click.formatting
+   click.globals
+   click.parser
+   click.shell_completion
+   click.termui
+   click.testing
+   click.types
+   click.utils
+
+Symbols used in public interface:
+
+Symbols exported by "click": 711
+  With known type: 711
+  With ambiguous type: 0
+  With unknown type: 0
+    (Ignoring unknown types imported from other packages)
+
+Other symbols referenced but not exported by "click": 77
+  With known type: 77
+  With ambiguous type: 0
+  With unknown type: 0
+
+Symbols without documentation:
+  Functions without docstring: 86
+  Functions without default param: 0
+  Classes without docstring: 23
+
+Type completeness score: 100%
+
+Completed in 0.919sec
+
+WARNING: there is a new pyright version available (v1.1.408 -> v1.1.411).
+Please install the new version or set PYRIGHT_PYTHON_FORCE_VERSION to `latest`
+

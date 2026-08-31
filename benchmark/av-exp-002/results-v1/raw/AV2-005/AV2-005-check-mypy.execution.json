@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/tmp/av-exp-002-run.v987Ig/click/.venv/bin/mypy"
+  ],
+  "exit_code": 1,
+  "signal": null,
+  "timed_out": false,
+  "spawn_error": null,
+  "duration_ms_observed": 647.131,
+  "stdout_sha256": "sha256:53d266569c11e06a4c91862cad1f557a56deeb359773f72c59366cf5153ca773",
+  "stderr_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

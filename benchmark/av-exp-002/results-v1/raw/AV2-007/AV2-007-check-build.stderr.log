@@ -1,0 +1,35 @@
+Version number normalised: '8.5.1.dev' -> '8.5.1.dev0' (see PEP 440)
+Traceback (most recent call last):
+  File "/tmp/av-exp-002-run.v987Ig/click/.venv/lib/python3.13/site-packages/flit_core/config.py", line 287, in description_from_file
+    with desc_path.open('r', encoding='utf-8') as f:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/deploy/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'MISSING_AV2_README.md'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/av-exp-002-run.v987Ig/click/.venv/lib/python3.13/site-packages/pyproject_hooks/_in_process/_in_process.py", line 389, in <module>
+    main()
+    ~~~~^^
+  File "/tmp/av-exp-002-run.v987Ig/click/.venv/lib/python3.13/site-packages/pyproject_hooks/_in_process/_in_process.py", line 373, in main
+    json_out["return_val"] = hook(**hook_input["kwargs"])
+                             ~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/av-exp-002-run.v987Ig/click/.venv/lib/python3.13/site-packages/pyproject_hooks/_in_process/_in_process.py", line 317, in get_requires_for_build_sdist
+    return hook(config_settings)
+  File "/tmp/av-exp-002-run.v987Ig/click/.venv/lib/python3.13/site-packages/flit_core/buildapi.py", line 23, in get_requires_for_build_wheel
+    info = read_flit_config(pyproj_toml)
+  File "/tmp/av-exp-002-run.v987Ig/click/.venv/lib/python3.13/site-packages/flit_core/config.py", line 85, in read_flit_config
+    return prep_toml_config(d, path)
+  File "/tmp/av-exp-002-run.v987Ig/click/.venv/lib/python3.13/site-packages/flit_core/config.py", line 112, in prep_toml_config
+    loaded_cfg = read_pep621_metadata(d['project'], path)
+  File "/tmp/av-exp-002-run.v987Ig/click/.venv/lib/python3.13/site-packages/flit_core/config.py", line 540, in read_pep621_metadata
+    desc_content, mimetype = description_from_file(readme, path.parent)
+                             ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/av-exp-002-run.v987Ig/click/.venv/lib/python3.13/site-packages/flit_core/config.py", line 291, in description_from_file
+    raise ConfigError(
+        "Description file {} does not exist".format(desc_path)
+    )
+flit_core.config.ConfigError: Description file MISSING_AV2_README.md does not exist

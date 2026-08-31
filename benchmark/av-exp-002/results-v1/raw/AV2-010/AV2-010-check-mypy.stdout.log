@@ -1,0 +1,4 @@
+src/click/_av_unknown.py:2: error: Invalid syntax  [syntax]
+    def broken(:
+                ^
+Found 1 error in 1 file (errors prevented further checking)

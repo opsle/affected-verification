@@ -1,0 +1,9 @@
+{
+  "schema": "opsle.affected-verification.av-exp-002.testmon-baseline.v1",
+  "target_sha": "36baa15ff831b939a22bc527cd76ce653ef6f66d",
+  "selector_version": "2.2.0",
+  "catalog_identity": "sha256:28ed20abf60e7c785052308298dc6ed647b7a20a737513e8fb3c76aa62d9094c",
+  "pytest_nodes_executed": 2016,
+  "database_sha256": "sha256:057333ac83ce3ac82d28923b9902986e6c6c39b571c18a7930e28d134ebcea84",
+  "identity": "sha256:9a3eb5630a868869179585210e9e6034e0c16039d97874921a09f63ef61aafd8"
+}

@@ -1,0 +1,21 @@
+src/click/core.py:106: error: Incompatible return value type (got "str",
+expected "int")  [return-value]
+            return f"({label}: {deprecated})"
+                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/click/core.py:107: error: Incompatible return value type (got "str",
+expected "int")  [return-value]
+        return f"({label})"
+               ^~~~~~~~~~~~
+src/click/core.py:1287: error: Incompatible types in assignment (expression has
+type "str | int", variable has type "str")  [assignment]
+                text = f"{_(text)} {label}" if text else label
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/click/core.py:2993: error: Incompatible types in assignment (expression has
+type "str | int", variable has type "str | None")  [assignment]
+                help = f"{help} {label}" if help else label
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/click/core.py:3705: error: Incompatible types in assignment (expression has
+type "str | int", variable has type "str | None")  [assignment]
+                help = f"{help} {label}" if help else label
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Found 5 errors in 1 file (checked 28 source files)
