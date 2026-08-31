@@ -1,0 +1,518 @@
+{
+  "schema": "opsle.affected-verification.repair-regression-matrix.v1",
+  "experiment_id": "AV-EXP-003",
+  "av_exp_001": {
+    "experiment_id": "AV-EXP-001",
+    "replay_basis": "sha256:c431d8849edce79d6121a290f49288ed2710e406600d8b66d3588e6b82c73a1d",
+    "method": "Frozen full-oracle and selector evidence replay; repair is monotonic and no Python opaque-boundary adapter applies.",
+    "scenarios": 10,
+    "arms": {
+      "AV_CORE": {
+        "historical_relevant_misses": 0,
+        "repaired_relevant_misses": 0,
+        "prior_tests_selected": 1640,
+        "repaired_tests_selected": 1640,
+        "additional_tests_due_to_repair": 0,
+        "tests_still_skipped": 600,
+        "non_test_check_differences": 0,
+        "full_verification_escalations": 3
+      },
+      "AV_WITH_NATIVE_EVIDENCE": {
+        "historical_relevant_misses": 0,
+        "repaired_relevant_misses": 0,
+        "prior_tests_selected": 1640,
+        "repaired_tests_selected": 1640,
+        "additional_tests_due_to_repair": 0,
+        "tests_still_skipped": 600,
+        "non_test_check_differences": 0,
+        "full_verification_escalations": 3
+      }
+    }
+  },
+  "av_exp_002": {
+    "experiment_id": "AV-EXP-002",
+    "replay_basis": "sha256:5b3f99bfbebd3a0d061651d66adfb5a6aaef899475c6267cb20e4040e6ed5768",
+    "preserved_historical_verdict": "FAIL",
+    "method": "Frozen complete FULL-oracle replay; repaired selection is the monotonic union of historical AV selection and deterministic open-boundary selections.",
+    "scenarios": [
+      {
+        "scenario_id": "AV2-001",
+        "original_relevant_check_ids": [],
+        "full_oracle_complete": true,
+        "arms": {
+          "AV_CORE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [
+              "pytest:tests/test_imports.py::test_light_imports"
+            ],
+            "prior_tests_selected": 1839,
+            "repaired_tests_selected": 1840,
+            "additional_tests_due_to_repair": 1,
+            "tests_still_skipped": 176,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 0
+          },
+          "AV_WITH_SELECTOR_EVIDENCE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [
+              "pytest:tests/test_imports.py::test_light_imports"
+            ],
+            "prior_tests_selected": 1839,
+            "repaired_tests_selected": 1840,
+            "additional_tests_due_to_repair": 1,
+            "tests_still_skipped": 176,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 0
+          }
+        }
+      },
+      {
+        "scenario_id": "AV2-002",
+        "original_relevant_check_ids": [
+          "pytest:tests/test_formatting.py::test_basic_functionality",
+          "pytest:tests/test_formatting.py::test_formatting_custom_type_metavar",
+          "pytest:tests/test_formatting.py::test_formatting_empty_help_lines",
+          "pytest:tests/test_formatting.py::test_global_show_default",
+          "pytest:tests/test_formatting.py::test_truncating_docstring",
+          "pytest:tests/test_formatting.py::test_truncating_docstring_no_help",
+          "pytest:tests/test_formatting.py::test_wrapping_long_command_name",
+          "pytest:tests/test_formatting.py::test_wrapping_long_options_strings",
+          "pytest:tests/test_options.py::test_help_option_custom_names_and_class[name_specs0-  -h, --help  Show this message and exit.\\n-False]",
+          "pytest:tests/test_options.py::test_help_option_custom_names_and_class[name_specs0-  -h, --help  Show this message and exit.\\n-True]",
+          "pytest:tests/test_options.py::test_help_option_custom_names_and_class[name_specs1-  -h      Show this message and exit.\\n  --help  Show this message and exit.\\n-False]",
+          "pytest:tests/test_options.py::test_help_option_custom_names_and_class[name_specs1-  -h      Show this message and exit.\\n  --help  Show this message and exit.\\n-True]",
+          "pytest:tests/test_options.py::test_help_option_custom_names_and_class[name_specs2-  --help  Show this message and exit.\\n-False]",
+          "pytest:tests/test_options.py::test_help_option_custom_names_and_class[name_specs2-  --help  Show this message and exit.\\n-True]",
+          "pytest:tests/test_options.py::test_option_help_preserve_paragraphs",
+          "pytest:tests/test_options.py::test_winstyle_options"
+        ],
+        "full_oracle_complete": true,
+        "arms": {
+          "AV_CORE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [
+              "pytest:tests/test_imports.py::test_light_imports"
+            ],
+            "prior_tests_selected": 1839,
+            "repaired_tests_selected": 1840,
+            "additional_tests_due_to_repair": 1,
+            "tests_still_skipped": 176,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 0
+          },
+          "AV_WITH_SELECTOR_EVIDENCE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [
+              "pytest:tests/test_imports.py::test_light_imports"
+            ],
+            "prior_tests_selected": 1839,
+            "repaired_tests_selected": 1840,
+            "additional_tests_due_to_repair": 1,
+            "tests_still_skipped": 176,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 0
+          }
+        }
+      },
+      {
+        "scenario_id": "AV2-003",
+        "original_relevant_check_ids": [
+          "pytest:tests/test_arguments.py::test_nested_subcommand_help",
+          "pytest:tests/test_arguments.py::test_subcommand_help",
+          "pytest:tests/test_basic.py::test_basic_group",
+          "pytest:tests/test_basic.py::test_group_commands_dict",
+          "pytest:tests/test_basic.py::test_group_from_list",
+          "pytest:tests/test_chain.py::test_args_and_chain",
+          "pytest:tests/test_chain.py::test_basic_chaining",
+          "pytest:tests/test_chain.py::test_chaining_help[args2-SDIST HELP]",
+          "pytest:tests/test_chain.py::test_chaining_help[args3-BDIST HELP]",
+          "pytest:tests/test_chain.py::test_chaining_help[args4-SDIST HELP]",
+          "pytest:tests/test_chain.py::test_chaining_with_arguments",
+          "pytest:tests/test_chain.py::test_chaining_with_options",
+          "pytest:tests/test_chain.py::test_group_arg_behavior",
+          "pytest:tests/test_chain.py::test_pipeline[args1-foo \\n bar-expect1]",
+          "pytest:tests/test_chain.py::test_pipeline[args2-foo \\n bar-expect2]",
+          "pytest:tests/test_command_decorators.py::test_group_no_parens",
+          "pytest:tests/test_commands.py::test_custom_parser",
+          "pytest:tests/test_commands.py::test_default_maps",
+          "pytest:tests/test_commands.py::test_forwarded_params_consistency",
+          "pytest:tests/test_commands.py::test_group_add_command_name",
+          "pytest:tests/test_commands.py::test_group_invoke_collects_used_option_prefixes",
+          "pytest:tests/test_commands.py::test_group_with_args[args2-0-obj=obj1\\nmove\\n]",
+          "pytest:tests/test_commands.py::test_invoked_subcommand",
+          "pytest:tests/test_commands.py::test_object_propagation",
+          "pytest:tests/test_commands.py::test_other_command_forward",
+          "pytest:tests/test_commands.py::test_suggest_possible_commands[decline-(Did you mean one of: 'declare', 'refine'?)]",
+          "pytest:tests/test_commands.py::test_suggest_possible_commands[pause-Did you mean 'push'?]",
+          "pytest:tests/test_commands.py::test_unknown_command",
+          "pytest:tests/test_context.py::test_ensure_context_objects",
+          "pytest:tests/test_context.py::test_get_context_objects",
+          "pytest:tests/test_context.py::test_get_context_objects_missing",
+          "pytest:tests/test_context.py::test_get_context_objects_no_ensuring",
+          "pytest:tests/test_context.py::test_make_pass_decorator_args",
+          "pytest:tests/test_context.py::test_make_pass_meta_decorator",
+          "pytest:tests/test_context.py::test_pass_obj",
+          "pytest:tests/test_context.py::test_propagate_show_default_setting",
+          "pytest:tests/test_defaults.py::test_flag_default_map",
+          "pytest:tests/test_formatting.py::test_formatting_usage_error_help_hint[help_names0-extra_options0-Try 'cli foo --help' for help.]",
+          "pytest:tests/test_formatting.py::test_formatting_usage_error_help_hint[help_names1-extra_options1-Try 'cli foo --help' for help.]",
+          "pytest:tests/test_formatting.py::test_formatting_usage_error_help_hint[help_names2-extra_options2-Try 'cli foo -h' for help.]",
+          "pytest:tests/test_formatting.py::test_formatting_usage_error_help_hint[help_names3-extra_options3-None]",
+          "pytest:tests/test_formatting.py::test_formatting_usage_error_help_hint[help_names4-extra_options4-Try 'cli foo --man' for help.]",
+          "pytest:tests/test_formatting.py::test_formatting_usage_error_help_hint[help_names5-extra_options5-Try 'cli foo --help' for help.]",
+          "pytest:tests/test_formatting.py::test_formatting_usage_error_nested",
+          "pytest:tests/test_formatting.py::test_wrapping_long_command_name",
+          "pytest:tests/test_formatting.py::test_wrapping_long_options_strings",
+          "pytest:tests/test_options.py::test_show_envvar_auto_prefix_dash_in_command",
+          "pytest:tests/test_shell_completion.py::test_chained",
+          "pytest:tests/test_shell_completion.py::test_group_command_same_option",
+          "pytest:tests/test_shell_completion.py::test_help_option",
+          "pytest:tests/test_shell_completion.py::test_hidden",
+          "pytest:tests/test_shell_completion.py::test_nested_group[args1--expect1]",
+          "pytest:tests/test_shell_completion.py::test_nested_group[args2--expect2]",
+          "pytest:tests/test_shell_completion.py::test_nested_group[args3---expect3]",
+          "pytest:tests/test_shell_completion.py::test_nested_group[args4--expect4]",
+          "pytest:tests/test_shell_completion.py::test_nested_group[args5---expect5]"
+        ],
+        "full_oracle_complete": true,
+        "arms": {
+          "AV_CORE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [],
+            "prior_tests_selected": 2016,
+            "repaired_tests_selected": 2016,
+            "additional_tests_due_to_repair": 0,
+            "tests_still_skipped": 0,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 1
+          },
+          "AV_WITH_SELECTOR_EVIDENCE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [],
+            "prior_tests_selected": 2016,
+            "repaired_tests_selected": 2016,
+            "additional_tests_due_to_repair": 0,
+            "tests_still_skipped": 0,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 1
+          }
+        }
+      },
+      {
+        "scenario_id": "AV2-004",
+        "original_relevant_check_ids": [
+          "check:format"
+        ],
+        "full_oracle_complete": true,
+        "arms": {
+          "AV_CORE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [
+              "pytest:tests/test_imports.py::test_light_imports",
+              "pytest:tests/test_types.py::test_path_dash_no_byteswarning"
+            ],
+            "prior_tests_selected": 7,
+            "repaired_tests_selected": 9,
+            "additional_tests_due_to_repair": 2,
+            "tests_still_skipped": 2007,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 0
+          },
+          "AV_WITH_SELECTOR_EVIDENCE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [
+              "pytest:tests/test_imports.py::test_light_imports",
+              "pytest:tests/test_types.py::test_path_dash_no_byteswarning"
+            ],
+            "prior_tests_selected": 7,
+            "repaired_tests_selected": 9,
+            "additional_tests_due_to_repair": 2,
+            "tests_still_skipped": 2007,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 0
+          }
+        }
+      },
+      {
+        "scenario_id": "AV2-005",
+        "original_relevant_check_ids": [
+          "check:mypy"
+        ],
+        "full_oracle_complete": true,
+        "arms": {
+          "AV_CORE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [],
+            "prior_tests_selected": 2016,
+            "repaired_tests_selected": 2016,
+            "additional_tests_due_to_repair": 0,
+            "tests_still_skipped": 0,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 1
+          },
+          "AV_WITH_SELECTOR_EVIDENCE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [],
+            "prior_tests_selected": 2016,
+            "repaired_tests_selected": 2016,
+            "additional_tests_due_to_repair": 0,
+            "tests_still_skipped": 0,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 1
+          }
+        }
+      },
+      {
+        "scenario_id": "AV2-006",
+        "original_relevant_check_ids": [
+          "check:lint",
+          "pytest:tests/test_imports.py::test_light_imports"
+        ],
+        "full_oracle_complete": true,
+        "arms": {
+          "AV_CORE": {
+            "historical_misses": [
+              "pytest:tests/test_imports.py::test_light_imports"
+            ],
+            "repaired_misses": [],
+            "additional_check_ids": [
+              "pytest:tests/test_imports.py::test_light_imports"
+            ],
+            "prior_tests_selected": 1839,
+            "repaired_tests_selected": 1840,
+            "additional_tests_due_to_repair": 1,
+            "tests_still_skipped": 176,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 0
+          },
+          "AV_WITH_SELECTOR_EVIDENCE": {
+            "historical_misses": [
+              "pytest:tests/test_imports.py::test_light_imports"
+            ],
+            "repaired_misses": [],
+            "additional_check_ids": [
+              "pytest:tests/test_imports.py::test_light_imports"
+            ],
+            "prior_tests_selected": 1839,
+            "repaired_tests_selected": 1840,
+            "additional_tests_due_to_repair": 1,
+            "tests_still_skipped": 176,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 0
+          }
+        }
+      },
+      {
+        "scenario_id": "AV2-007",
+        "original_relevant_check_ids": [
+          "check:build"
+        ],
+        "full_oracle_complete": true,
+        "arms": {
+          "AV_CORE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [],
+            "prior_tests_selected": 2016,
+            "repaired_tests_selected": 2016,
+            "additional_tests_due_to_repair": 0,
+            "tests_still_skipped": 0,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 1
+          },
+          "AV_WITH_SELECTOR_EVIDENCE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [],
+            "prior_tests_selected": 2016,
+            "repaired_tests_selected": 2016,
+            "additional_tests_due_to_repair": 0,
+            "tests_still_skipped": 0,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 1
+          }
+        }
+      },
+      {
+        "scenario_id": "AV2-008",
+        "original_relevant_check_ids": [
+          "check:format",
+          "pytest:tests/test_options.py::test_help_option_custom_names_and_class[name_specs0-  -h, --help  Show this message and exit.\\n-False]",
+          "pytest:tests/test_options.py::test_help_option_custom_names_and_class[name_specs0-  -h, --help  Show this message and exit.\\n-True]",
+          "pytest:tests/test_options.py::test_option_help_preserve_paragraphs"
+        ],
+        "full_oracle_complete": true,
+        "arms": {
+          "AV_CORE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [
+              "pytest:tests/test_imports.py::test_light_imports"
+            ],
+            "prior_tests_selected": 1839,
+            "repaired_tests_selected": 1840,
+            "additional_tests_due_to_repair": 1,
+            "tests_still_skipped": 176,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 0
+          },
+          "AV_WITH_SELECTOR_EVIDENCE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [
+              "pytest:tests/test_imports.py::test_light_imports"
+            ],
+            "prior_tests_selected": 1839,
+            "repaired_tests_selected": 1840,
+            "additional_tests_due_to_repair": 1,
+            "tests_still_skipped": 176,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 0
+          }
+        }
+      },
+      {
+        "scenario_id": "AV2-009",
+        "original_relevant_check_ids": [
+          "check:mypy",
+          "pytest:tests/test_basic.py::test_version_option_ambiguous_import_name_errors",
+          "pytest:tests/test_basic.py::test_version_option_resolves_import_name_to_distribution"
+        ],
+        "full_oracle_complete": true,
+        "arms": {
+          "AV_CORE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [],
+            "prior_tests_selected": 2016,
+            "repaired_tests_selected": 2016,
+            "additional_tests_due_to_repair": 0,
+            "tests_still_skipped": 0,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 1
+          },
+          "AV_WITH_SELECTOR_EVIDENCE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [
+              "pytest:tests/test_imports.py::test_light_imports"
+            ],
+            "prior_tests_selected": 1839,
+            "repaired_tests_selected": 1840,
+            "additional_tests_due_to_repair": 1,
+            "tests_still_skipped": 176,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 0
+          }
+        }
+      },
+      {
+        "scenario_id": "AV2-010",
+        "original_relevant_check_ids": [
+          "check:format",
+          "check:lint",
+          "check:mypy"
+        ],
+        "full_oracle_complete": true,
+        "arms": {
+          "AV_CORE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [],
+            "prior_tests_selected": 2016,
+            "repaired_tests_selected": 2016,
+            "additional_tests_due_to_repair": 0,
+            "tests_still_skipped": 0,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 1
+          },
+          "AV_WITH_SELECTOR_EVIDENCE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [],
+            "prior_tests_selected": 2016,
+            "repaired_tests_selected": 2016,
+            "additional_tests_due_to_repair": 0,
+            "tests_still_skipped": 0,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 1
+          }
+        }
+      },
+      {
+        "scenario_id": "AV2-011",
+        "original_relevant_check_ids": [],
+        "full_oracle_complete": true,
+        "arms": {
+          "AV_CORE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [],
+            "prior_tests_selected": 2016,
+            "repaired_tests_selected": 2016,
+            "additional_tests_due_to_repair": 0,
+            "tests_still_skipped": 0,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 1
+          },
+          "AV_WITH_SELECTOR_EVIDENCE": {
+            "historical_misses": [],
+            "repaired_misses": [],
+            "additional_check_ids": [],
+            "prior_tests_selected": 2016,
+            "repaired_tests_selected": 2016,
+            "additional_tests_due_to_repair": 0,
+            "tests_still_skipped": 0,
+            "non_test_check_differences": 0,
+            "full_verification_escalations": 1
+          }
+        }
+      }
+    ],
+    "aggregate": {
+      "AV_CORE": {
+        "historical_relevant_misses": 1,
+        "repaired_relevant_misses": 0,
+        "prior_tests_selected": 19459,
+        "repaired_tests_selected": 19465,
+        "additional_tests_due_to_repair": 6,
+        "tests_still_skipped": 2711,
+        "non_test_check_differences": 0,
+        "full_verification_escalations": 6
+      },
+      "AV_WITH_SELECTOR_EVIDENCE": {
+        "historical_relevant_misses": 1,
+        "repaired_relevant_misses": 0,
+        "prior_tests_selected": 19282,
+        "repaired_tests_selected": 19289,
+        "additional_tests_due_to_repair": 7,
+        "tests_still_skipped": 2887,
+        "non_test_check_differences": 0,
+        "full_verification_escalations": 5
+      }
+    }
+  },
+  "av_exp_003": {
+    "scenarios": 10,
+    "prior_tests_selected": 10,
+    "repaired_tests_selected": 17,
+    "additional_tests_due_to_repair": 7,
+    "tests_still_skipped": 13,
+    "non_test_check_differences": 0,
+    "full_verification_escalations": 0,
+    "targeted_scenarios_retained": 10,
+    "broadened_scenarios": 7,
+    "new_misses": []
+  },
+  "identity": "sha256:7260c2d3476a6e78323e75d36c54c8409ea4cb18fa3a8f9a76b5533e1df08615"
+}

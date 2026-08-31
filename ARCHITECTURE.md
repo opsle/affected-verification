@@ -4,6 +4,9 @@
 change + normalized evidence + catalog + policy
                        |
                        v
+       check dependency-completeness assessment
+                       |
+                       v
           deterministic verification planner
                        |
                        v
@@ -14,9 +17,11 @@ change + normalized evidence + catalog + policy
 
 ## Core and adapters
 
-The core owns validation, reverse-impact closure, deterministic policy matching, fail-closed escalation, selection/skip arguments, canonical hashing, Visible Value planning counts, and shadow-result classification.
+The core owns validation, reverse-impact closure, deterministic policy matching, check-level dependency-completeness decisions, fail-closed escalation, selection/skip arguments, canonical hashing, Visible Value planning counts including safety additions, and shadow-result classification.
 
-Adapters may translate Git diffs, package/project graphs, imports, coverage, test selectors, CODEOWNERS, schemas, or declared critical boundaries into normalized input. V1 implements no production adapter. This prevents the core from embedding Nx, Turbo, Jest, Vitest, testmon, or any one repository layout.
+Adapters may translate Git diffs, package/project graphs, imports, coverage, test selectors, CODEOWNERS, schemas, or declared critical boundaries into normalized input. The AV-EXP-003 bounded Python inspector classifies check-local alternate boundaries with source provenance; it remains benchmark-only. This prevents the core from embedding Python, Click, pytest-testmon, or any one repository layout.
+
+Multiple absence sources do not become complete by agreement. Static graph and native selector omission can coexist while a subprocess, child interpreter, dynamic import, plugin/entry-point discovery, code-generation, runtime-loading, or declared reflection/registration boundary remains open. An open check-local boundary selects that check; it does not globally broaden unrelated checks.
 
 The verification catalog is the planner's universe. It is not a scheduler. Commands are opaque identities; the planner never shells out to them.
 
@@ -32,7 +37,7 @@ Affected Verification decides **what should execute**. After execution, Context 
 
 ## Decision Evidence and Trajectory boundaries
 
-Decision Evidence may later validate change identity, evidence provenance, plan identity, selected/skip arguments, and execution-result bindings. Agent Trajectory Profiler may measure planned selections, actual executions, shadow comparisons, and observed latency/cost when genuinely recorded. V1 records compatible identities but creates no cross-repository package coupling.
+Decision Evidence may later validate change identity, evidence provenance, plan identity, selected/skip arguments, and execution-result bindings. Agent Trajectory Profiler may measure planned selections, actual executions, shadow comparisons, and observed latency/cost when genuinely recorded. V2 records compatible identities but creates no cross-repository package coupling.
 
 ## Shadow observations
 

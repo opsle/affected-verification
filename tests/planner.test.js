@@ -37,7 +37,10 @@ test('identical input produces an identical deterministic plan', () => {
 test('unrelated checks are skipped with exact reasons', () => {
   const plan = planVerification(fixture('isolated-implementation'));
   const skipped = plan.skipped_checks.find((item) => item.id === 'unrelated.large-suite');
-  assert.deepEqual(skipped.reasons.map((item) => item.code), ['OUTSIDE_TRANSITIVE_IMPACT_SET']);
+  assert.deepEqual(skipped.reasons.map((item) => item.code), [
+    'OUTSIDE_TRANSITIVE_IMPACT_SET',
+    'CHECK_DEPENDENCY_COMPLETENESS_DEFENDED',
+  ]);
 });
 
 test('direct affected checks are selected', () => {
@@ -99,6 +102,8 @@ test('incomplete catalog is insufficient even when all known checks are selected
 test('uncovered affected component is insufficient even with a complete catalog', () => {
   const input = fixture('isolated-implementation');
   input.catalog.checks = input.catalog.checks.filter((check) => !check.scope.components.includes('isolated'));
+  input.evidence.check_dependencies = input.evidence.check_dependencies.filter((assessment) =>
+    input.catalog.checks.some((check) => check.id === assessment.check_id));
   const plan = planVerification(input);
   assert.equal(plan.sufficiency, 'INSUFFICIENT_EVIDENCE');
   assert.ok(plan.uncertainty.reasons.includes('NO_VERIFICATION_COVERAGE:isolated'));
@@ -128,6 +133,7 @@ test('every skipped check has a nonempty evidence-backed reason', () => {
     assert.ok(check.reasons.length > 0);
     assert.ok(check.reasons.every((item) => item.code && item.detail && item.evidence_refs.length));
   }
+  assert.equal(plan.argument.every_skip_dependency_complete, true);
 });
 
 test('duplicate impact evidence is rejected instead of merged optimistically', () => {

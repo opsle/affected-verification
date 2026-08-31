@@ -37,7 +37,7 @@ test('operator indicator never aggregates unlike checks into its test percentage
   const plan = planVerification(fixture('unrelated-large-suite'));
   assert.equal(
     operatorIndicator(plan),
-    '[Affected Verification] Selected tests: 14/1043; other checks: 1 lint, 1 typecheck; skipped tests: 1029; test-execution reduction: 98.7%; sufficiency: SUFFICIENT_TARGETED; impact uncertainty: none',
+    '[Affected Verification] Selected tests: 14/1043; other checks: 1 lint, 1 typecheck; skipped tests: 1029; dependency safety additions: 0 checks/0 test executions; opaque boundaries selected: 0; test-execution reduction: 98.7%; sufficiency: SUFFICIENT_TARGETED; impact uncertainty: none',
   );
 });
 

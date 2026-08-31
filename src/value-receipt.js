@@ -28,6 +28,12 @@ export function buildValueReceipt(plan, { mechanismRevision = null, runId = null
   const selectedTests = plan.selected_checks.filter(isTest).reduce((sum, item) => sum + item.test_executions, 0);
   const skippedTests = availableTests - selectedTests;
   const ratio = availableTests === 0 ? null : `${skippedTests}/${availableTests}`;
+  const dependencyForced = plan.selected_checks.filter(
+    (item) => item.dependency_completeness?.forced_selection,
+  );
+  const dependencyForcedTests = dependencyForced
+    .filter(isTest)
+    .reduce((sum, item) => sum + item.test_executions, 0);
   return {
     schema: RECEIPT_SCHEMA,
     mechanism: {
@@ -50,6 +56,8 @@ export function buildValueReceipt(plan, { mechanismRevision = null, runId = null
       measurement({ id: 'test_executions_available', baseline: null, result: availableTests, delta: null, unit: 'count', direction: 'NEUTRAL', operatorDisplay: false }),
       measurement({ id: 'test_executions_selected', baseline: null, result: selectedTests, delta: null, unit: 'count', direction: 'LOWER_IS_VALUE', operatorDisplay: true }),
       measurement({ id: 'test_executions_skipped', baseline: null, result: skippedTests, delta: null, unit: 'count', direction: 'HIGHER_IS_VALUE', operatorDisplay: true }),
+      measurement({ id: 'dependency_safety_checks_added', baseline: 0, result: dependencyForced.length, delta: dependencyForced.length, unit: 'count', direction: 'NEUTRAL', operatorDisplay: true }),
+      measurement({ id: 'dependency_safety_test_executions_added', baseline: 0, result: dependencyForcedTests, delta: dependencyForcedTests, unit: 'count', direction: 'NEUTRAL', operatorDisplay: true }),
       measurement({
         id: 'test_execution_reduction',
         baseline: null,
@@ -72,6 +80,7 @@ export function buildValueReceipt(plan, { mechanismRevision = null, runId = null
     extensions: {
       sufficiency: plan.sufficiency,
       impact_uncertainty: plan.uncertainty.state,
+      dependency_completeness: plan.dependency_completeness,
       selected_by_type: Object.fromEntries(
         [...new Set(plan.selected_checks.map((item) => item.type))].sort().map((type) => [
           type,
@@ -92,5 +101,14 @@ export function operatorIndicator(plan) {
     return counts;
   }, {})).sort().map(([type, count]) => `${count} ${type}`).join(', ') || 'none';
   const reduction = availableTests === 0 ? 'n/a' : `${((skippedTests / availableTests) * 100).toFixed(1)}%`;
-  return `[Affected Verification] Selected tests: ${selectedTests}/${availableTests}; other checks: ${other}; skipped tests: ${skippedTests}; test-execution reduction: ${reduction}; sufficiency: ${plan.sufficiency}; impact uncertainty: ${plan.uncertainty.state.toLowerCase()}`;
+  const dependencyForced = plan.selected_checks.filter(
+    (item) => item.dependency_completeness?.forced_selection,
+  );
+  const dependencyForcedTests = dependencyForced
+    .filter(isTest)
+    .reduce((sum, item) => sum + item.test_executions, 0);
+  const opaque = dependencyForced.filter(
+    (item) => item.dependency_completeness.state === 'OPAQUE_BOUNDARY',
+  ).length;
+  return `[Affected Verification] Selected tests: ${selectedTests}/${availableTests}; other checks: ${other}; skipped tests: ${skippedTests}; dependency safety additions: ${dependencyForced.length} checks/${dependencyForcedTests} test executions; opaque boundaries selected: ${opaque}; test-execution reduction: ${reduction}; sufficiency: ${plan.sufficiency}; impact uncertainty: ${plan.uncertainty.state.toLowerCase()}`;
 }

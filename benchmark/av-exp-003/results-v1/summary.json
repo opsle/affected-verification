@@ -1,0 +1,2789 @@
+{
+  "schema": "opsle.affected-verification.av-exp-003.result.v1",
+  "experiment_id": "AV-EXP-003",
+  "title": "Opaque Dependency Boundary Repair",
+  "trust_stage": "OBSERVE/SHADOW",
+  "lifecycle": "VERIFIED",
+  "preregistration_commit": "7aa4d13e42d6a547973d7f2a6b330821145cedc2",
+  "preregistration_manifest": "sha256:72fdc8c6f3cf6266caa23487506e147d999f626ec63a0ea763ea94d366ceba81",
+  "historical_result": {
+    "experiment_id": "AV-EXP-002",
+    "verdict": "FAIL",
+    "result_identity": "sha256:5b3f99bfbebd3a0d061651d66adfb5a6aaef899475c6267cb20e4040e6ed5768",
+    "preserved": true
+  },
+  "known_replay": {
+    "scenario_id": "AV2-006",
+    "check_id": "pytest:tests/test_imports.py::test_light_imports",
+    "old_av_exp_002": "MISS",
+    "repaired_av_exp_003": "SELECTED",
+    "core_selected": true,
+    "with_selector_selected": true,
+    "reason": "OPAQUE_BOUNDARY: deterministic Python inspection found SUBPROCESS and CHILD_INTERPRETER boundaries; skip completeness is not defensible.",
+    "provenance": [
+      {
+        "evidence_refs": [
+          "python-boundary-inspector"
+        ],
+        "explanation": "subprocess.Popen crosses a CHILD_INTERPRETER boundary not closed by ordinary static import evidence.",
+        "id": "tests/test_imports.py:test_light_imports:70:CHILD_INTERPRETER",
+        "kind": "CHILD_INTERPRETER",
+        "relevant": true,
+        "source": {
+          "construct": "subprocess.Popen",
+          "line": 70,
+          "path": "tests/test_imports.py"
+        },
+        "status": "OPEN"
+      },
+      {
+        "evidence_refs": [
+          "python-boundary-inspector"
+        ],
+        "explanation": "subprocess.Popen crosses a SUBPROCESS boundary not closed by ordinary static import evidence.",
+        "id": "tests/test_imports.py:test_light_imports:70:SUBPROCESS",
+        "kind": "SUBPROCESS",
+        "relevant": true,
+        "source": {
+          "construct": "subprocess.Popen",
+          "line": 70,
+          "path": "tests/test_imports.py"
+        },
+        "status": "OPEN"
+      }
+    ]
+  },
+  "adversarial": [
+    {
+      "scenario_id": "AV3-001",
+      "full_oracle": {
+        "complete": true,
+        "executed_check_ids": [
+          "boundary.observe",
+          "changed.unit",
+          "unrelated.unit"
+        ],
+        "relevant_check_ids": [
+          "changed.unit",
+          "boundary.observe"
+        ]
+      },
+      "prior_selected_check_ids": [
+        "changed.unit"
+      ],
+      "repaired_selected_check_ids": [
+        "boundary.observe",
+        "changed.unit"
+      ],
+      "repaired_skipped_check_ids": [
+        "unrelated.unit"
+      ],
+      "additional_check_ids": [
+        "boundary.observe"
+      ],
+      "misses": [],
+      "plan": {
+        "schema": "opsle.affected-verification.plan.v2",
+        "plan_identity": "sha256:11eda52a4c09b06489dd21976a5547562343f929354d852ccca4d0915187314d",
+        "change": {
+          "base_revision": "base",
+          "target_revision": "target",
+          "identity": "sha256:141dd265709270b1c27e5ff19cc0949474bb5bc73a64dd4d31fe9cfaa8d4c579",
+          "changed_paths": [
+            "src/changed.py"
+          ],
+          "changed_regions": []
+        },
+        "provenance": {
+          "input_hash": "sha256:3bd82b71ca3350cf1810f0dceaa2ed4a725fd99551a23aec555e3fbd2d51e85b",
+          "evidence_identity": "sha256:opaque-fixture",
+          "verification_catalog_identity": "sha256:opaque-catalog",
+          "policy_identity": "sha256:opaque-policy",
+          "policy_version": "1",
+          "providers": [
+            {
+              "id": "boundary-inspector",
+              "kind": "DETERMINISTIC_CHECK_BOUNDARY_METADATA",
+              "version": "1",
+              "identity": "sha256:boundary-inspector"
+            },
+            {
+              "id": "native-selector",
+              "kind": "NATIVE_SELECTOR",
+              "version": "1",
+              "identity": "sha256:native-selector"
+            }
+          ]
+        },
+        "dependency_completeness": {
+          "checks_assessed": 3,
+          "forced_check_ids": [
+            "boundary.observe"
+          ],
+          "states": {
+            "COMPLETE_FOR_CHECK": 2,
+            "OPAQUE_BOUNDARY": 1
+          },
+          "agreement_implies_completeness": false
+        },
+        "affected_components": [
+          {
+            "id": "changed",
+            "direct": true,
+            "via_dependencies": []
+          }
+        ],
+        "selected_checks": [
+          {
+            "id": "boundary.observe",
+            "type": "unit-test",
+            "command": "pytest boundary",
+            "scope": {
+              "components": [
+                "boundary"
+              ]
+            },
+            "tags": [
+              "boundary"
+            ],
+            "test_executions": 1,
+            "reasons": [
+              {
+                "code": "OPAQUE_BOUNDARY_FORCED_SELECTION",
+                "detail": "Skip sufficiency cannot be defended: dependency completeness is OPAQUE_BOUNDARY",
+                "evidence_refs": [
+                  "boundary-inspector"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "OPAQUE_BOUNDARY",
+              "mechanisms": [
+                {
+                  "kind": "SUBPROCESS",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [
+                {
+                  "id": "b1",
+                  "kind": "SUBPROCESS",
+                  "status": "OPEN",
+                  "relevant": true,
+                  "explanation": "SUBPROCESS fixture boundary is OPEN.",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "source": {
+                    "path": "checks/example.py",
+                    "line": 1,
+                    "construct": "subprocess"
+                  }
+                }
+              ],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [
+                "SUBPROCESS"
+              ],
+              "explanation": "Fixture assessment is OPAQUE_BOUNDARY.",
+              "action": "SELECT",
+              "forced_selection": true
+            }
+          },
+          {
+            "id": "changed.unit",
+            "type": "unit-test",
+            "command": "pytest changed",
+            "scope": {
+              "components": [
+                "changed"
+              ]
+            },
+            "tags": [
+              "direct"
+            ],
+            "test_executions": 3,
+            "reasons": [
+              {
+                "code": "SCOPE_INTERSECTS_AFFECTED_COMPONENT",
+                "detail": "Check scope intersects: changed",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SELECT",
+              "forced_selection": false
+            }
+          }
+        ],
+        "skipped_checks": [
+          {
+            "id": "unrelated.unit",
+            "type": "unit-test",
+            "command": "pytest unrelated",
+            "scope": {
+              "components": [
+                "unrelated"
+              ]
+            },
+            "tags": [
+              "unrelated"
+            ],
+            "test_executions": 5,
+            "reasons": [
+              {
+                "code": "OUTSIDE_TRANSITIVE_IMPACT_SET",
+                "detail": "Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog",
+                  "verification-policy"
+                ]
+              },
+              {
+                "code": "CHECK_DEPENDENCY_COMPLETENESS_DEFENDED",
+                "detail": "Check-level dependency evidence is COMPLETE_FOR_CHECK; no unresolved relevant boundary remains",
+                "evidence_refs": [
+                  "boundary-inspector",
+                  "verification-policy"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SKIP",
+              "forced_selection": false
+            }
+          }
+        ],
+        "risk": {
+          "classification": "BASELINE",
+          "tags": [],
+          "matched_policy_rules": []
+        },
+        "uncertainty": {
+          "state": "NONE",
+          "reasons": []
+        },
+        "escalation": {
+          "state": "BROADENED",
+          "reasons": [
+            {
+              "source": "check-dependency:boundary.observe",
+              "escalation": "BROADEN"
+            }
+          ]
+        },
+        "sufficiency": "SUFFICIENT_BROADENED",
+        "argument": {
+          "claim": "Smallest set justified by the normalized evidence model and configured policy; no global mathematical minimality claim.",
+          "unknown_is_safe_to_skip": false,
+          "every_skip_explained": true,
+          "every_skip_dependency_complete": true
+        }
+      },
+      "workload": {
+        "prior_tests_selected": 1,
+        "repaired_tests_selected": 2,
+        "additional_tests_due_to_repair": 1,
+        "tests_still_skipped": 1,
+        "non_test_check_differences": 0,
+        "full_verification_escalations": 0
+      }
+    },
+    {
+      "scenario_id": "AV3-002",
+      "full_oracle": {
+        "complete": true,
+        "executed_check_ids": [
+          "boundary.observe",
+          "changed.unit",
+          "unrelated.unit"
+        ],
+        "relevant_check_ids": [
+          "changed.unit",
+          "boundary.observe"
+        ]
+      },
+      "prior_selected_check_ids": [
+        "changed.unit"
+      ],
+      "repaired_selected_check_ids": [
+        "boundary.observe",
+        "changed.unit"
+      ],
+      "repaired_skipped_check_ids": [
+        "unrelated.unit"
+      ],
+      "additional_check_ids": [
+        "boundary.observe"
+      ],
+      "misses": [],
+      "plan": {
+        "schema": "opsle.affected-verification.plan.v2",
+        "plan_identity": "sha256:98c9429bbfe52bf7eeeb96e2fc8f84ff3f183d9636d48f6b1799608a629c6384",
+        "change": {
+          "base_revision": "base",
+          "target_revision": "target",
+          "identity": "sha256:141dd265709270b1c27e5ff19cc0949474bb5bc73a64dd4d31fe9cfaa8d4c579",
+          "changed_paths": [
+            "src/changed.py"
+          ],
+          "changed_regions": []
+        },
+        "provenance": {
+          "input_hash": "sha256:a0e9de1a7b0f771ec70f08e6b7ae09fdfcfd02540a036c57c3313523da5a36d2",
+          "evidence_identity": "sha256:opaque-fixture",
+          "verification_catalog_identity": "sha256:opaque-catalog",
+          "policy_identity": "sha256:opaque-policy",
+          "policy_version": "1",
+          "providers": [
+            {
+              "id": "boundary-inspector",
+              "kind": "DETERMINISTIC_CHECK_BOUNDARY_METADATA",
+              "version": "1",
+              "identity": "sha256:boundary-inspector"
+            },
+            {
+              "id": "native-selector",
+              "kind": "NATIVE_SELECTOR",
+              "version": "1",
+              "identity": "sha256:native-selector"
+            }
+          ]
+        },
+        "dependency_completeness": {
+          "checks_assessed": 3,
+          "forced_check_ids": [
+            "boundary.observe"
+          ],
+          "states": {
+            "COMPLETE_FOR_CHECK": 2,
+            "OPAQUE_BOUNDARY": 1
+          },
+          "agreement_implies_completeness": false
+        },
+        "affected_components": [
+          {
+            "id": "changed",
+            "direct": true,
+            "via_dependencies": []
+          }
+        ],
+        "selected_checks": [
+          {
+            "id": "boundary.observe",
+            "type": "unit-test",
+            "command": "pytest boundary",
+            "scope": {
+              "components": [
+                "boundary"
+              ]
+            },
+            "tags": [
+              "boundary"
+            ],
+            "test_executions": 1,
+            "reasons": [
+              {
+                "code": "OPAQUE_BOUNDARY_FORCED_SELECTION",
+                "detail": "Skip sufficiency cannot be defended: dependency completeness is OPAQUE_BOUNDARY",
+                "evidence_refs": [
+                  "boundary-inspector"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "OPAQUE_BOUNDARY",
+              "mechanisms": [
+                {
+                  "kind": "DYNAMIC_IMPORT",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [
+                {
+                  "id": "b2",
+                  "kind": "DYNAMIC_IMPORT",
+                  "status": "OPEN",
+                  "relevant": true,
+                  "explanation": "DYNAMIC_IMPORT fixture boundary is OPEN.",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "source": {
+                    "path": "checks/example.py",
+                    "line": 2,
+                    "construct": "dynamic_import"
+                  }
+                }
+              ],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [
+                "DYNAMIC_IMPORT"
+              ],
+              "explanation": "Fixture assessment is OPAQUE_BOUNDARY.",
+              "action": "SELECT",
+              "forced_selection": true
+            }
+          },
+          {
+            "id": "changed.unit",
+            "type": "unit-test",
+            "command": "pytest changed",
+            "scope": {
+              "components": [
+                "changed"
+              ]
+            },
+            "tags": [
+              "direct"
+            ],
+            "test_executions": 3,
+            "reasons": [
+              {
+                "code": "SCOPE_INTERSECTS_AFFECTED_COMPONENT",
+                "detail": "Check scope intersects: changed",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SELECT",
+              "forced_selection": false
+            }
+          }
+        ],
+        "skipped_checks": [
+          {
+            "id": "unrelated.unit",
+            "type": "unit-test",
+            "command": "pytest unrelated",
+            "scope": {
+              "components": [
+                "unrelated"
+              ]
+            },
+            "tags": [
+              "unrelated"
+            ],
+            "test_executions": 5,
+            "reasons": [
+              {
+                "code": "OUTSIDE_TRANSITIVE_IMPACT_SET",
+                "detail": "Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog",
+                  "verification-policy"
+                ]
+              },
+              {
+                "code": "CHECK_DEPENDENCY_COMPLETENESS_DEFENDED",
+                "detail": "Check-level dependency evidence is COMPLETE_FOR_CHECK; no unresolved relevant boundary remains",
+                "evidence_refs": [
+                  "boundary-inspector",
+                  "verification-policy"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SKIP",
+              "forced_selection": false
+            }
+          }
+        ],
+        "risk": {
+          "classification": "BASELINE",
+          "tags": [],
+          "matched_policy_rules": []
+        },
+        "uncertainty": {
+          "state": "NONE",
+          "reasons": []
+        },
+        "escalation": {
+          "state": "BROADENED",
+          "reasons": [
+            {
+              "source": "check-dependency:boundary.observe",
+              "escalation": "BROADEN"
+            }
+          ]
+        },
+        "sufficiency": "SUFFICIENT_BROADENED",
+        "argument": {
+          "claim": "Smallest set justified by the normalized evidence model and configured policy; no global mathematical minimality claim.",
+          "unknown_is_safe_to_skip": false,
+          "every_skip_explained": true,
+          "every_skip_dependency_complete": true
+        }
+      },
+      "workload": {
+        "prior_tests_selected": 1,
+        "repaired_tests_selected": 2,
+        "additional_tests_due_to_repair": 1,
+        "tests_still_skipped": 1,
+        "non_test_check_differences": 0,
+        "full_verification_escalations": 0
+      }
+    },
+    {
+      "scenario_id": "AV3-003",
+      "full_oracle": {
+        "complete": true,
+        "executed_check_ids": [
+          "boundary.observe",
+          "changed.unit",
+          "unrelated.unit"
+        ],
+        "relevant_check_ids": [
+          "changed.unit",
+          "boundary.observe"
+        ]
+      },
+      "prior_selected_check_ids": [
+        "changed.unit"
+      ],
+      "repaired_selected_check_ids": [
+        "boundary.observe",
+        "changed.unit"
+      ],
+      "repaired_skipped_check_ids": [
+        "unrelated.unit"
+      ],
+      "additional_check_ids": [
+        "boundary.observe"
+      ],
+      "misses": [],
+      "plan": {
+        "schema": "opsle.affected-verification.plan.v2",
+        "plan_identity": "sha256:52c8dce7b4cce037301e8d908892d0fc0d23e2e25d5326d6be2e3c2bc143a7bc",
+        "change": {
+          "base_revision": "base",
+          "target_revision": "target",
+          "identity": "sha256:141dd265709270b1c27e5ff19cc0949474bb5bc73a64dd4d31fe9cfaa8d4c579",
+          "changed_paths": [
+            "src/changed.py"
+          ],
+          "changed_regions": []
+        },
+        "provenance": {
+          "input_hash": "sha256:30cabf5d202a179a4f1d29487c97b0e0fea438dd7d393c066d030cddcd792b91",
+          "evidence_identity": "sha256:opaque-fixture",
+          "verification_catalog_identity": "sha256:opaque-catalog",
+          "policy_identity": "sha256:opaque-policy",
+          "policy_version": "1",
+          "providers": [
+            {
+              "id": "boundary-inspector",
+              "kind": "DETERMINISTIC_CHECK_BOUNDARY_METADATA",
+              "version": "1",
+              "identity": "sha256:boundary-inspector"
+            },
+            {
+              "id": "native-selector",
+              "kind": "NATIVE_SELECTOR",
+              "version": "1",
+              "identity": "sha256:native-selector"
+            }
+          ]
+        },
+        "dependency_completeness": {
+          "checks_assessed": 3,
+          "forced_check_ids": [
+            "boundary.observe"
+          ],
+          "states": {
+            "COMPLETE_FOR_CHECK": 2,
+            "OPAQUE_BOUNDARY": 1
+          },
+          "agreement_implies_completeness": false
+        },
+        "affected_components": [
+          {
+            "id": "changed",
+            "direct": true,
+            "via_dependencies": []
+          }
+        ],
+        "selected_checks": [
+          {
+            "id": "boundary.observe",
+            "type": "unit-test",
+            "command": "pytest boundary",
+            "scope": {
+              "components": [
+                "boundary"
+              ]
+            },
+            "tags": [
+              "boundary"
+            ],
+            "test_executions": 1,
+            "reasons": [
+              {
+                "code": "OPAQUE_BOUNDARY_FORCED_SELECTION",
+                "detail": "Skip sufficiency cannot be defended: dependency completeness is OPAQUE_BOUNDARY",
+                "evidence_refs": [
+                  "boundary-inspector"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "OPAQUE_BOUNDARY",
+              "mechanisms": [
+                {
+                  "kind": "PLUGIN_OR_ENTRY_POINT_DISCOVERY",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [
+                {
+                  "id": "b3",
+                  "kind": "PLUGIN_OR_ENTRY_POINT_DISCOVERY",
+                  "status": "OPEN",
+                  "relevant": true,
+                  "explanation": "PLUGIN_OR_ENTRY_POINT_DISCOVERY fixture boundary is OPEN.",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "source": {
+                    "path": "checks/example.py",
+                    "line": 3,
+                    "construct": "plugin_or_entry_point_discovery"
+                  }
+                }
+              ],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [
+                "PLUGIN_OR_ENTRY_POINT_DISCOVERY"
+              ],
+              "explanation": "Fixture assessment is OPAQUE_BOUNDARY.",
+              "action": "SELECT",
+              "forced_selection": true
+            }
+          },
+          {
+            "id": "changed.unit",
+            "type": "unit-test",
+            "command": "pytest changed",
+            "scope": {
+              "components": [
+                "changed"
+              ]
+            },
+            "tags": [
+              "direct"
+            ],
+            "test_executions": 3,
+            "reasons": [
+              {
+                "code": "SCOPE_INTERSECTS_AFFECTED_COMPONENT",
+                "detail": "Check scope intersects: changed",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SELECT",
+              "forced_selection": false
+            }
+          }
+        ],
+        "skipped_checks": [
+          {
+            "id": "unrelated.unit",
+            "type": "unit-test",
+            "command": "pytest unrelated",
+            "scope": {
+              "components": [
+                "unrelated"
+              ]
+            },
+            "tags": [
+              "unrelated"
+            ],
+            "test_executions": 5,
+            "reasons": [
+              {
+                "code": "OUTSIDE_TRANSITIVE_IMPACT_SET",
+                "detail": "Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog",
+                  "verification-policy"
+                ]
+              },
+              {
+                "code": "CHECK_DEPENDENCY_COMPLETENESS_DEFENDED",
+                "detail": "Check-level dependency evidence is COMPLETE_FOR_CHECK; no unresolved relevant boundary remains",
+                "evidence_refs": [
+                  "boundary-inspector",
+                  "verification-policy"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SKIP",
+              "forced_selection": false
+            }
+          }
+        ],
+        "risk": {
+          "classification": "BASELINE",
+          "tags": [],
+          "matched_policy_rules": []
+        },
+        "uncertainty": {
+          "state": "NONE",
+          "reasons": []
+        },
+        "escalation": {
+          "state": "BROADENED",
+          "reasons": [
+            {
+              "source": "check-dependency:boundary.observe",
+              "escalation": "BROADEN"
+            }
+          ]
+        },
+        "sufficiency": "SUFFICIENT_BROADENED",
+        "argument": {
+          "claim": "Smallest set justified by the normalized evidence model and configured policy; no global mathematical minimality claim.",
+          "unknown_is_safe_to_skip": false,
+          "every_skip_explained": true,
+          "every_skip_dependency_complete": true
+        }
+      },
+      "workload": {
+        "prior_tests_selected": 1,
+        "repaired_tests_selected": 2,
+        "additional_tests_due_to_repair": 1,
+        "tests_still_skipped": 1,
+        "non_test_check_differences": 0,
+        "full_verification_escalations": 0
+      }
+    },
+    {
+      "scenario_id": "AV3-004",
+      "full_oracle": {
+        "complete": true,
+        "executed_check_ids": [
+          "boundary.observe",
+          "changed.unit",
+          "unrelated.unit"
+        ],
+        "relevant_check_ids": [
+          "changed.unit"
+        ]
+      },
+      "prior_selected_check_ids": [
+        "changed.unit"
+      ],
+      "repaired_selected_check_ids": [
+        "changed.unit"
+      ],
+      "repaired_skipped_check_ids": [
+        "boundary.observe",
+        "unrelated.unit"
+      ],
+      "additional_check_ids": [],
+      "misses": [],
+      "plan": {
+        "schema": "opsle.affected-verification.plan.v2",
+        "plan_identity": "sha256:1788f032bbd4388e185384f715e40fc134bec19ce77c8394ee2335a7d4f6cafb",
+        "change": {
+          "base_revision": "base",
+          "target_revision": "target",
+          "identity": "sha256:141dd265709270b1c27e5ff19cc0949474bb5bc73a64dd4d31fe9cfaa8d4c579",
+          "changed_paths": [
+            "src/changed.py"
+          ],
+          "changed_regions": []
+        },
+        "provenance": {
+          "input_hash": "sha256:736d3963f78ff83072b3afce8bd57c1ce2f5f71741642e3b42d6140863ea6eca",
+          "evidence_identity": "sha256:opaque-fixture",
+          "verification_catalog_identity": "sha256:opaque-catalog",
+          "policy_identity": "sha256:opaque-policy",
+          "policy_version": "1",
+          "providers": [
+            {
+              "id": "boundary-inspector",
+              "kind": "DETERMINISTIC_CHECK_BOUNDARY_METADATA",
+              "version": "1",
+              "identity": "sha256:boundary-inspector"
+            },
+            {
+              "id": "native-selector",
+              "kind": "NATIVE_SELECTOR",
+              "version": "1",
+              "identity": "sha256:native-selector"
+            }
+          ]
+        },
+        "dependency_completeness": {
+          "checks_assessed": 3,
+          "forced_check_ids": [],
+          "states": {
+            "COMPLETE_FOR_CHECK": 3
+          },
+          "agreement_implies_completeness": false
+        },
+        "affected_components": [
+          {
+            "id": "changed",
+            "direct": true,
+            "via_dependencies": []
+          }
+        ],
+        "selected_checks": [
+          {
+            "id": "changed.unit",
+            "type": "unit-test",
+            "command": "pytest changed",
+            "scope": {
+              "components": [
+                "changed"
+              ]
+            },
+            "tags": [
+              "direct"
+            ],
+            "test_executions": 3,
+            "reasons": [
+              {
+                "code": "SCOPE_INTERSECTS_AFFECTED_COMPONENT",
+                "detail": "Check scope intersects: changed",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SELECT",
+              "forced_selection": false
+            }
+          }
+        ],
+        "skipped_checks": [
+          {
+            "id": "boundary.observe",
+            "type": "unit-test",
+            "command": "pytest boundary",
+            "scope": {
+              "components": [
+                "boundary"
+              ]
+            },
+            "tags": [
+              "boundary"
+            ],
+            "test_executions": 1,
+            "reasons": [
+              {
+                "code": "OUTSIDE_TRANSITIVE_IMPACT_SET",
+                "detail": "Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog",
+                  "verification-policy"
+                ]
+              },
+              {
+                "code": "CHECK_DEPENDENCY_COMPLETENESS_DEFENDED",
+                "detail": "Check-level dependency evidence is COMPLETE_FOR_CHECK; no unresolved relevant boundary remains",
+                "evidence_refs": [
+                  "boundary-inspector",
+                  "verification-policy"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SKIP",
+              "forced_selection": false
+            }
+          },
+          {
+            "id": "unrelated.unit",
+            "type": "unit-test",
+            "command": "pytest unrelated",
+            "scope": {
+              "components": [
+                "unrelated"
+              ]
+            },
+            "tags": [
+              "unrelated"
+            ],
+            "test_executions": 5,
+            "reasons": [
+              {
+                "code": "OUTSIDE_TRANSITIVE_IMPACT_SET",
+                "detail": "Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog",
+                  "verification-policy"
+                ]
+              },
+              {
+                "code": "CHECK_DEPENDENCY_COMPLETENESS_DEFENDED",
+                "detail": "Check-level dependency evidence is COMPLETE_FOR_CHECK; no unresolved relevant boundary remains",
+                "evidence_refs": [
+                  "boundary-inspector",
+                  "verification-policy"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SKIP",
+              "forced_selection": false
+            }
+          }
+        ],
+        "risk": {
+          "classification": "BASELINE",
+          "tags": [],
+          "matched_policy_rules": []
+        },
+        "uncertainty": {
+          "state": "NONE",
+          "reasons": []
+        },
+        "escalation": {
+          "state": "NONE",
+          "reasons": []
+        },
+        "sufficiency": "SUFFICIENT_TARGETED",
+        "argument": {
+          "claim": "Smallest set justified by the normalized evidence model and configured policy; no global mathematical minimality claim.",
+          "unknown_is_safe_to_skip": false,
+          "every_skip_explained": true,
+          "every_skip_dependency_complete": true
+        }
+      },
+      "workload": {
+        "prior_tests_selected": 1,
+        "repaired_tests_selected": 1,
+        "additional_tests_due_to_repair": 0,
+        "tests_still_skipped": 2,
+        "non_test_check_differences": 0,
+        "full_verification_escalations": 0
+      }
+    },
+    {
+      "scenario_id": "AV3-005",
+      "full_oracle": {
+        "complete": true,
+        "executed_check_ids": [
+          "boundary.observe",
+          "changed.unit",
+          "unrelated.unit"
+        ],
+        "relevant_check_ids": [
+          "changed.unit"
+        ]
+      },
+      "prior_selected_check_ids": [
+        "changed.unit"
+      ],
+      "repaired_selected_check_ids": [
+        "changed.unit"
+      ],
+      "repaired_skipped_check_ids": [
+        "boundary.observe",
+        "unrelated.unit"
+      ],
+      "additional_check_ids": [],
+      "misses": [],
+      "plan": {
+        "schema": "opsle.affected-verification.plan.v2",
+        "plan_identity": "sha256:5d243625f1becb95efbf0ee99c4a14a92a339b987c9013b1c9da534107ce252c",
+        "change": {
+          "base_revision": "base",
+          "target_revision": "target",
+          "identity": "sha256:141dd265709270b1c27e5ff19cc0949474bb5bc73a64dd4d31fe9cfaa8d4c579",
+          "changed_paths": [
+            "src/changed.py"
+          ],
+          "changed_regions": []
+        },
+        "provenance": {
+          "input_hash": "sha256:9395f439624d1e246a7ae60707e858081b9c522b77beb203730259d16c435bd5",
+          "evidence_identity": "sha256:opaque-fixture",
+          "verification_catalog_identity": "sha256:opaque-catalog",
+          "policy_identity": "sha256:opaque-policy",
+          "policy_version": "1",
+          "providers": [
+            {
+              "id": "boundary-inspector",
+              "kind": "DETERMINISTIC_CHECK_BOUNDARY_METADATA",
+              "version": "1",
+              "identity": "sha256:boundary-inspector"
+            },
+            {
+              "id": "native-selector",
+              "kind": "NATIVE_SELECTOR",
+              "version": "1",
+              "identity": "sha256:native-selector"
+            }
+          ]
+        },
+        "dependency_completeness": {
+          "checks_assessed": 3,
+          "forced_check_ids": [],
+          "states": {
+            "COMPLETE_FOR_CHECK": 3
+          },
+          "agreement_implies_completeness": false
+        },
+        "affected_components": [
+          {
+            "id": "changed",
+            "direct": true,
+            "via_dependencies": []
+          }
+        ],
+        "selected_checks": [
+          {
+            "id": "changed.unit",
+            "type": "unit-test",
+            "command": "pytest changed",
+            "scope": {
+              "components": [
+                "changed"
+              ]
+            },
+            "tags": [
+              "direct"
+            ],
+            "test_executions": 3,
+            "reasons": [
+              {
+                "code": "SCOPE_INTERSECTS_AFFECTED_COMPONENT",
+                "detail": "Check scope intersects: changed",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SELECT",
+              "forced_selection": false
+            }
+          }
+        ],
+        "skipped_checks": [
+          {
+            "id": "boundary.observe",
+            "type": "unit-test",
+            "command": "pytest boundary",
+            "scope": {
+              "components": [
+                "boundary"
+              ]
+            },
+            "tags": [
+              "boundary"
+            ],
+            "test_executions": 1,
+            "reasons": [
+              {
+                "code": "OUTSIDE_TRANSITIVE_IMPACT_SET",
+                "detail": "Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog",
+                  "verification-policy"
+                ]
+              },
+              {
+                "code": "CHECK_DEPENDENCY_COMPLETENESS_DEFENDED",
+                "detail": "Check-level dependency evidence is COMPLETE_FOR_CHECK; no unresolved relevant boundary remains",
+                "evidence_refs": [
+                  "boundary-inspector",
+                  "verification-policy"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "SUBPROCESS",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [
+                {
+                  "id": "b5",
+                  "kind": "SUBPROCESS",
+                  "status": "IRRELEVANT",
+                  "relevant": false,
+                  "explanation": "SUBPROCESS fixture boundary is IRRELEVANT.",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "source": {
+                    "path": "checks/example.py",
+                    "line": 5,
+                    "construct": "subprocess"
+                  }
+                }
+              ],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SKIP",
+              "forced_selection": false
+            }
+          },
+          {
+            "id": "unrelated.unit",
+            "type": "unit-test",
+            "command": "pytest unrelated",
+            "scope": {
+              "components": [
+                "unrelated"
+              ]
+            },
+            "tags": [
+              "unrelated"
+            ],
+            "test_executions": 5,
+            "reasons": [
+              {
+                "code": "OUTSIDE_TRANSITIVE_IMPACT_SET",
+                "detail": "Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog",
+                  "verification-policy"
+                ]
+              },
+              {
+                "code": "CHECK_DEPENDENCY_COMPLETENESS_DEFENDED",
+                "detail": "Check-level dependency evidence is COMPLETE_FOR_CHECK; no unresolved relevant boundary remains",
+                "evidence_refs": [
+                  "boundary-inspector",
+                  "verification-policy"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SKIP",
+              "forced_selection": false
+            }
+          }
+        ],
+        "risk": {
+          "classification": "BASELINE",
+          "tags": [],
+          "matched_policy_rules": []
+        },
+        "uncertainty": {
+          "state": "NONE",
+          "reasons": []
+        },
+        "escalation": {
+          "state": "NONE",
+          "reasons": []
+        },
+        "sufficiency": "SUFFICIENT_TARGETED",
+        "argument": {
+          "claim": "Smallest set justified by the normalized evidence model and configured policy; no global mathematical minimality claim.",
+          "unknown_is_safe_to_skip": false,
+          "every_skip_explained": true,
+          "every_skip_dependency_complete": true
+        }
+      },
+      "workload": {
+        "prior_tests_selected": 1,
+        "repaired_tests_selected": 1,
+        "additional_tests_due_to_repair": 0,
+        "tests_still_skipped": 2,
+        "non_test_check_differences": 0,
+        "full_verification_escalations": 0
+      }
+    },
+    {
+      "scenario_id": "AV3-006",
+      "full_oracle": {
+        "complete": true,
+        "executed_check_ids": [
+          "boundary.observe",
+          "changed.unit",
+          "unrelated.unit"
+        ],
+        "relevant_check_ids": [
+          "changed.unit",
+          "boundary.observe"
+        ]
+      },
+      "prior_selected_check_ids": [
+        "changed.unit"
+      ],
+      "repaired_selected_check_ids": [
+        "boundary.observe",
+        "changed.unit"
+      ],
+      "repaired_skipped_check_ids": [
+        "unrelated.unit"
+      ],
+      "additional_check_ids": [
+        "boundary.observe"
+      ],
+      "misses": [],
+      "plan": {
+        "schema": "opsle.affected-verification.plan.v2",
+        "plan_identity": "sha256:e68316621c062d478e30d81fb77abde9242b1a486b9e30d171d0200c05fee8fd",
+        "change": {
+          "base_revision": "base",
+          "target_revision": "target",
+          "identity": "sha256:141dd265709270b1c27e5ff19cc0949474bb5bc73a64dd4d31fe9cfaa8d4c579",
+          "changed_paths": [
+            "src/changed.py"
+          ],
+          "changed_regions": []
+        },
+        "provenance": {
+          "input_hash": "sha256:f2c3f3480380be3088d6f65f78a5e8204a6419b24044cd1693237d97bfd9f702",
+          "evidence_identity": "sha256:opaque-fixture",
+          "verification_catalog_identity": "sha256:opaque-catalog",
+          "policy_identity": "sha256:opaque-policy",
+          "policy_version": "1",
+          "providers": [
+            {
+              "id": "boundary-inspector",
+              "kind": "DETERMINISTIC_CHECK_BOUNDARY_METADATA",
+              "version": "1",
+              "identity": "sha256:boundary-inspector"
+            },
+            {
+              "id": "native-selector",
+              "kind": "NATIVE_SELECTOR",
+              "version": "1",
+              "identity": "sha256:native-selector"
+            }
+          ]
+        },
+        "dependency_completeness": {
+          "checks_assessed": 3,
+          "forced_check_ids": [
+            "boundary.observe"
+          ],
+          "states": {
+            "COMPLETE_FOR_CHECK": 2,
+            "UNKNOWN": 1
+          },
+          "agreement_implies_completeness": false
+        },
+        "affected_components": [
+          {
+            "id": "changed",
+            "direct": true,
+            "via_dependencies": []
+          }
+        ],
+        "selected_checks": [
+          {
+            "id": "boundary.observe",
+            "type": "unit-test",
+            "command": "pytest boundary",
+            "scope": {
+              "components": [
+                "boundary"
+              ]
+            },
+            "tags": [
+              "boundary"
+            ],
+            "test_executions": 1,
+            "reasons": [
+              {
+                "code": "DEPENDENCY_COMPLETENESS_FORCED_SELECTION",
+                "detail": "Skip sufficiency cannot be defended: dependency completeness is UNKNOWN",
+                "evidence_refs": [
+                  "boundary-inspector"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "UNKNOWN",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [
+                "UNDECLARED_OR_INCOMPLETE"
+              ],
+              "explanation": "Fixture assessment is UNKNOWN.",
+              "action": "SELECT",
+              "forced_selection": true
+            }
+          },
+          {
+            "id": "changed.unit",
+            "type": "unit-test",
+            "command": "pytest changed",
+            "scope": {
+              "components": [
+                "changed"
+              ]
+            },
+            "tags": [
+              "direct"
+            ],
+            "test_executions": 3,
+            "reasons": [
+              {
+                "code": "SCOPE_INTERSECTS_AFFECTED_COMPONENT",
+                "detail": "Check scope intersects: changed",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SELECT",
+              "forced_selection": false
+            }
+          }
+        ],
+        "skipped_checks": [
+          {
+            "id": "unrelated.unit",
+            "type": "unit-test",
+            "command": "pytest unrelated",
+            "scope": {
+              "components": [
+                "unrelated"
+              ]
+            },
+            "tags": [
+              "unrelated"
+            ],
+            "test_executions": 5,
+            "reasons": [
+              {
+                "code": "OUTSIDE_TRANSITIVE_IMPACT_SET",
+                "detail": "Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog",
+                  "verification-policy"
+                ]
+              },
+              {
+                "code": "CHECK_DEPENDENCY_COMPLETENESS_DEFENDED",
+                "detail": "Check-level dependency evidence is COMPLETE_FOR_CHECK; no unresolved relevant boundary remains",
+                "evidence_refs": [
+                  "boundary-inspector",
+                  "verification-policy"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SKIP",
+              "forced_selection": false
+            }
+          }
+        ],
+        "risk": {
+          "classification": "BASELINE",
+          "tags": [],
+          "matched_policy_rules": []
+        },
+        "uncertainty": {
+          "state": "NONE",
+          "reasons": []
+        },
+        "escalation": {
+          "state": "BROADENED",
+          "reasons": [
+            {
+              "source": "check-dependency:boundary.observe",
+              "escalation": "BROADEN"
+            }
+          ]
+        },
+        "sufficiency": "SUFFICIENT_BROADENED",
+        "argument": {
+          "claim": "Smallest set justified by the normalized evidence model and configured policy; no global mathematical minimality claim.",
+          "unknown_is_safe_to_skip": false,
+          "every_skip_explained": true,
+          "every_skip_dependency_complete": true
+        }
+      },
+      "workload": {
+        "prior_tests_selected": 1,
+        "repaired_tests_selected": 2,
+        "additional_tests_due_to_repair": 1,
+        "tests_still_skipped": 1,
+        "non_test_check_differences": 0,
+        "full_verification_escalations": 0
+      }
+    },
+    {
+      "scenario_id": "AV3-007",
+      "full_oracle": {
+        "complete": true,
+        "executed_check_ids": [
+          "boundary.observe",
+          "changed.unit",
+          "unrelated.unit"
+        ],
+        "relevant_check_ids": [
+          "changed.unit",
+          "boundary.observe"
+        ]
+      },
+      "prior_selected_check_ids": [
+        "changed.unit"
+      ],
+      "repaired_selected_check_ids": [
+        "boundary.observe",
+        "changed.unit"
+      ],
+      "repaired_skipped_check_ids": [
+        "unrelated.unit"
+      ],
+      "additional_check_ids": [
+        "boundary.observe"
+      ],
+      "misses": [],
+      "plan": {
+        "schema": "opsle.affected-verification.plan.v2",
+        "plan_identity": "sha256:a7d3efab2594f138bc48d6a1d473880e818caff240474d527aa4f60707710c1c",
+        "change": {
+          "base_revision": "base",
+          "target_revision": "target",
+          "identity": "sha256:141dd265709270b1c27e5ff19cc0949474bb5bc73a64dd4d31fe9cfaa8d4c579",
+          "changed_paths": [
+            "src/changed.py"
+          ],
+          "changed_regions": []
+        },
+        "provenance": {
+          "input_hash": "sha256:dbe8240833e7e22839bbf9493fc6c4b0a5f0e58a87d402007211985cd254a65c",
+          "evidence_identity": "sha256:opaque-fixture",
+          "verification_catalog_identity": "sha256:opaque-catalog",
+          "policy_identity": "sha256:opaque-policy",
+          "policy_version": "1",
+          "providers": [
+            {
+              "id": "boundary-inspector",
+              "kind": "DETERMINISTIC_CHECK_BOUNDARY_METADATA",
+              "version": "1",
+              "identity": "sha256:boundary-inspector"
+            },
+            {
+              "id": "native-selector",
+              "kind": "NATIVE_SELECTOR",
+              "version": "1",
+              "identity": "sha256:native-selector"
+            }
+          ]
+        },
+        "dependency_completeness": {
+          "checks_assessed": 3,
+          "forced_check_ids": [
+            "boundary.observe"
+          ],
+          "states": {
+            "COMPLETE_FOR_CHECK": 2,
+            "OPAQUE_BOUNDARY": 1
+          },
+          "agreement_implies_completeness": false
+        },
+        "affected_components": [
+          {
+            "id": "changed",
+            "direct": true,
+            "via_dependencies": []
+          }
+        ],
+        "selected_checks": [
+          {
+            "id": "boundary.observe",
+            "type": "unit-test",
+            "command": "pytest boundary",
+            "scope": {
+              "components": [
+                "boundary"
+              ]
+            },
+            "tags": [
+              "boundary"
+            ],
+            "test_executions": 1,
+            "reasons": [
+              {
+                "code": "OPAQUE_BOUNDARY_FORCED_SELECTION",
+                "detail": "Skip sufficiency cannot be defended: dependency completeness is OPAQUE_BOUNDARY",
+                "evidence_refs": [
+                  "boundary-inspector"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "OPAQUE_BOUNDARY",
+              "mechanisms": [
+                {
+                  "kind": "CHILD_INTERPRETER",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [
+                {
+                  "id": "b7",
+                  "kind": "CHILD_INTERPRETER",
+                  "status": "OPEN",
+                  "relevant": true,
+                  "explanation": "CHILD_INTERPRETER fixture boundary is OPEN.",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "source": {
+                    "path": "checks/example.py",
+                    "line": 7,
+                    "construct": "child_interpreter"
+                  }
+                }
+              ],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [
+                "CHILD_INTERPRETER"
+              ],
+              "explanation": "Fixture assessment is OPAQUE_BOUNDARY.",
+              "action": "SELECT",
+              "forced_selection": true
+            }
+          },
+          {
+            "id": "changed.unit",
+            "type": "unit-test",
+            "command": "pytest changed",
+            "scope": {
+              "components": [
+                "changed"
+              ]
+            },
+            "tags": [
+              "direct"
+            ],
+            "test_executions": 3,
+            "reasons": [
+              {
+                "code": "SCOPE_INTERSECTS_AFFECTED_COMPONENT",
+                "detail": "Check scope intersects: changed",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SELECT",
+              "forced_selection": false
+            }
+          }
+        ],
+        "skipped_checks": [
+          {
+            "id": "unrelated.unit",
+            "type": "unit-test",
+            "command": "pytest unrelated",
+            "scope": {
+              "components": [
+                "unrelated"
+              ]
+            },
+            "tags": [
+              "unrelated"
+            ],
+            "test_executions": 5,
+            "reasons": [
+              {
+                "code": "OUTSIDE_TRANSITIVE_IMPACT_SET",
+                "detail": "Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog",
+                  "verification-policy"
+                ]
+              },
+              {
+                "code": "CHECK_DEPENDENCY_COMPLETENESS_DEFENDED",
+                "detail": "Check-level dependency evidence is COMPLETE_FOR_CHECK; no unresolved relevant boundary remains",
+                "evidence_refs": [
+                  "boundary-inspector",
+                  "verification-policy"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SKIP",
+              "forced_selection": false
+            }
+          }
+        ],
+        "risk": {
+          "classification": "BASELINE",
+          "tags": [],
+          "matched_policy_rules": []
+        },
+        "uncertainty": {
+          "state": "NONE",
+          "reasons": []
+        },
+        "escalation": {
+          "state": "BROADENED",
+          "reasons": [
+            {
+              "source": "check-dependency:boundary.observe",
+              "escalation": "BROADEN"
+            }
+          ]
+        },
+        "sufficiency": "SUFFICIENT_BROADENED",
+        "argument": {
+          "claim": "Smallest set justified by the normalized evidence model and configured policy; no global mathematical minimality claim.",
+          "unknown_is_safe_to_skip": false,
+          "every_skip_explained": true,
+          "every_skip_dependency_complete": true
+        }
+      },
+      "workload": {
+        "prior_tests_selected": 1,
+        "repaired_tests_selected": 2,
+        "additional_tests_due_to_repair": 1,
+        "tests_still_skipped": 1,
+        "non_test_check_differences": 0,
+        "full_verification_escalations": 0
+      }
+    },
+    {
+      "scenario_id": "AV3-008",
+      "full_oracle": {
+        "complete": true,
+        "executed_check_ids": [
+          "boundary.observe",
+          "changed.unit",
+          "unrelated.unit"
+        ],
+        "relevant_check_ids": [
+          "changed.unit",
+          "boundary.observe"
+        ]
+      },
+      "prior_selected_check_ids": [
+        "changed.unit"
+      ],
+      "repaired_selected_check_ids": [
+        "boundary.observe",
+        "changed.unit"
+      ],
+      "repaired_skipped_check_ids": [
+        "unrelated.unit"
+      ],
+      "additional_check_ids": [
+        "boundary.observe"
+      ],
+      "misses": [],
+      "plan": {
+        "schema": "opsle.affected-verification.plan.v2",
+        "plan_identity": "sha256:2965551a34cfb2576382c46cd1d64816e434354b6d6bbd0e2b342ed6df724663",
+        "change": {
+          "base_revision": "base",
+          "target_revision": "target",
+          "identity": "sha256:141dd265709270b1c27e5ff19cc0949474bb5bc73a64dd4d31fe9cfaa8d4c579",
+          "changed_paths": [
+            "src/changed.py"
+          ],
+          "changed_regions": []
+        },
+        "provenance": {
+          "input_hash": "sha256:05ac2d6b3f6d3199b2fab8174a14f66397992f58bcba877374983863ffd7fcc2",
+          "evidence_identity": "sha256:opaque-fixture",
+          "verification_catalog_identity": "sha256:opaque-catalog",
+          "policy_identity": "sha256:opaque-policy",
+          "policy_version": "1",
+          "providers": [
+            {
+              "id": "boundary-inspector",
+              "kind": "DETERMINISTIC_CHECK_BOUNDARY_METADATA",
+              "version": "1",
+              "identity": "sha256:boundary-inspector"
+            },
+            {
+              "id": "native-selector",
+              "kind": "NATIVE_SELECTOR",
+              "version": "1",
+              "identity": "sha256:native-selector"
+            }
+          ]
+        },
+        "dependency_completeness": {
+          "checks_assessed": 3,
+          "forced_check_ids": [
+            "boundary.observe"
+          ],
+          "states": {
+            "COMPLETE_FOR_CHECK": 2,
+            "INCOMPLETE": 1
+          },
+          "agreement_implies_completeness": false
+        },
+        "affected_components": [
+          {
+            "id": "changed",
+            "direct": true,
+            "via_dependencies": []
+          }
+        ],
+        "selected_checks": [
+          {
+            "id": "boundary.observe",
+            "type": "unit-test",
+            "command": "pytest boundary",
+            "scope": {
+              "components": [
+                "boundary"
+              ]
+            },
+            "tags": [
+              "boundary"
+            ],
+            "test_executions": 1,
+            "reasons": [
+              {
+                "code": "POSITIVE_DEPENDENCY_EVIDENCE",
+                "detail": "At least one identified evidence source positively selected this check",
+                "evidence_refs": [
+                  "native-selector"
+                ]
+              },
+              {
+                "code": "DEPENDENCY_COMPLETENESS_FORCED_SELECTION",
+                "detail": "Skip sufficiency cannot be defended: dependency completeness is INCOMPLETE",
+                "evidence_refs": [
+                  "boundary-inspector",
+                  "native-selector"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "INCOMPLETE",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                },
+                {
+                  "kind": "NATIVE_SELECTOR",
+                  "evidence_refs": [
+                    "native-selector"
+                  ],
+                  "positive": true
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector",
+                "native-selector"
+              ],
+              "unresolved_mechanisms": [
+                "UNDECLARED_OR_INCOMPLETE"
+              ],
+              "explanation": "Fixture assessment is INCOMPLETE.",
+              "action": "SELECT",
+              "forced_selection": true
+            }
+          },
+          {
+            "id": "changed.unit",
+            "type": "unit-test",
+            "command": "pytest changed",
+            "scope": {
+              "components": [
+                "changed"
+              ]
+            },
+            "tags": [
+              "direct"
+            ],
+            "test_executions": 3,
+            "reasons": [
+              {
+                "code": "SCOPE_INTERSECTS_AFFECTED_COMPONENT",
+                "detail": "Check scope intersects: changed",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SELECT",
+              "forced_selection": false
+            }
+          }
+        ],
+        "skipped_checks": [
+          {
+            "id": "unrelated.unit",
+            "type": "unit-test",
+            "command": "pytest unrelated",
+            "scope": {
+              "components": [
+                "unrelated"
+              ]
+            },
+            "tags": [
+              "unrelated"
+            ],
+            "test_executions": 5,
+            "reasons": [
+              {
+                "code": "OUTSIDE_TRANSITIVE_IMPACT_SET",
+                "detail": "Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog",
+                  "verification-policy"
+                ]
+              },
+              {
+                "code": "CHECK_DEPENDENCY_COMPLETENESS_DEFENDED",
+                "detail": "Check-level dependency evidence is COMPLETE_FOR_CHECK; no unresolved relevant boundary remains",
+                "evidence_refs": [
+                  "boundary-inspector",
+                  "verification-policy"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SKIP",
+              "forced_selection": false
+            }
+          }
+        ],
+        "risk": {
+          "classification": "BASELINE",
+          "tags": [],
+          "matched_policy_rules": []
+        },
+        "uncertainty": {
+          "state": "NONE",
+          "reasons": []
+        },
+        "escalation": {
+          "state": "BROADENED",
+          "reasons": [
+            {
+              "source": "check-dependency:boundary.observe",
+              "escalation": "BROADEN"
+            }
+          ]
+        },
+        "sufficiency": "SUFFICIENT_BROADENED",
+        "argument": {
+          "claim": "Smallest set justified by the normalized evidence model and configured policy; no global mathematical minimality claim.",
+          "unknown_is_safe_to_skip": false,
+          "every_skip_explained": true,
+          "every_skip_dependency_complete": true
+        }
+      },
+      "workload": {
+        "prior_tests_selected": 1,
+        "repaired_tests_selected": 2,
+        "additional_tests_due_to_repair": 1,
+        "tests_still_skipped": 1,
+        "non_test_check_differences": 0,
+        "full_verification_escalations": 0
+      }
+    },
+    {
+      "scenario_id": "AV3-009",
+      "full_oracle": {
+        "complete": true,
+        "executed_check_ids": [
+          "boundary.observe",
+          "changed.unit",
+          "unrelated.unit"
+        ],
+        "relevant_check_ids": [
+          "changed.unit",
+          "boundary.observe"
+        ]
+      },
+      "prior_selected_check_ids": [
+        "changed.unit"
+      ],
+      "repaired_selected_check_ids": [
+        "boundary.observe",
+        "changed.unit"
+      ],
+      "repaired_skipped_check_ids": [
+        "unrelated.unit"
+      ],
+      "additional_check_ids": [
+        "boundary.observe"
+      ],
+      "misses": [],
+      "plan": {
+        "schema": "opsle.affected-verification.plan.v2",
+        "plan_identity": "sha256:7270ccaa39015706b512a7b3fc77641d307df810a64b08284f3e4e6c9d7cb151",
+        "change": {
+          "base_revision": "base",
+          "target_revision": "target",
+          "identity": "sha256:141dd265709270b1c27e5ff19cc0949474bb5bc73a64dd4d31fe9cfaa8d4c579",
+          "changed_paths": [
+            "src/changed.py"
+          ],
+          "changed_regions": []
+        },
+        "provenance": {
+          "input_hash": "sha256:3734ea4aa72f36e74d3c102807335312b14edb0146fb4e8b67b2afd10a3fb534",
+          "evidence_identity": "sha256:opaque-fixture",
+          "verification_catalog_identity": "sha256:opaque-catalog",
+          "policy_identity": "sha256:opaque-policy",
+          "policy_version": "1",
+          "providers": [
+            {
+              "id": "boundary-inspector",
+              "kind": "DETERMINISTIC_CHECK_BOUNDARY_METADATA",
+              "version": "1",
+              "identity": "sha256:boundary-inspector"
+            },
+            {
+              "id": "native-selector",
+              "kind": "NATIVE_SELECTOR",
+              "version": "1",
+              "identity": "sha256:native-selector"
+            }
+          ]
+        },
+        "dependency_completeness": {
+          "checks_assessed": 3,
+          "forced_check_ids": [
+            "boundary.observe"
+          ],
+          "states": {
+            "COMPLETE_FOR_CHECK": 2,
+            "OPAQUE_BOUNDARY": 1
+          },
+          "agreement_implies_completeness": false
+        },
+        "affected_components": [
+          {
+            "id": "changed",
+            "direct": true,
+            "via_dependencies": []
+          }
+        ],
+        "selected_checks": [
+          {
+            "id": "boundary.observe",
+            "type": "unit-test",
+            "command": "pytest boundary",
+            "scope": {
+              "components": [
+                "boundary"
+              ]
+            },
+            "tags": [
+              "boundary"
+            ],
+            "test_executions": 1,
+            "reasons": [
+              {
+                "code": "OPAQUE_BOUNDARY_FORCED_SELECTION",
+                "detail": "Skip sufficiency cannot be defended: dependency completeness is OPAQUE_BOUNDARY",
+                "evidence_refs": [
+                  "boundary-inspector"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "OPAQUE_BOUNDARY",
+              "mechanisms": [
+                {
+                  "kind": "EXEC_EVAL_OR_CODE_GENERATION",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [
+                {
+                  "id": "b9",
+                  "kind": "EXEC_EVAL_OR_CODE_GENERATION",
+                  "status": "OPEN",
+                  "relevant": true,
+                  "explanation": "EXEC_EVAL_OR_CODE_GENERATION fixture boundary is OPEN.",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "source": {
+                    "path": "checks/example.py",
+                    "line": 9,
+                    "construct": "exec_eval_or_code_generation"
+                  }
+                }
+              ],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [
+                "EXEC_EVAL_OR_CODE_GENERATION"
+              ],
+              "explanation": "Fixture assessment is OPAQUE_BOUNDARY.",
+              "action": "SELECT",
+              "forced_selection": true
+            }
+          },
+          {
+            "id": "changed.unit",
+            "type": "unit-test",
+            "command": "pytest changed",
+            "scope": {
+              "components": [
+                "changed"
+              ]
+            },
+            "tags": [
+              "direct"
+            ],
+            "test_executions": 3,
+            "reasons": [
+              {
+                "code": "SCOPE_INTERSECTS_AFFECTED_COMPONENT",
+                "detail": "Check scope intersects: changed",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SELECT",
+              "forced_selection": false
+            }
+          }
+        ],
+        "skipped_checks": [
+          {
+            "id": "unrelated.unit",
+            "type": "unit-test",
+            "command": "pytest unrelated",
+            "scope": {
+              "components": [
+                "unrelated"
+              ]
+            },
+            "tags": [
+              "unrelated"
+            ],
+            "test_executions": 5,
+            "reasons": [
+              {
+                "code": "OUTSIDE_TRANSITIVE_IMPACT_SET",
+                "detail": "Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog",
+                  "verification-policy"
+                ]
+              },
+              {
+                "code": "CHECK_DEPENDENCY_COMPLETENESS_DEFENDED",
+                "detail": "Check-level dependency evidence is COMPLETE_FOR_CHECK; no unresolved relevant boundary remains",
+                "evidence_refs": [
+                  "boundary-inspector",
+                  "verification-policy"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SKIP",
+              "forced_selection": false
+            }
+          }
+        ],
+        "risk": {
+          "classification": "BASELINE",
+          "tags": [],
+          "matched_policy_rules": []
+        },
+        "uncertainty": {
+          "state": "NONE",
+          "reasons": []
+        },
+        "escalation": {
+          "state": "BROADENED",
+          "reasons": [
+            {
+              "source": "check-dependency:boundary.observe",
+              "escalation": "BROADEN"
+            }
+          ]
+        },
+        "sufficiency": "SUFFICIENT_BROADENED",
+        "argument": {
+          "claim": "Smallest set justified by the normalized evidence model and configured policy; no global mathematical minimality claim.",
+          "unknown_is_safe_to_skip": false,
+          "every_skip_explained": true,
+          "every_skip_dependency_complete": true
+        }
+      },
+      "workload": {
+        "prior_tests_selected": 1,
+        "repaired_tests_selected": 2,
+        "additional_tests_due_to_repair": 1,
+        "tests_still_skipped": 1,
+        "non_test_check_differences": 0,
+        "full_verification_escalations": 0
+      }
+    },
+    {
+      "scenario_id": "AV3-010",
+      "full_oracle": {
+        "complete": true,
+        "executed_check_ids": [
+          "boundary.observe",
+          "changed.unit",
+          "unrelated.unit"
+        ],
+        "relevant_check_ids": [
+          "changed.unit"
+        ]
+      },
+      "prior_selected_check_ids": [
+        "changed.unit"
+      ],
+      "repaired_selected_check_ids": [
+        "changed.unit"
+      ],
+      "repaired_skipped_check_ids": [
+        "boundary.observe",
+        "unrelated.unit"
+      ],
+      "additional_check_ids": [],
+      "misses": [],
+      "plan": {
+        "schema": "opsle.affected-verification.plan.v2",
+        "plan_identity": "sha256:f33a8e6e716905312da89ed00b225c4faa61272c7fd557e904d2eb70a34dc897",
+        "change": {
+          "base_revision": "base",
+          "target_revision": "target",
+          "identity": "sha256:141dd265709270b1c27e5ff19cc0949474bb5bc73a64dd4d31fe9cfaa8d4c579",
+          "changed_paths": [
+            "src/changed.py"
+          ],
+          "changed_regions": []
+        },
+        "provenance": {
+          "input_hash": "sha256:31a9dcf957980fdb9314c5fb55d983e02d101754fe57aebbb8608d3ceeb8d602",
+          "evidence_identity": "sha256:opaque-fixture",
+          "verification_catalog_identity": "sha256:opaque-catalog",
+          "policy_identity": "sha256:opaque-policy",
+          "policy_version": "1",
+          "providers": [
+            {
+              "id": "boundary-inspector",
+              "kind": "DETERMINISTIC_CHECK_BOUNDARY_METADATA",
+              "version": "1",
+              "identity": "sha256:boundary-inspector"
+            },
+            {
+              "id": "native-selector",
+              "kind": "NATIVE_SELECTOR",
+              "version": "1",
+              "identity": "sha256:native-selector"
+            }
+          ]
+        },
+        "dependency_completeness": {
+          "checks_assessed": 3,
+          "forced_check_ids": [],
+          "states": {
+            "COMPLETE_FOR_CHECK": 2,
+            "COMPLETE_WITH_DECLARED_BOUNDARIES": 1
+          },
+          "agreement_implies_completeness": false
+        },
+        "affected_components": [
+          {
+            "id": "changed",
+            "direct": true,
+            "via_dependencies": []
+          }
+        ],
+        "selected_checks": [
+          {
+            "id": "changed.unit",
+            "type": "unit-test",
+            "command": "pytest changed",
+            "scope": {
+              "components": [
+                "changed"
+              ]
+            },
+            "tags": [
+              "direct"
+            ],
+            "test_executions": 3,
+            "reasons": [
+              {
+                "code": "SCOPE_INTERSECTS_AFFECTED_COMPONENT",
+                "detail": "Check scope intersects: changed",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SELECT",
+              "forced_selection": false
+            }
+          }
+        ],
+        "skipped_checks": [
+          {
+            "id": "boundary.observe",
+            "type": "unit-test",
+            "command": "pytest boundary",
+            "scope": {
+              "components": [
+                "boundary"
+              ]
+            },
+            "tags": [
+              "boundary"
+            ],
+            "test_executions": 1,
+            "reasons": [
+              {
+                "code": "OUTSIDE_TRANSITIVE_IMPACT_SET",
+                "detail": "Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog",
+                  "verification-policy"
+                ]
+              },
+              {
+                "code": "CHECK_DEPENDENCY_COMPLETENESS_DEFENDED",
+                "detail": "Check-level dependency evidence is COMPLETE_WITH_DECLARED_BOUNDARIES; no unresolved relevant boundary remains",
+                "evidence_refs": [
+                  "boundary-inspector",
+                  "verification-policy"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_WITH_DECLARED_BOUNDARIES",
+              "mechanisms": [
+                {
+                  "kind": "DYNAMIC_IMPORT",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [
+                {
+                  "id": "b10",
+                  "kind": "DYNAMIC_IMPORT",
+                  "status": "CLOSED",
+                  "relevant": true,
+                  "explanation": "DYNAMIC_IMPORT fixture boundary is CLOSED.",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "source": {
+                    "path": "checks/example.py",
+                    "line": 10,
+                    "construct": "dynamic_import"
+                  }
+                }
+              ],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_WITH_DECLARED_BOUNDARIES.",
+              "action": "SKIP",
+              "forced_selection": false
+            }
+          },
+          {
+            "id": "unrelated.unit",
+            "type": "unit-test",
+            "command": "pytest unrelated",
+            "scope": {
+              "components": [
+                "unrelated"
+              ]
+            },
+            "tags": [
+              "unrelated"
+            ],
+            "test_executions": 5,
+            "reasons": [
+              {
+                "code": "OUTSIDE_TRANSITIVE_IMPACT_SET",
+                "detail": "Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it",
+                "evidence_refs": [
+                  "impact-evidence",
+                  "verification-catalog",
+                  "verification-policy"
+                ]
+              },
+              {
+                "code": "CHECK_DEPENDENCY_COMPLETENESS_DEFENDED",
+                "detail": "Check-level dependency evidence is COMPLETE_FOR_CHECK; no unresolved relevant boundary remains",
+                "evidence_refs": [
+                  "boundary-inspector",
+                  "verification-policy"
+                ]
+              }
+            ],
+            "dependency_completeness": {
+              "state": "COMPLETE_FOR_CHECK",
+              "mechanisms": [
+                {
+                  "kind": "DECLARED_SCOPE",
+                  "evidence_refs": [
+                    "boundary-inspector"
+                  ],
+                  "positive": false
+                }
+              ],
+              "boundaries": [],
+              "evidence_coverage": [
+                "boundary-inspector"
+              ],
+              "unresolved_mechanisms": [],
+              "explanation": "Fixture assessment is COMPLETE_FOR_CHECK.",
+              "action": "SKIP",
+              "forced_selection": false
+            }
+          }
+        ],
+        "risk": {
+          "classification": "BASELINE",
+          "tags": [],
+          "matched_policy_rules": []
+        },
+        "uncertainty": {
+          "state": "NONE",
+          "reasons": []
+        },
+        "escalation": {
+          "state": "NONE",
+          "reasons": []
+        },
+        "sufficiency": "SUFFICIENT_TARGETED",
+        "argument": {
+          "claim": "Smallest set justified by the normalized evidence model and configured policy; no global mathematical minimality claim.",
+          "unknown_is_safe_to_skip": false,
+          "every_skip_explained": true,
+          "every_skip_dependency_complete": true
+        }
+      },
+      "workload": {
+        "prior_tests_selected": 1,
+        "repaired_tests_selected": 1,
+        "additional_tests_due_to_repair": 0,
+        "tests_still_skipped": 2,
+        "non_test_check_differences": 0,
+        "full_verification_escalations": 0
+      }
+    }
+  ],
+  "regression_matrix_identity": "sha256:7260c2d3476a6e78323e75d36c54c8409ea4cb18fa3a8f9a76b5533e1df08615",
+  "acceptance": {
+    "known_replay_selected": true,
+    "adversarial_misses": 0,
+    "av_exp_001_new_misses": 0,
+    "av_exp_002_new_misses": 0,
+    "target_specific_core_rules": 0,
+    "full_oracle_complete_scenarios": 10
+  },
+  "claim_limit": "Observed on frozen repair and regression corpora in SHADOW only; no general failure-prevention, dynamic-dependency solution, safety, causal-savings, or production-trust claim.",
+  "result_identity": "sha256:03b2f7d6a380c84f6a1749531067cf8b87404c879f42380de8f07cce48251519"
+}

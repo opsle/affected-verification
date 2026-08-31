@@ -16,7 +16,7 @@ test('CLI keeps canonical plan on stdout, indicator on stderr, and receipt in si
   writeFileSync(inputPath, JSON.stringify(fixture('isolated-implementation')));
   const result = spawnSync(process.execPath, [bin, 'plan', inputPath, '--receipt', receiptPath], { encoding: 'utf8' });
   assert.equal(result.status, 0);
-  assert.equal(JSON.parse(result.stdout).schema, 'opsle.affected-verification.plan.v1');
+  assert.equal(JSON.parse(result.stdout).schema, 'opsle.affected-verification.plan.v2');
   assert.match(result.stderr, /^\[Affected Verification\]/);
   assert.equal(JSON.parse(readFileSync(receiptPath, 'utf8')).schema, 'opsle.value-receipt.v1');
 });

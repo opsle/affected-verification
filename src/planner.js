@@ -83,7 +83,37 @@ function selectionReason(check, affectedIds, requiredBy) {
   return reasons;
 }
 
-function mapCheck(check, reasons) {
+function dependencyArgument(assessment, action, forced) {
+  const boundaries = [...assessment.boundaries]
+    .map((item) => ({ ...item, evidence_refs: sortedUnique(item.evidence_refs) }))
+    .sort((a, b) => a.id.localeCompare(b.id));
+  const mechanisms = [...assessment.mechanisms]
+    .map((item) => ({ ...item, evidence_refs: sortedUnique(item.evidence_refs) }))
+    .sort((a, b) => a.kind.localeCompare(b.kind));
+  const openKinds = boundaries
+    .filter((item) => item.relevant && item.status === 'OPEN')
+    .map((item) => item.kind);
+  const unresolved = openKinds.length
+    ? openKinds
+    : ['INCOMPLETE', 'UNKNOWN'].includes(assessment.completeness)
+      ? ['UNDECLARED_OR_INCOMPLETE']
+      : [];
+  return {
+    state: assessment.completeness,
+    mechanisms,
+    boundaries,
+    evidence_coverage: sortedUnique([
+      ...mechanisms.flatMap((item) => item.evidence_refs),
+      ...boundaries.flatMap((item) => item.evidence_refs),
+    ]),
+    unresolved_mechanisms: sortedUnique(unresolved),
+    explanation: assessment.explanation,
+    action,
+    forced_selection: forced,
+  };
+}
+
+function mapCheck(check, reasons, assessment, action, forced = false) {
   return {
     id: check.id,
     type: check.type,
@@ -92,7 +122,13 @@ function mapCheck(check, reasons) {
     tags: [...check.tags].sort(),
     test_executions: check.test_executions,
     reasons,
+    dependency_completeness: dependencyArgument(assessment, action, forced),
   };
+}
+
+function dependencyForcesSelection(assessment) {
+  return ['INCOMPLETE', 'OPAQUE_BOUNDARY', 'UNKNOWN'].includes(assessment.completeness)
+    || assessment.mechanisms.some((item) => item.positive);
 }
 
 function uncertainty(input, affected) {
@@ -128,6 +164,9 @@ export function planVerification(rawInput) {
   const direct = directComponents(input);
   const affected = reverseClosure(input.evidence.components, direct);
   const affectedIds = new Set(affected.map((item) => item.id));
+  const checkDependencies = new Map(
+    input.evidence.check_dependencies.map((item) => [item.check_id, item]),
+  );
   const policies = matchedRules(input, affectedIds);
   const maxEscalation = policies.reduce(
     (current, rule) => ESCALATION_ORDER[rule.escalation] > ESCALATION_ORDER[current]
@@ -174,11 +213,33 @@ export function planVerification(rawInput) {
 
   const selected = [];
   const skipped = [];
+  const dependencyForcedChecks = [];
   for (const check of [...input.catalog.checks].sort((a, b) => a.id.localeCompare(b.id))) {
+    const dependency = checkDependencies.get(check.id);
     const requiredBy = requiredTagsByRule.filter((rule) => check.tags.some((tag) => rule.tags.has(tag)));
     const scopeIntersects = check.scope.components.some((component) => component === '*' || affectedIds.has(component));
-    if (selectAll || scopeIntersects || requiredBy.length) {
+    const dependencyForced = dependencyForcesSelection(dependency);
+    if (selectAll || scopeIntersects || requiredBy.length || dependencyForced) {
       const reasons = selectionReason(check, affectedIds, requiredBy);
+      if (dependency.mechanisms.some((item) => item.positive)) {
+        reasons.push(reason(
+          'POSITIVE_DEPENDENCY_EVIDENCE',
+          'At least one identified evidence source positively selected this check',
+          dependency.mechanisms.filter((item) => item.positive).flatMap((item) => item.evidence_refs),
+        ));
+      }
+      if (['INCOMPLETE', 'OPAQUE_BOUNDARY', 'UNKNOWN'].includes(dependency.completeness)) {
+        reasons.push(reason(
+          dependency.completeness === 'OPAQUE_BOUNDARY'
+            ? 'OPAQUE_BOUNDARY_FORCED_SELECTION'
+            : 'DEPENDENCY_COMPLETENESS_FORCED_SELECTION',
+          `Skip sufficiency cannot be defended: dependency completeness is ${dependency.completeness}`,
+          [
+            ...dependency.mechanisms.flatMap((item) => item.evidence_refs),
+            ...dependency.boundaries.flatMap((item) => item.evidence_refs),
+          ],
+        ));
+      }
       if (selectAll) {
         reasons.push(reason(
           uncertaintyReasons.length ? 'FAIL_CLOSED_FULL_SELECTION' : 'POLICY_REQUIRES_FULL_SELECTION',
@@ -188,21 +249,37 @@ export function planVerification(rawInput) {
           uncertaintyReasons.length ? ['impact-evidence', 'verification-catalog'] : policies.map((rule) => `policy-rule:${rule.id}`),
         ));
       }
-      selected.push(mapCheck(check, reasons));
+      const forced = dependencyForced && !selectAll && !scopeIntersects && requiredBy.length === 0;
+      if (forced) dependencyForcedChecks.push(check.id);
+      selected.push(mapCheck(check, reasons, dependency, 'SELECT', forced));
     } else {
-      skipped.push(mapCheck(check, [reason(
-        'OUTSIDE_TRANSITIVE_IMPACT_SET',
-        'Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it',
-        ['impact-evidence', 'verification-catalog', 'verification-policy'],
-      )]));
+      skipped.push(mapCheck(check, [
+        reason(
+          'OUTSIDE_TRANSITIVE_IMPACT_SET',
+          'Check scope does not intersect the direct or reverse-dependent impact set and no matched policy requires it',
+          ['impact-evidence', 'verification-catalog', 'verification-policy'],
+        ),
+        reason(
+          'CHECK_DEPENDENCY_COMPLETENESS_DEFENDED',
+          `Check-level dependency evidence is ${dependency.completeness}; no unresolved relevant boundary remains`,
+          [
+            ...dependency.mechanisms.flatMap((item) => item.evidence_refs),
+            ...dependency.boundaries.flatMap((item) => item.evidence_refs),
+            'verification-policy',
+          ],
+        ),
+      ], dependency, 'SKIP'));
     }
   }
 
   const escalationState = selectAll
     ? 'FULL'
-    : maxEscalation === 'BROADEN'
+    : maxEscalation === 'BROADEN' || dependencyForcedChecks.length
       ? 'BROADENED'
       : 'NONE';
+  if (dependencyForcedChecks.length && sufficiency === 'SUFFICIENT_TARGETED') {
+    sufficiency = 'SUFFICIENT_BROADENED';
+  }
   const planWithoutIdentity = {
     schema: PLAN_SCHEMA,
     plan_identity: null,
@@ -225,6 +302,19 @@ export function planVerification(rawInput) {
         .map((provider) => ({ ...provider }))
         .sort((a, b) => a.id.localeCompare(b.id)),
     },
+    dependency_completeness: {
+      checks_assessed: input.evidence.check_dependencies.length,
+      forced_check_ids: sortedUnique(dependencyForcedChecks),
+      states: Object.fromEntries(
+        [...new Set(input.evidence.check_dependencies.map((item) => item.completeness))]
+          .sort()
+          .map((state) => [
+            state,
+            input.evidence.check_dependencies.filter((item) => item.completeness === state).length,
+          ]),
+      ),
+      agreement_implies_completeness: false,
+    },
     affected_components: affected,
     selected_checks: selected,
     skipped_checks: skipped,
@@ -245,10 +335,16 @@ export function planVerification(rawInput) {
     },
     escalation: {
       state: escalationState,
-      reasons: policies.filter((rule) => rule.escalation !== 'NONE').map((rule) => ({
-        rule_id: rule.id,
-        escalation: rule.escalation,
-      })),
+      reasons: [
+        ...policies.filter((rule) => rule.escalation !== 'NONE').map((rule) => ({
+          source: `policy-rule:${rule.id}`,
+          escalation: rule.escalation,
+        })),
+        ...dependencyForcedChecks.map((checkId) => ({
+          source: `check-dependency:${checkId}`,
+          escalation: 'BROADEN',
+        })),
+      ],
     },
     sufficiency,
     argument: {
@@ -257,6 +353,9 @@ export function planVerification(rawInput) {
         : 'Targeted sufficiency is not claimed.',
       unknown_is_safe_to_skip: false,
       every_skip_explained: skipped.every((check) => check.reasons.length > 0),
+      every_skip_dependency_complete: skipped.every((check) =>
+        ['COMPLETE_FOR_CHECK', 'COMPLETE_WITH_DECLARED_BOUNDARIES']
+          .includes(check.dependency_completeness.state)),
     },
   };
   const planIdentity = contentIdentity({ ...planWithoutIdentity, plan_identity: undefined });
