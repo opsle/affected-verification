@@ -1,0 +1,13 @@
+diff --git a/src/vanilla/shallow.ts b/src/vanilla/shallow.ts
+index e5b4bf6..fe0839e 100644
+--- a/src/vanilla/shallow.ts
++++ b/src/vanilla/shallow.ts
+@@ -47,7 +47,7 @@ const compareIterables = (
+ 
+ export function shallow<T>(valueA: T, valueB: T): boolean {
+   if (Object.is(valueA, valueB)) {
+-    return true
++    return false
+   }
+   if (
+     typeof valueA !== 'object' ||

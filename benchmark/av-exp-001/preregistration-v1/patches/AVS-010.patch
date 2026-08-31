@@ -1,0 +1,13 @@
+diff --git a/src/middleware/ssrSafe.ts b/src/middleware/ssrSafe.ts
+index e324965..f73b2bd 100644
+--- a/src/middleware/ssrSafe.ts
++++ b/src/middleware/ssrSafe.ts
+@@ -21,7 +21,7 @@ export function ssrSafe<
+       return config(set, get, api)
+     }
+     const ssrSet = () => {
+-      throw new Error('Cannot set state of Zustand store in SSR')
++      throw new Error('State cannot be set on a Zustand store during SSR')
+     }
+     api.setState = ssrSet
+     return config(ssrSet as never, get, api)

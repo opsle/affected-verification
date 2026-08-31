@@ -1,0 +1,50 @@
+{
+  "schema": "opsle.affected-verification.benchmark-policy.v1",
+  "id": "av-exp-001-zustand-policy-v1",
+  "planner_schema": "opsle.affected-verification.plan.v1",
+  "trust_stage": "SHADOW",
+  "core_evidence": {
+    "git_diff": "Exact changed paths and patch identity from the frozen scenario.",
+    "source_graph": "Deterministic TypeScript static import graph rooted in src and public entrypoints; unresolved or dynamic imports make evidence incomplete.",
+    "catalog": "catalog.json",
+    "complete_only_when": "Target SHA, catalog, patch, adapter version, and all changed-path mappings validate without an unresolved edge."
+  },
+  "native_evidence": {
+    "use": "AV_WITH_NATIVE_EVIDENCE only",
+    "role": "Each native-selected test check is normalized as an additional impacted verification component; it does not replace core evidence or policy.",
+    "missing_behavior": "Missing or invalid native evidence marks impact evidence incomplete and denies targeted skipping."
+  },
+  "policy_rules": [
+    {
+      "id": "always-non-test-catalog",
+      "match": "every valid change",
+      "effect": "require format, typecheck, lint, and build tags"
+    },
+    {
+      "id": "verification-metadata-full",
+      "paths": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        "vitest.config.mts",
+        "tsconfig.json",
+        "eslint.config.mjs",
+        "rollup.config.mjs",
+        ".github/workflows/**"
+      ],
+      "effect": "FULL"
+    },
+    {
+      "id": "public-contract-broaden",
+      "paths": ["src/index.ts", "src/vanilla.ts", "src/react.ts", "src/types.d.ts"],
+      "effect": "require typecheck and build tags"
+    },
+    {
+      "id": "unknown-impact-full",
+      "condition": "incomplete dependency evidence, unknown changed path, missing required native evidence, or unresolved import",
+      "effect": "FULL when the catalog is complete; otherwise INSUFFICIENT_EVIDENCE"
+    }
+  ],
+  "skip_rule": "A test check may be skipped only when its scope does not intersect the complete affected closure, no native evidence selects it in the native-evidence arm, and no policy rule requires it. Every skip records evidence and policy references.",
+  "identity": "sha256:4ccefdc16896069237909f2e367ecd6d8a33b2aeca946a895b7da016e4452d88"
+}

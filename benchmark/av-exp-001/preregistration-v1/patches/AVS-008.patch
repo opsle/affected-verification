@@ -1,0 +1,13 @@
+diff --git a/src/vanilla.ts b/src/vanilla.ts
+index d16a6a3..f2ce584 100644
+--- a/src/vanilla.ts
++++ b/src/vanilla.ts
+@@ -8,7 +8,7 @@ type SetStateInternal<T> = {
+ 
+ export interface StoreApi<T> {
+   setState: SetStateInternal<T>
+-  getState: () => T
++  getState: () => Promise<T>
+   getInitialState: () => T
+   subscribe: (listener: (state: T, prevState: T) => void) => () => void
+ }

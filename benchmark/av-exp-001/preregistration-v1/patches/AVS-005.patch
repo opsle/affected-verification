@@ -1,0 +1,13 @@
+diff --git a/tests/vanilla/basic.test.ts b/tests/vanilla/basic.test.ts
+index 09e2d14..4146154 100644
+--- a/tests/vanilla/basic.test.ts
++++ b/tests/vanilla/basic.test.ts
+@@ -47,7 +47,7 @@ it('uses the store', async () => {
+   }))
+   store.getState().inc()
+ 
+-  expect(store.getState().count).toBe(1)
++  expect(store.getState().count).toBe(2)
+ })
+ 
+ it('can get the store', async () => {

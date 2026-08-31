@@ -1,0 +1,31 @@
+{
+  "schema": "opsle.affected-verification.verification-catalog.v1",
+  "target_commit": "b57db4f86ef179285da216eeb291266da82c361c",
+  "complete": true,
+  "source": {
+    "workflow": ".github/workflows/test.yml",
+    "package_manifest": "package.json",
+    "test_collection": "pnpm exec vitest list --json=<artifact>",
+    "collection_count": 224
+  },
+  "checks": [
+    {"id":"test:tests/basic.test.tsx","type":"unit-test","target":"tests/basic.test.tsx","invocation":"pnpm exec vitest run tests/basic.test.tsx","test_executions":22,"scope":["src/index.ts","src/traditional.ts"],"tags":["test"]},
+    {"id":"test:tests/devtools.test.tsx","type":"unit-test","target":"tests/devtools.test.tsx","invocation":"pnpm exec vitest run tests/devtools.test.tsx","test_executions":64,"scope":["src/middleware.ts","src/vanilla.ts"],"tags":["test"]},
+    {"id":"test:tests/immer.test.tsx","type":"unit-test","target":"tests/immer.test.tsx","invocation":"pnpm exec vitest run tests/immer.test.tsx","test_executions":5,"scope":["src/index.ts","src/middleware/immer.ts","src/vanilla.ts"],"tags":["test"]},
+    {"id":"test:tests/middlewareTypes.test.tsx","type":"unit-test","target":"tests/middlewareTypes.test.tsx","invocation":"pnpm exec vitest run tests/middlewareTypes.test.tsx","test_executions":26,"scope":["src/index.ts","src/middleware.ts","src/middleware/immer.ts","src/vanilla.ts"],"tags":["test"]},
+    {"id":"test:tests/persistAsync.test.tsx","type":"unit-test","target":"tests/persistAsync.test.tsx","invocation":"pnpm exec vitest run tests/persistAsync.test.tsx","test_executions":26,"scope":["src/index.ts","src/middleware.ts","src/vanilla.ts"],"tags":["test"]},
+    {"id":"test:tests/persistSync.test.tsx","type":"unit-test","target":"tests/persistSync.test.tsx","invocation":"pnpm exec vitest run tests/persistSync.test.tsx","test_executions":22,"scope":["src/index.ts","src/middleware.ts"],"tags":["test"]},
+    {"id":"test:tests/shallow.test.tsx","type":"unit-test","target":"tests/shallow.test.tsx","invocation":"pnpm exec vitest run tests/shallow.test.tsx","test_executions":6,"scope":["src/index.ts","src/shallow.ts","src/traditional.ts"],"tags":["test"]},
+    {"id":"test:tests/ssr.test.tsx","type":"unit-test","target":"tests/ssr.test.tsx","invocation":"pnpm exec vitest run tests/ssr.test.tsx","test_executions":2,"scope":["src/index.ts"],"tags":["test"]},
+    {"id":"test:tests/subscribe.test.tsx","type":"unit-test","target":"tests/subscribe.test.tsx","invocation":"pnpm exec vitest run tests/subscribe.test.tsx","test_executions":12,"scope":["src/index.ts","src/middleware.ts"],"tags":["test"]},
+    {"id":"test:tests/types.test.tsx","type":"unit-test","target":"tests/types.test.tsx","invocation":"pnpm exec vitest run tests/types.test.tsx","test_executions":7,"scope":["src/index.ts","src/middleware.ts"],"tags":["test"]},
+    {"id":"test:tests/vanilla/basic.test.ts","type":"unit-test","target":"tests/vanilla/basic.test.ts","invocation":"pnpm exec vitest run tests/vanilla/basic.test.ts","test_executions":10,"scope":["src/vanilla.ts"],"tags":["test"]},
+    {"id":"test:tests/vanilla/shallow.test.tsx","type":"unit-test","target":"tests/vanilla/shallow.test.tsx","invocation":"pnpm exec vitest run tests/vanilla/shallow.test.tsx","test_executions":13,"scope":["src/shallow.ts"],"tags":["test"]},
+    {"id":"test:tests/vanilla/subscribe.test.tsx","type":"unit-test","target":"tests/vanilla/subscribe.test.tsx","invocation":"pnpm exec vitest run tests/vanilla/subscribe.test.tsx","test_executions":9,"scope":["src/middleware.ts","src/vanilla.ts"],"tags":["test"]},
+    {"id":"check:format","type":"other","target":"repository","invocation":"pnpm run test:format","test_executions":0,"scope":["*"],"tags":["format","non-test-required"]},
+    {"id":"check:typecheck","type":"typecheck","target":"repository","invocation":"pnpm run test:types","test_executions":0,"scope":["*"],"tags":["typecheck","non-test-required"]},
+    {"id":"check:lint","type":"lint","target":"repository","invocation":"pnpm run test:lint","test_executions":0,"scope":["*"],"tags":["lint","non-test-required"]},
+    {"id":"check:build","type":"build","target":"repository","invocation":"pnpm run build","test_executions":0,"scope":["*"],"tags":["build","non-test-required"]}
+  ],
+  "identity": "sha256:8c5b224deaa7077690341248a18a2155310e2b16072e1607a9b4cd546e3a0914"
+}
