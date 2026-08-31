@@ -21,7 +21,10 @@ const preregDir = path.join(here, 'preregistration-v1');
 const targetSha = 'b57db4f86ef179285da216eeb291266da82c361c';
 const targetUrl = 'https://github.com/pmndrs/zustand.git';
 const preregistrationSha = '0544362d7659093b7f0b4f89ee8f68023fd269c3';
-const amendmentIdentity = 'sha256:80a04b99ad73e86ecb2e7c85dda3a11ddbe99cdf200ca38e2c1effe498184357';
+const amendmentIdentities = [
+  'sha256:80a04b99ad73e86ecb2e7c85dda3a11ddbe99cdf200ca38e2c1effe498184357',
+  'sha256:51437d6c3bfdd1461a9679a5055ab5c34d9eb603ba95b67f86f8516f8b93a25e',
+];
 
 function readJson(file) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -97,10 +100,12 @@ function verifyPreregistration() {
       throw new Error(`scenario patch/hash mismatch: ${scenario.id}`);
     }
   }
-  const amendmentFile = path.join(here, 'amendments', '001-worktree-install.md');
-  const amendmentText = fs.readFileSync(amendmentFile, 'utf8');
-  const amendmentBody = amendmentText.split('\nAmendment identity:\n')[0] + '\n';
-  if (sha256Bytes(amendmentBody) !== amendmentIdentity) throw new Error('benchmark amendment identity mismatch');
+  const amendmentFiles = ['001-worktree-install.md', '002-reporter-semantics.md'];
+  amendmentFiles.forEach((name, index) => {
+    const amendmentText = fs.readFileSync(path.join(here, 'amendments', name), 'utf8');
+    const amendmentBody = amendmentText.split('\nAmendment identity:\n')[0] + '\n';
+    if (sha256Bytes(amendmentBody) !== amendmentIdentities[index]) throw new Error(`benchmark amendment identity mismatch: ${name}`);
+  });
   return { manifest, prereg, catalog, policy, native, scenarios };
 }
 
@@ -225,14 +230,12 @@ function runFullCatalog(worktree, rawDir, catalog, runId) {
     failed_check_ids: failed,
     outcomes: Object.fromEntries([...outcomes.entries()].sort()),
     complete,
-    command_evidence: commandRecords.map((record) => ({
+    command_outcomes: commandRecords.map((record) => ({
       command: record.command,
       exit_code: record.exit_code,
       signal: record.signal,
       timed_out: record.timed_out,
       spawn_error: record.spawn_error,
-      stdout_sha256: record.stdout_sha256,
-      stderr_sha256: record.stderr_sha256,
     })),
   };
   return {
@@ -244,7 +247,7 @@ function runFullCatalog(worktree, rawDir, catalog, runId) {
     })),
     evidence_files: commandRecords.flatMap((record) => [record.stdout_file, record.stderr_file]),
     test_count: testRun.report?.numTotalTests ?? null,
-    test_file_count: testRun.report?.numTotalTestSuites ?? null,
+    test_file_count: testRun.report?.testResults?.length ?? null,
   };
 }
 
@@ -550,7 +553,7 @@ function scenarioResult(target, scratch, resultsDir, scenario, prereg, baselineR
   const evidenceFiles = [...full.evidence_files, ...nativeRun.evidence_files];
   const benchmarkResult = createShadowBenchmarkResult({
     experiment_id: 'AV-EXP-001',
-    benchmark_revision: `${preregistrationSha}+${amendmentIdentity}`,
+    benchmark_revision: `${preregistrationSha}+${amendmentIdentities.join('+')}`,
     trust_stage: 'SHADOW',
     target: { repository: targetUrl, expected_sha: targetSha, observed_sha: git(worktree, ['rev-parse', 'HEAD']) },
     scenario: {
@@ -596,7 +599,7 @@ function summarize(resultsDir, catalog, scenarioResults, baselineRecord) {
     schema: 'opsle.affected-verification.shadow-benchmark-summary.v1',
     experiment_id: 'AV-EXP-001',
     preregistration_sha: preregistrationSha,
-    amendment_identity: amendmentIdentity,
+    amendment_identities: amendmentIdentities,
     target: { repository: targetUrl, sha: targetSha },
     catalog_identity: catalog.identity,
     baseline_identity: baselineRecord.identity,

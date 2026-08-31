@@ -4,6 +4,14 @@ import { InputError } from './validate.js';
 export const BENCHMARK_RESULT_SCHEMA =
   'opsle.affected-verification.shadow-benchmark-result.v1';
 
+function semanticResultIdentity(result) {
+  return contentIdentity({
+    ...result,
+    result_identity: undefined,
+    evidence_hashes: undefined,
+  });
+}
+
 function fail(issues, code = 'INVALID_BENCHMARK_STATE') {
   if (issues.length) throw new InputError(issues, code);
 }
@@ -236,7 +244,7 @@ export function createShadowBenchmarkResult(input) {
   };
   const result = {
     ...withoutIdentity,
-    result_identity: contentIdentity({ ...withoutIdentity, result_identity: undefined }),
+    result_identity: semanticResultIdentity(withoutIdentity),
   };
   return deepFreeze(result);
 }
@@ -245,7 +253,7 @@ export function validateShadowBenchmarkResult(result) {
   const issues = [];
   if (result?.schema !== BENCHMARK_RESULT_SCHEMA) issues.push('benchmark result schema mismatch');
   if (result?.trust_stage !== 'SHADOW') issues.push('unsafe attempt to mark SHADOW result as trusted');
-  const expectedIdentity = contentIdentity({ ...result, result_identity: undefined });
+  const expectedIdentity = semanticResultIdentity(result);
   if (result?.result_identity !== expectedIdentity) issues.push('result tampering');
   const catalogIds = result?.arms?.FULL?.selected_check_ids ?? [];
   const relevantIds = result?.oracle?.relevant_check_ids ?? [];

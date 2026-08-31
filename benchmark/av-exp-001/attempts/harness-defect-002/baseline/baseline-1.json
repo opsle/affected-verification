@@ -1,0 +1,185 @@
+{
+  "scenario_id": "baseline-1",
+  "target_sha": "b57db4f86ef179285da216eeb291266da82c361c",
+  "catalog_identity": "sha256:8c5b224deaa7077690341248a18a2155310e2b16072e1607a9b4cd546e3a0914",
+  "executed_check_ids": [
+    "check:build",
+    "check:format",
+    "check:lint",
+    "check:typecheck",
+    "test:tests/basic.test.tsx",
+    "test:tests/devtools.test.tsx",
+    "test:tests/immer.test.tsx",
+    "test:tests/middlewareTypes.test.tsx",
+    "test:tests/persistAsync.test.tsx",
+    "test:tests/persistSync.test.tsx",
+    "test:tests/shallow.test.tsx",
+    "test:tests/ssr.test.tsx",
+    "test:tests/subscribe.test.tsx",
+    "test:tests/types.test.tsx",
+    "test:tests/vanilla/basic.test.ts",
+    "test:tests/vanilla/shallow.test.tsx",
+    "test:tests/vanilla/subscribe.test.tsx"
+  ],
+  "failed_check_ids": [],
+  "outcomes": {
+    "check:build": "PASS",
+    "check:format": "PASS",
+    "check:lint": "PASS",
+    "check:typecheck": "PASS",
+    "test:tests/basic.test.tsx": "PASS",
+    "test:tests/devtools.test.tsx": "PASS",
+    "test:tests/immer.test.tsx": "PASS",
+    "test:tests/middlewareTypes.test.tsx": "PASS",
+    "test:tests/persistAsync.test.tsx": "PASS",
+    "test:tests/persistSync.test.tsx": "PASS",
+    "test:tests/shallow.test.tsx": "PASS",
+    "test:tests/ssr.test.tsx": "PASS",
+    "test:tests/subscribe.test.tsx": "PASS",
+    "test:tests/types.test.tsx": "PASS",
+    "test:tests/vanilla/basic.test.ts": "PASS",
+    "test:tests/vanilla/shallow.test.tsx": "PASS",
+    "test:tests/vanilla/subscribe.test.tsx": "PASS"
+  },
+  "complete": true,
+  "command_evidence": [
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "--reporter=json",
+        "--outputFile=/home/deploy/apps/opsle-bootstrap/repos/affected-verification/benchmark/av-exp-001/results-v1/raw/baseline-1/baseline-1-tests.vitest.json"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "timed_out": false,
+      "spawn_error": null,
+      "stdout_sha256": "sha256:8e127ad45f46dd3daf1ac84868d885680e7d2c032e0efe9d91209bdae4c8a5d6",
+      "stderr_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "test:format"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "timed_out": false,
+      "spawn_error": null,
+      "stdout_sha256": "sha256:1ecb535caea29a9528aa427a98062497e820ce9c02db65529824912f8335d8b6",
+      "stderr_sha256": "sha256:18a39320051637915e489a32b00ab2f976d0c1a2a414a01b30e9a99a6b0bb544"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "test:types"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "timed_out": false,
+      "spawn_error": null,
+      "stdout_sha256": "sha256:63fd119e84427c1102f8d841434d47a0d91cea3740e257df3a8d9fa98fedc434",
+      "stderr_sha256": "sha256:8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "test:lint"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "timed_out": false,
+      "spawn_error": null,
+      "stdout_sha256": "sha256:310864af89afb0e14237134e4bc98ca280a8483b4bab55652546b0217f49151d",
+      "stderr_sha256": "sha256:050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "timed_out": false,
+      "spawn_error": null,
+      "stdout_sha256": "sha256:b54e84c5c42410a1321d1b23d0a51525fc4bbe882943c84b4cf725466287d7a7",
+      "stderr_sha256": "sha256:1407c9871d446f122a2df8ed5b9a49679b59f8460a43abcf1d60775c8bfc47e5"
+    }
+  ],
+  "identity": "sha256:3dc37640e17836a69ab6d2acb1c19558e85185c9fc7603cfe26f4be3838d0e88",
+  "observed_durations_ms": [
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "--reporter=json",
+        "--outputFile=/home/deploy/apps/opsle-bootstrap/repos/affected-verification/benchmark/av-exp-001/results-v1/raw/baseline-1/baseline-1-tests.vitest.json"
+      ],
+      "duration_ms": 4220.339
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "test:format"
+      ],
+      "duration_ms": 4473.455
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "test:types"
+      ],
+      "duration_ms": 3436.344
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "test:lint"
+      ],
+      "duration_ms": 6119.323
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "build"
+      ],
+      "duration_ms": 9224.959
+    }
+  ],
+  "evidence_files": [
+    "benchmark/av-exp-001/results-v1/raw/baseline-1/baseline-1-tests.stdout.log",
+    "benchmark/av-exp-001/results-v1/raw/baseline-1/baseline-1-tests.stderr.log",
+    "benchmark/av-exp-001/results-v1/raw/baseline-1/baseline-1-format.stdout.log",
+    "benchmark/av-exp-001/results-v1/raw/baseline-1/baseline-1-format.stderr.log",
+    "benchmark/av-exp-001/results-v1/raw/baseline-1/baseline-1-typecheck.stdout.log",
+    "benchmark/av-exp-001/results-v1/raw/baseline-1/baseline-1-typecheck.stderr.log",
+    "benchmark/av-exp-001/results-v1/raw/baseline-1/baseline-1-lint.stdout.log",
+    "benchmark/av-exp-001/results-v1/raw/baseline-1/baseline-1-lint.stderr.log",
+    "benchmark/av-exp-001/results-v1/raw/baseline-1/baseline-1-build.stdout.log",
+    "benchmark/av-exp-001/results-v1/raw/baseline-1/baseline-1-build.stderr.log"
+  ],
+  "test_count": 224,
+  "test_file_count": 66
+}
