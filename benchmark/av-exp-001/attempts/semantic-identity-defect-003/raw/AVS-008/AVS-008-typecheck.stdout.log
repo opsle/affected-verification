@@ -1,0 +1,337 @@
+Already up to date
+Done in 449ms using pnpm v11.3.0
+src/middleware/persist.ts(222,38): error TS2345: Argument of type '{ then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<...>) | null | undefined): Promise<...>; catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<...>) | ... 1 more ... |...' is not assignable to parameter of type 'T'.
+  'T' could be instantiated with an arbitrary type which could be unrelated to '{ then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<...>) | null | undefined): Promise<...>; catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<...>) | ... 1 more ... |...'.
+src/middleware/persist.ts(264,43): error TS2345: Argument of type 'Promise<T>' is not assignable to parameter of type 'T'.
+  'T' could be instantiated with an arbitrary type which could be unrelated to 'Promise<T>'.
+src/middleware/persist.ts(267,36): error TS2345: Argument of type 'Promise<T>' is not assignable to parameter of type 'T'.
+  'T' could be instantiated with an arbitrary type which could be unrelated to 'Promise<T>'.
+src/middleware/persist.ts(304,11): error TS2345: Argument of type 'Promise<T>' is not assignable to parameter of type 'T'.
+  'T' could be instantiated with an arbitrary type which could be unrelated to 'Promise<T>'.
+src/middleware/persist.ts(317,35): error TS2345: Argument of type 'Promise<T>' is not assignable to parameter of type 'T'.
+  'T' could be instantiated with an arbitrary type which could be unrelated to 'Promise<T>'.
+src/middleware/persist.ts(324,9): error TS2322: Type 'Promise<T>' is not assignable to type 'T'.
+  'T' could be instantiated with an arbitrary type which could be unrelated to 'Promise<T>'.
+src/middleware/persist.ts(339,7): error TS2375: Type '{ name: string; storage: PersistStorage<T, unknown> | undefined; partialize: ((state: T) => T) | ((state: Promise<T>) => T); onRehydrateStorage?: ((state: T) => void | ((state?: T | undefined, error?: unknown) => void)) | ((state: Promise<...>) => void | ((state?: Promise<...> | undefined, error?: unknown) => void))...' is not assignable to type '{ name: string; storage: PersistStorage<T, unknown> | undefined; partialize: (state: T) => T; onRehydrateStorage?: (state: T) => void | ((state?: T | undefined, error?: unknown) => void); version: number; migrate?: (persistedState: unknown, version: number) => T | Promise<...>; merge: (persistedState: unknown, curre...' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+  Types of property 'partialize' are incompatible.
+    Type '((state: T) => T) | ((state: Promise<T>) => T)' is not assignable to type '(state: T) => T'.
+      Type '(state: Promise<T>) => T' is not assignable to type '(state: T) => T'.
+        Types of parameters 'state' and 'state' are incompatible.
+          Type 'T' is not assignable to type 'Promise<T>'.
+src/middleware/persist.ts(352,23): error TS2375: Type '{ name: string; storage: PersistStorage<T, unknown> | undefined; partialize: (state: T) => T; onRehydrateStorage?: (state: T) => void | ((state?: T | undefined, error?: unknown) => void); version: number; migrate?: (persistedState: unknown, version: number) => T | Promise<...>; merge: (persistedState: unknown, curre...' is not assignable to type 'Partial<PersistOptions<Promise<T>, T, unknown>>' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+  Types of property 'partialize' are incompatible.
+    Type '(state: T) => T' is not assignable to type '(state: Promise<T>) => T'.
+      Types of parameters 'state' and 'state' are incompatible.
+        Type 'Promise<T>' is not assignable to type 'T'.
+          'T' could be instantiated with an arbitrary type which could be unrelated to 'Promise<T>'.
+src/middleware/persist.ts(356,30): error TS2345: Argument of type 'PersistListener<Promise<T>>' is not assignable to parameter of type 'PersistListener<T>'.
+  Type 'T' is not assignable to type 'Promise<T>'.
+src/middleware/persist.ts(359,35): error TS2345: Argument of type 'PersistListener<Promise<T>>' is not assignable to parameter of type 'PersistListener<T>'.
+  Type 'T' is not assignable to type 'Promise<T>'.
+src/middleware/persist.ts(363,36): error TS2345: Argument of type 'PersistListener<Promise<T>>' is not assignable to parameter of type 'PersistListener<T>'.
+  Type 'T' is not assignable to type 'Promise<T>'.
+src/middleware/persist.ts(366,41): error TS2345: Argument of type 'PersistListener<Promise<T>>' is not assignable to parameter of type 'PersistListener<T>'.
+  Type 'T' is not assignable to type 'Promise<T>'.
+src/react.ts(32,38): error TS2345: Argument of type 'Promise<TState>' is not assignable to parameter of type 'TState'.
+  'TState' could be instantiated with an arbitrary type which could be unrelated to 'Promise<TState>'.
+src/traditional.ts(38,5): error TS2345: Argument of type '() => Promise<TState>' is not assignable to parameter of type '() => TState'.
+  Type 'Promise<TState>' is not assignable to type 'TState'.
+    'TState' could be instantiated with an arbitrary type which could be unrelated to 'Promise<TState>'.
+src/vanilla.ts(83,56): error TS2322: Type 'T' is not assignable to type 'Promise<T>'.
+tests/basic.test.tsx(57,13): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/basic.test.tsx(57,20): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/basic.test.tsx(78,42): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/basic.test.tsx(79,40): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/basic.test.tsx(104,16): error TS2339: Property 'item' does not exist on type 'Promise<{ item: { value: number; }; }>'.
+tests/basic.test.tsx(140,50): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/basic.test.tsx(146,48): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/basic.test.tsx(173,13): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/basic.test.tsx(173,20): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/basic.test.tsx(201,32): error TS2345: Argument of type '(state: State) => string' is not assignable to parameter of type '(state: Promise<State>) => string'.
+  Types of parameters 'state' and 'state' are incompatible.
+    Type 'Promise<State>' is missing the following properties from type 'State': one, two
+tests/basic.test.tsx(231,37): error TS2345: Argument of type '(s: State) => State' is not assignable to parameter of type '(state: Promise<State>) => State'.
+  Types of parameters 's' and 'state' are incompatible.
+    Property 'value' is missing in type 'Promise<State>' but required in type 'State'.
+tests/basic.test.tsx(350,19): error TS2345: Argument of type '(s: State) => any' is not assignable to parameter of type '(state: Promise<State>) => any'.
+  Types of parameters 's' and 'state' are incompatible.
+    Property 'value' is missing in type 'Promise<State>' but required in type 'State'.
+tests/basic.test.tsx(400,19): error TS2345: Argument of type '(s: State) => State' is not assignable to parameter of type '(state: Promise<State>) => State'.
+  Types of parameters 's' and 'state' are incompatible.
+    Property 'value' is missing in type 'Promise<State>' but required in type 'State'.
+tests/basic.test.tsx(428,22): error TS2739: Type 'Promise<State>' is missing the following properties from type 'State': value, getState1, getState2
+tests/basic.test.tsx(429,29): error TS2739: Type 'Promise<State>' is missing the following properties from type 'State': value, getState1, getState2
+tests/basic.test.tsx(432,21): error TS2339: Property 'getState1' does not exist on type 'Promise<State>'.
+tests/basic.test.tsx(433,21): error TS2339: Property 'getState2' does not exist on type 'Promise<State>'.
+tests/basic.test.tsx(449,14): error TS2339: Property 'setState1' does not exist on type 'Promise<State>'.
+tests/basic.test.tsx(450,21): error TS2339: Property 'value' does not exist on type 'Promise<State>'.
+tests/basic.test.tsx(451,14): error TS2339: Property 'setState2' does not exist on type 'Promise<State>'.
+tests/basic.test.tsx(452,21): error TS2339: Property 'value' does not exist on type 'Promise<State>'.
+tests/basic.test.tsx(453,14): error TS2339: Property 'setState1' does not exist on type 'Promise<State>'.
+tests/basic.test.tsx(453,25): error TS7006: Parameter 's' implicitly has an 'any' type.
+tests/basic.test.tsx(454,21): error TS2339: Property 'value' does not exist on type 'Promise<State>'.
+tests/basic.test.tsx(455,14): error TS2339: Property 'setState2' does not exist on type 'Promise<State>'.
+tests/basic.test.tsx(455,25): error TS7006: Parameter 's' implicitly has an 'any' type.
+tests/basic.test.tsx(456,21): error TS2339: Property 'value' does not exist on type 'Promise<State>'.
+tests/basic.test.tsx(494,19): error TS2345: Argument of type '(s: State) => number' is not assignable to parameter of type '(state: Promise<State>) => number'.
+  Types of parameters 's' and 'state' are incompatible.
+    Type 'Promise<State>' is missing the following properties from type 'State': a, b
+tests/basic.test.tsx(533,56): error TS2339: Property 'b' does not exist on type 'Promise<State>'.
+tests/basic.test.tsx(534,19): error TS2345: Argument of type '(s: State) => number' is not assignable to parameter of type '(state: Promise<State>) => number'.
+  Types of parameters 's' and 'state' are incompatible.
+    Type 'Promise<State>' is missing the following properties from type 'State': a, b
+tests/basic.test.tsx(586,41): error TS2339: Property 'childItems' does not exist on type 'Promise<State>'.
+tests/basic.test.tsx(591,48): error TS2339: Property 'childItems' does not exist on type 'Promise<State>'.
+tests/basic.test.tsx(623,38): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/basic.test.tsx(664,38): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/basic.test.tsx(669,38): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/devtools.test.tsx(218,20): error TS2339: Property 'setCount' does not exist on type 'Promise<{ count: number; setCount: (count: number) => void; }>'.
+tests/devtools.test.tsx(306,24): error TS2339: Property 'setCount' does not exist on type 'Promise<{ count: number; setCount: (count: number) => void; }>'.
+tests/devtools.test.tsx(360,22): error TS2339: Property 'setCount' does not exist on type 'Promise<{ count: number; setCount: (count: number) => void; }>'.
+tests/immer.test.tsx(19,30): error TS2339: Property 'inc' does not exist on type 'Promise<State>'.
+tests/immer.test.tsx(20,37): error TS2339: Property 'count' does not exist on type 'Promise<State>'.
+tests/immer.test.tsx(56,51): error TS2339: Property 'user' does not exist on type 'Promise<State>'.
+tests/immer.test.tsx(57,30): error TS2339: Property 'addTag' does not exist on type 'Promise<State>'.
+tests/immer.test.tsx(59,37): error TS2339: Property 'user' does not exist on type 'Promise<State>'.
+tests/immer.test.tsx(60,37): error TS2339: Property 'user' does not exist on type 'Promise<State>'.
+tests/immer.test.tsx(72,29): error TS2339: Property 'count' does not exist on type 'Promise<State>'.
+tests/middlewareTypes.test.tsx(44,37): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(47,43): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(48,43): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(49,36): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(50,36): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(51,45): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(52,45): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(66,33): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(71,43): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(72,43): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(73,36): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(74,36): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(75,45): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(76,45): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(95,35): error TS2339: Property 'count' does not exist on type 'Promise<Promise<CounterState> & { additional: number; }>'.
+tests/middlewareTypes.test.tsx(100,63): error TS2344: Type '{ additional: number; }' does not satisfy the constraint '{ [toStringTag]: "Expected: never, Actual: string"; then: "Expected: never, Actual: function"; catch: "Expected: never, Actual: function"; finally: "Expected: never, Actual: function"; additional: "Expected: number, Actual: never"; }'.
+  Type '{ additional: number; }' is missing the following properties from type '{ [toStringTag]: "Expected: never, Actual: string"; then: "Expected: never, Actual: function"; catch: "Expected: never, Actual: function"; finally: "Expected: never, Actual: function"; additional: "Expected: number, Actual: never"; }': [toStringTag], then, catch, finally
+tests/middlewareTypes.test.tsx(109,63): error TS2344: Type '{ additional: number; }' does not satisfy the constraint '{ [toStringTag]: "Expected: never, Actual: string"; then: "Expected: never, Actual: function"; catch: "Expected: never, Actual: function"; finally: "Expected: never, Actual: function"; additional: "Expected: number, Actual: never"; }'.
+  Type '{ additional: number; }' is missing the following properties from type '{ [toStringTag]: "Expected: never, Actual: string"; then: "Expected: never, Actual: function"; catch: "Expected: never, Actual: function"; finally: "Expected: never, Actual: function"; additional: "Expected: number, Actual: never"; }': [toStringTag], then, catch, finally
+tests/middlewareTypes.test.tsx(133,43): error TS2339: Property 'count' does not exist on type 'Promise<Write<{ count: number; }, ReduxState<{ type: "INC"; }>>>'.
+tests/middlewareTypes.test.tsx(135,32): error TS2339: Property 'dispatch' does not exist on type 'Promise<Write<{ count: number; }, ReduxState<{ type: "INC"; }>>>'.
+tests/middlewareTypes.test.tsx(137,36): error TS2339: Property 'dispatch' does not exist on type 'Promise<Write<{ count: number; }, ReduxState<{ type: "INC"; }>>>'.
+tests/middlewareTypes.test.tsx(158,41): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(164,43): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(165,43): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(166,36): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(167,36): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(168,45): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(169,45): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(211,30): error TS2339: Property 'count' does not exist on type 'Promise<MyState>'.
+tests/middlewareTypes.test.tsx(227,39): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(231,43): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(232,43): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(233,36): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(234,36): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(235,45): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(236,45): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(238,26): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(254,39): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/middlewareTypes.test.tsx(258,43): error TS2339: Property 'count' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(259,43): error TS2339: Property 'inc' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(260,36): error TS2339: Property 'count' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(261,36): error TS2339: Property 'inc' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(262,45): error TS2339: Property 'count' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(263,45): error TS2339: Property 'inc' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(279,41): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(285,43): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(286,43): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(287,36): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(288,36): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(289,45): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(290,45): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(307,41): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(313,43): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(314,43): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(315,36): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(316,36): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(317,45): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(318,45): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(334,41): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(340,43): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(341,43): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(342,36): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(343,36): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(344,45): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(345,45): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(362,39): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(373,43): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(374,43): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(375,36): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(376,36): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(377,45): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(378,45): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(405,43): error TS2339: Property 'count' does not exist on type 'Promise<Write<{ count: number; }, ReduxState<{ type: "INC"; }>>>'.
+tests/middlewareTypes.test.tsx(407,32): error TS2339: Property 'dispatch' does not exist on type 'Promise<Write<{ count: number; }, ReduxState<{ type: "INC"; }>>>'.
+tests/middlewareTypes.test.tsx(409,36): error TS2339: Property 'dispatch' does not exist on type 'Promise<Write<{ count: number; }, ReduxState<{ type: "INC"; }>>>'.
+tests/middlewareTypes.test.tsx(427,41): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/middlewareTypes.test.tsx(433,43): error TS2339: Property 'count' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(434,43): error TS2339: Property 'inc' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(435,36): error TS2339: Property 'count' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(436,36): error TS2339: Property 'inc' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(437,45): error TS2339: Property 'count' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(438,45): error TS2339: Property 'inc' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(451,41): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/middlewareTypes.test.tsx(456,43): error TS2339: Property 'count' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(457,43): error TS2339: Property 'inc' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(458,36): error TS2339: Property 'count' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(459,36): error TS2339: Property 'inc' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(460,45): error TS2339: Property 'count' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(461,45): error TS2339: Property 'inc' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(463,26): error TS2339: Property 'count' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(476,41): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(482,43): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(483,43): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(484,36): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(485,36): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(486,45): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(487,45): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(490,28): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(508,43): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(516,43): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(517,43): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(518,36): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(519,36): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(520,45): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(521,45): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(541,37): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(550,43): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(551,43): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(552,36): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(553,36): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(554,45): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(555,45): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(570,43): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/middlewareTypes.test.tsx(577,43): error TS2339: Property 'count' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(578,43): error TS2339: Property 'inc' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(579,36): error TS2339: Property 'count' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(580,36): error TS2339: Property 'inc' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(581,45): error TS2339: Property 'count' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(582,45): error TS2339: Property 'inc' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(585,28): error TS2339: Property 'count' does not exist on type 'Promise<Write<{ count: number; }, { inc: () => void; }>>'.
+tests/middlewareTypes.test.tsx(604,45): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(613,43): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(614,43): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(615,36): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(616,36): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(617,45): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(618,45): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(621,28): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(645,39): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(655,43): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(656,43): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(657,36): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(658,36): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(659,45): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(660,45): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(663,28): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(690,43): error TS2339: Property 'foo' does not exist on type 'Promise<{ foo: boolean; }>'.
+tests/middlewareTypes.test.tsx(691,36): error TS2339: Property 'foo' does not exist on type 'Promise<{ foo: boolean; }>'.
+tests/middlewareTypes.test.tsx(692,45): error TS2339: Property 'foo' does not exist on type 'Promise<{ foo: boolean; }>'.
+tests/middlewareTypes.test.tsx(694,26): error TS2339: Property 'foo' does not exist on type 'Promise<{ foo: boolean; }>'.
+tests/middlewareTypes.test.tsx(716,43): error TS2339: Property 'foo' does not exist on type 'Promise<MyState>'.
+tests/middlewareTypes.test.tsx(717,36): error TS2339: Property 'foo' does not exist on type 'Promise<MyState>'.
+tests/middlewareTypes.test.tsx(718,45): error TS2339: Property 'foo' does not exist on type 'Promise<MyState>'.
+tests/middlewareTypes.test.tsx(720,26): error TS2339: Property 'foo' does not exist on type 'Promise<MyState>'.
+tests/middlewareTypes.test.tsx(748,32): error TS2339: Property 'authenticated' does not exist on type 'Promise<MyState>'.
+tests/middlewareTypes.test.tsx(751,32): error TS2339: Property 'authenticate' does not exist on type 'Promise<MyState>'.
+tests/middlewareTypes.test.tsx(753,36): error TS2339: Property 'authenticated' does not exist on type 'Promise<MyState>'.
+tests/middlewareTypes.test.tsx(755,25): error TS2339: Property 'authenticate' does not exist on type 'Promise<MyState>'.
+tests/middlewareTypes.test.tsx(758,34): error TS2339: Property 'authenticated' does not exist on type 'Promise<MyState>'.
+tests/middlewareTypes.test.tsx(761,34): error TS2339: Property 'authenticate' does not exist on type 'Promise<MyState>'.
+tests/middlewareTypes.test.tsx(782,43): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(789,43): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(790,43): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(791,36): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(792,36): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(793,45): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(794,45): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(797,28): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/middlewareTypes.test.tsx(851,43): error TS2339: Property 'bears' does not exist on type 'Promise<BearSlice & FishSlice>'.
+tests/middlewareTypes.test.tsx(852,43): error TS2339: Property 'fishes' does not exist on type 'Promise<BearSlice & FishSlice>'.
+tests/middlewareTypes.test.tsx(853,43): error TS2339: Property 'addBear' does not exist on type 'Promise<BearSlice & FishSlice>'.
+tests/middlewareTypes.test.tsx(854,43): error TS2339: Property 'eatFish' does not exist on type 'Promise<BearSlice & FishSlice>'.
+tests/persistAsync.test.tsx(84,15): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; name: string; }>'.
+tests/persistAsync.test.tsx(84,22): error TS2339: Property 'name' does not exist on type 'Promise<{ count: number; name: string; }>'.
+tests/persistAsync.test.tsx(130,15): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/persistAsync.test.tsx(167,15): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/persistAsync.test.tsx(198,15): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/persistAsync.test.tsx(247,15): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/persistAsync.test.tsx(304,15): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; name: string; setName: (name: string) => void; }>'.
+tests/persistAsync.test.tsx(304,22): error TS2339: Property 'setName' does not exist on type 'Promise<{ count: number; name: string; setName: (name: string) => void; }>'.
+tests/persistAsync.test.tsx(304,31): error TS2339: Property 'name' does not exist on type 'Promise<{ count: number; name: string; setName: (name: string) => void; }>'.
+tests/persistAsync.test.tsx(359,15): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/persistAsync.test.tsx(404,15): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/persistAsync.test.tsx(456,15): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/persistAsync.test.tsx(500,15): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; unstorableMethod: () => void; }>'.
+tests/persistAsync.test.tsx(553,15): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; actions: { unstorableMethod: () => void; }; }>'.
+tests/persistAsync.test.tsx(595,15): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/persistAsync.test.tsx(745,15): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; inc: () => void; }>'.
+tests/persistAsync.test.tsx(757,37): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; inc: () => void; }>'.
+tests/persistAsync.test.tsx(791,15): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; bumped: boolean; }>'.
+tests/persistAsync.test.tsx(791,22): error TS2339: Property 'bumped' does not exist on type 'Promise<{ count: number; bumped: boolean; }>'.
+tests/persistAsync.test.tsx(843,15): error TS2339: Property 'map' does not exist on type 'Promise<{ map: Map<any, any>; }>'.
+tests/persistAsync.test.tsx(881,15): error TS2339: Property 'map' does not exist on type 'Promise<{ map: Map<any, any>; }>'.
+tests/persistAsync.test.tsx(917,15): error TS2339: Property 'map' does not exist on type 'Promise<{ map: Map<any, any>; }>'.
+tests/persistAsync.test.tsx(974,37): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/persistAsync.test.tsx(1064,37): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/persistAsync.test.tsx(1106,29): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/persistAsync.test.tsx(1134,29): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/persistAsync.test.tsx(1168,29): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/persistAsync.test.tsx(1171,29): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/persistAsync.test.tsx(1192,29): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/persistAsync.test.tsx(1227,29): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/persistAsync.test.tsx(1234,29): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; }>'.
+tests/persistSync.test.tsx(656,37): error TS2339: Property 'count' does not exist on type 'Promise<{ count: number; inc: () => void; }>'.
+tests/shallow.test.tsx(14,55): error TS2339: Property 'villages' does not exist on type 'Promise<{ villages: { name: string; }[]; }>'.
+tests/shallow.test.tsx(26,26): error TS2339: Property 'refetchTimestamp' does not exist on type 'Promise<{ refetchTimestamp: string; }>'.
+tests/shallow.test.tsx(133,33): error TS2345: Argument of type '(state: Record<string, unknown>) => string[]' is not assignable to parameter of type '(state: Promise<Record<string, unknown>>) => string[]'.
+  Types of parameters 'state' and 'state' are incompatible.
+    Type 'Promise<Record<string, unknown>>' is not assignable to type 'Record<string, unknown>'.
+      Index signature for type 'string' is missing in type 'Promise<Record<string, unknown>>'.
+tests/ssr.test.tsx(22,33): error TS2339: Property 'bears' does not exist on type 'Promise<BearStoreState & BearStoreAction>'.
+tests/ssr.test.tsx(24,8): error TS2339: Property 'increasePopulation' does not exist on type 'Promise<BearStoreState & BearStoreAction>'.
+tests/ssr.test.tsx(76,47): error TS2339: Property 'bears' does not exist on type 'Promise<{ bears: number; }>'.
+tests/subscribe.test.tsx(27,28): error TS2345: Argument of type '{ then<TResult1 = { value: number; other: string; }, TResult2 = never>(onfulfilled?: ((value: { value: number; other: string; }) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<...>) | ... 1 more ... | undefined): Promise<...>; catch<TResult = never>(onr...' is not assignable to parameter of type '{ value: number; other: string; } | Partial<{ value: number; other: string; }> | ((state: { value: number; other: string; }) => { value: number; other: string; } | Partial<{ value: number; other: string; }>)'.
+tests/subscribe.test.tsx(36,38): error TS2339: Property 'value' does not exist on type 'Promise<{ value: number; other: string; }>'.
+tests/subscribe.test.tsx(46,38): error TS2339: Property 'value' does not exist on type 'Promise<{ value: number; other: string; }>'.
+tests/subscribe.test.tsx(67,38): error TS2339: Property 'value' does not exist on type 'Promise<{ value: number; other: string; }>'.
+tests/subscribe.test.tsx(78,52): error TS2339: Property 'value' does not exist on type 'Promise<{ value: number; other: string; }>'.
+tests/subscribe.test.tsx(93,38): error TS2339: Property 'value' does not exist on type 'Promise<{ value: number; }>'.
+tests/types.test.tsx(43,25): error TS2339: Property 'num' does not exist on type 'Promise<ExampleState>'.
+tests/types.test.tsx(47,50): error TS2339: Property 'num' does not exist on type 'Promise<ExampleState>'.
+tests/types.test.tsx(61,25): error TS2339: Property 'num' does not exist on type 'Promise<ExampleState>'.
+tests/types.test.tsx(62,30): error TS2339: Property 'num' does not exist on type 'Promise<ExampleState>'.
+tests/types.test.tsx(211,26): error TS2339: Property 'count' does not exist on type 'Promise<State> | Promise<Promise<State>>'.
+  Property 'count' does not exist on type 'Promise<State>'.
+tests/types.test.tsx(228,26): error TS2339: Property 'count' does not exist on type 'Promise<State>'.
+tests/types.test.tsx(247,41): error TS2339: Property 'count' does not exist on type 'Promise<State>'.
+tests/vanilla/basic.test.ts(51,20): error TS2339: Property 'inc' does not exist on type 'Promise<CounterState>'.
+tests/vanilla/basic.test.ts(53,27): error TS2339: Property 'count' does not exist on type 'Promise<CounterState>'.
+tests/vanilla/basic.test.ts(65,22): error TS2739: Type 'Promise<State>' is missing the following properties from type 'State': value, getState1, getState2
+tests/vanilla/basic.test.ts(66,29): error TS2739: Type 'Promise<State>' is missing the following properties from type 'State': value, getState1, getState2
+tests/vanilla/basic.test.ts(69,27): error TS2339: Property 'getState1' does not exist on type 'Promise<State>'.
+tests/vanilla/basic.test.ts(70,27): error TS2339: Property 'getState2' does not exist on type 'Promise<State>'.
+tests/vanilla/basic.test.ts(93,20): error TS2339: Property 'setState1' does not exist on type 'Promise<State>'.
+tests/vanilla/basic.test.ts(94,27): error TS2339: Property 'value' does not exist on type 'Promise<State>'.
+tests/vanilla/basic.test.ts(95,20): error TS2339: Property 'setState2' does not exist on type 'Promise<State>'.
+tests/vanilla/basic.test.ts(96,27): error TS2339: Property 'value' does not exist on type 'Promise<State>'.
+tests/vanilla/subscribe.test.tsx(22,14): error TS2345: Argument of type '{ then<TResult1 = { value: number; other: string; }, TResult2 = never>(onfulfilled?: ((value: { value: number; other: string; }) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<...>) | ... 1 more ... | undefined): Promise<...>; catch<TResult = never>(onr...' is not assignable to parameter of type '{ value: number; other: string; } | Partial<{ value: number; other: string; }> | ((state: { value: number; other: string; }) => { value: number; other: string; } | Partial<{ value: number; other: string; }>)'.
+tests/vanilla/subscribe.test.tsx(33,24): error TS2339: Property 'value' does not exist on type 'Promise<{ value: number; other: string; }>'.
+tests/vanilla/subscribe.test.tsx(45,24): error TS2339: Property 'value' does not exist on type 'Promise<{ value: number; other: string; }>'.
+tests/vanilla/subscribe.test.tsx(70,24): error TS2339: Property 'value' does not exist on type 'Promise<{ value: number; other: string; }>'.
+tests/vanilla/subscribe.test.tsx(83,38): error TS2339: Property 'value' does not exist on type 'Promise<{ value: number; other: string; }>'.
+tests/vanilla/subscribe.test.tsx(104,32): error TS2339: Property 'value' does not exist on type 'Promise<{ value: number; other: string; }>'.
+tests/vanilla/subscribe.test.tsx(106,37): error TS2339: Property 'value' does not exist on type 'Promise<{ value: number; other: string; }>'.
+tests/vanilla/subscribe.test.tsx(110,13): error TS2339: Property 'value' does not exist on type 'Promise<{ value: number; other: string; }>'.
+tests/vanilla/subscribe.test.tsx(111,21): error TS2339: Property 'value' does not exist on type 'Promise<{ value: number; other: string; }>'.
+tests/vanilla/subscribe.test.tsx(113,39): error TS2339: Property 'value' does not exist on type 'Promise<{ value: number; other: string; }>'.
+tests/vanilla/subscribe.test.tsx(129,24): error TS2339: Property 'value' does not exist on type 'Promise<{ value: number; }>'.
+[ELIFECYCLE] Command failed with exit code 2.

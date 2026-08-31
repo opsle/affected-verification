@@ -1,0 +1,11 @@
+{
+  "scenario_id": "AVS-003",
+  "full_run_identity": "sha256:2e2783083c5c15223ced34fe6484e50135e8c08bd8611e655053de2f55774553",
+  "baseline_identity": "sha256:f60b3c5d52fdfb56a78b516a3a3482ae2729e746b01245a5f348c65a71e8a74e",
+  "relevant_check_ids": [
+    "check:lint",
+    "test:tests/subscribe.test.tsx"
+  ],
+  "definition": "Clean PASS changed to scenario FAIL; relevant within this frozen verification catalog.",
+  "identity": "sha256:b57768c62849b53e02e2e5416062669f976349e57f666ad2d540d370db0ab1fe"
+}

@@ -1,0 +1,9 @@
+Already up to date
+Done in 411ms using pnpm v11.3.0
+
+/tmp/av-exp-001-shadow-amendment-002/AVS-003/src/vanilla.ts
+  74:13  error  'previousState' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+✖ 1 problem (1 error, 0 warnings)
+
+[ELIFECYCLE] Command failed with exit code 1.

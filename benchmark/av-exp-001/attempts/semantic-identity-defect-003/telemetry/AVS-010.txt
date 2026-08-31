@@ -1,0 +1,6 @@
+[Affected Verification]
+Scenario: AVS-010
+Impact evidence incomplete
+Targeted skipping denied
+Verification broadened: FULL
+Selection miss risk: unresolved, fail-closed

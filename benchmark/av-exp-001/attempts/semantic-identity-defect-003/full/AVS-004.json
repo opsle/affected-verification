@@ -1,0 +1,177 @@
+{
+  "scenario_id": "AVS-004",
+  "target_sha": "b57db4f86ef179285da216eeb291266da82c361c",
+  "catalog_identity": "sha256:8c5b224deaa7077690341248a18a2155310e2b16072e1607a9b4cd546e3a0914",
+  "executed_check_ids": [
+    "check:build",
+    "check:format",
+    "check:lint",
+    "check:typecheck",
+    "test:tests/basic.test.tsx",
+    "test:tests/devtools.test.tsx",
+    "test:tests/immer.test.tsx",
+    "test:tests/middlewareTypes.test.tsx",
+    "test:tests/persistAsync.test.tsx",
+    "test:tests/persistSync.test.tsx",
+    "test:tests/shallow.test.tsx",
+    "test:tests/ssr.test.tsx",
+    "test:tests/subscribe.test.tsx",
+    "test:tests/types.test.tsx",
+    "test:tests/vanilla/basic.test.ts",
+    "test:tests/vanilla/shallow.test.tsx",
+    "test:tests/vanilla/subscribe.test.tsx"
+  ],
+  "failed_check_ids": [
+    "test:tests/persistSync.test.tsx"
+  ],
+  "outcomes": {
+    "check:build": "PASS",
+    "check:format": "PASS",
+    "check:lint": "PASS",
+    "check:typecheck": "PASS",
+    "test:tests/basic.test.tsx": "PASS",
+    "test:tests/devtools.test.tsx": "PASS",
+    "test:tests/immer.test.tsx": "PASS",
+    "test:tests/middlewareTypes.test.tsx": "PASS",
+    "test:tests/persistAsync.test.tsx": "PASS",
+    "test:tests/persistSync.test.tsx": "FAIL",
+    "test:tests/shallow.test.tsx": "PASS",
+    "test:tests/ssr.test.tsx": "PASS",
+    "test:tests/subscribe.test.tsx": "PASS",
+    "test:tests/types.test.tsx": "PASS",
+    "test:tests/vanilla/basic.test.ts": "PASS",
+    "test:tests/vanilla/shallow.test.tsx": "PASS",
+    "test:tests/vanilla/subscribe.test.tsx": "PASS"
+  },
+  "complete": true,
+  "command_outcomes": [
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "--reporter=json",
+        "--outputFile=/home/deploy/apps/opsle-bootstrap/repos/affected-verification/benchmark/av-exp-001/results-v1/raw/AVS-004/AVS-004-tests.vitest.json"
+      ],
+      "exit_code": 1,
+      "signal": null,
+      "timed_out": false,
+      "spawn_error": null
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "test:format"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "timed_out": false,
+      "spawn_error": null
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "test:types"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "timed_out": false,
+      "spawn_error": null
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "test:lint"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "timed_out": false,
+      "spawn_error": null
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "timed_out": false,
+      "spawn_error": null
+    }
+  ],
+  "identity": "sha256:1dd293c293e24294eb672f4cfee45ade7424ff4e7a7f80da876b37a95608a11c",
+  "observed_durations_ms": [
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "--reporter=json",
+        "--outputFile=/home/deploy/apps/opsle-bootstrap/repos/affected-verification/benchmark/av-exp-001/results-v1/raw/AVS-004/AVS-004-tests.vitest.json"
+      ],
+      "duration_ms": 4363.582
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "test:format"
+      ],
+      "duration_ms": 4080.656
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "test:types"
+      ],
+      "duration_ms": 3666.045
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "test:lint"
+      ],
+      "duration_ms": 5945.114
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "build"
+      ],
+      "duration_ms": 12744.722
+    }
+  ],
+  "evidence_files": [
+    "benchmark/av-exp-001/results-v1/raw/AVS-004/AVS-004-tests.stdout.log",
+    "benchmark/av-exp-001/results-v1/raw/AVS-004/AVS-004-tests.stderr.log",
+    "benchmark/av-exp-001/results-v1/raw/AVS-004/AVS-004-format.stdout.log",
+    "benchmark/av-exp-001/results-v1/raw/AVS-004/AVS-004-format.stderr.log",
+    "benchmark/av-exp-001/results-v1/raw/AVS-004/AVS-004-typecheck.stdout.log",
+    "benchmark/av-exp-001/results-v1/raw/AVS-004/AVS-004-typecheck.stderr.log",
+    "benchmark/av-exp-001/results-v1/raw/AVS-004/AVS-004-lint.stdout.log",
+    "benchmark/av-exp-001/results-v1/raw/AVS-004/AVS-004-lint.stderr.log",
+    "benchmark/av-exp-001/results-v1/raw/AVS-004/AVS-004-build.stdout.log",
+    "benchmark/av-exp-001/results-v1/raw/AVS-004/AVS-004-build.stderr.log"
+  ],
+  "test_count": 224,
+  "test_file_count": 13
+}

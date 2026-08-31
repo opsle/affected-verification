@@ -24,6 +24,7 @@ const preregistrationSha = '0544362d7659093b7f0b4f89ee8f68023fd269c3';
 const amendmentIdentities = [
   'sha256:80a04b99ad73e86ecb2e7c85dda3a11ddbe99cdf200ca38e2c1effe498184357',
   'sha256:51437d6c3bfdd1461a9679a5055ab5c34d9eb603ba95b67f86f8516f8b93a25e',
+  'sha256:44f420409b719b5ddfaac04928e215572873475c8d8e720e4755e043b878dfde',
 ];
 
 function readJson(file) {
@@ -100,7 +101,11 @@ function verifyPreregistration() {
       throw new Error(`scenario patch/hash mismatch: ${scenario.id}`);
     }
   }
-  const amendmentFiles = ['001-worktree-install.md', '002-reporter-semantics.md'];
+  const amendmentFiles = [
+    '001-worktree-install.md',
+    '002-reporter-semantics.md',
+    '003-artifact-path-normalization.md',
+  ];
   amendmentFiles.forEach((name, index) => {
     const amendmentText = fs.readFileSync(path.join(here, 'amendments', name), 'utf8');
     const amendmentBody = amendmentText.split('\nAmendment identity:\n')[0] + '\n';
@@ -231,7 +236,8 @@ function runFullCatalog(worktree, rawDir, catalog, runId) {
     outcomes: Object.fromEntries([...outcomes.entries()].sort()),
     complete,
     command_outcomes: commandRecords.map((record) => ({
-      command: record.command,
+      command: record.command.map((token) => token.startsWith('--outputFile=')
+        ? '--outputFile=<artifact>' : token),
       exit_code: record.exit_code,
       signal: record.signal,
       timed_out: record.timed_out,

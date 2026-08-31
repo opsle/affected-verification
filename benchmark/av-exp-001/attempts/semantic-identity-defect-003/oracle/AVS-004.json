@@ -1,0 +1,10 @@
+{
+  "scenario_id": "AVS-004",
+  "full_run_identity": "sha256:1dd293c293e24294eb672f4cfee45ade7424ff4e7a7f80da876b37a95608a11c",
+  "baseline_identity": "sha256:f60b3c5d52fdfb56a78b516a3a3482ae2729e746b01245a5f348c65a71e8a74e",
+  "relevant_check_ids": [
+    "test:tests/persistSync.test.tsx"
+  ],
+  "definition": "Clean PASS changed to scenario FAIL; relevant within this frozen verification catalog.",
+  "identity": "sha256:b2cb0a5ce4f2ddccde45b4a5a7b79a9d3cb4dcf1e8179768d3685fed5623f67d"
+}
