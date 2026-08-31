@@ -1,0 +1,5 @@
+src/click/decorators.py:521: error: Need type annotation for "distributions"
+(hint: "distributions: list[<type>] = ...")  [var-annotated]
+                    distributions = []
+                    ^~~~~~~~~~~~~
+Found 1 error in 1 file (checked 28 source files)

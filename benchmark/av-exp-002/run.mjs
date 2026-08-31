@@ -489,7 +489,12 @@ function scenarioRun(worktree, scenario, prereg, baselineSummary, selectorBaseli
   const patchFile = path.join(preregDir, scenario.patch);
   const apply = run('git', ['apply', patchFile], { cwd: worktree });
   requireSuccess(apply, `apply ${scenario.id}`);
-  const changedPaths = git(worktree, ['diff', '--name-only']).split('\n').filter(Boolean).sort();
+  const trackedPaths = git(worktree, ['diff', '--name-only']).split('\n').filter(Boolean);
+  const statusPaths = git(worktree, ['status', '--porcelain', '--untracked-files=all'])
+    .split('\n')
+    .filter((line) => line.startsWith('?? '))
+    .map((line) => line.slice(3));
+  const changedPaths = [...new Set([...trackedPaths, ...statusPaths])].sort();
   if (JSON.stringify(changedPaths) !== JSON.stringify([...scenario.changed_paths].sort())) {
     throw new Error(`changed path mismatch: ${scenario.id}`);
   }
@@ -609,6 +614,7 @@ const amendmentFiles = [
   '001-report-directory.md',
   '002-pytest-report-and-pyright-resolution.md',
   '003-planner-catalog-coverage-scope.md',
+  '004-added-path-change-identity.md',
 ];
 const amendments = amendmentFiles.map((name) => ({
   name,

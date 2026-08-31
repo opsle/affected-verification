@@ -1,0 +1,14 @@
+{
+  "command": [
+    "uv",
+    "lock",
+    "--check"
+  ],
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "spawn_error": null,
+  "duration_ms_observed": 26.256,
+  "stdout_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "sha256:3dbcbb25a43ec40e2609b2a5bcdf8446b776f2ca41d9194448d434449ad5c066"
+}

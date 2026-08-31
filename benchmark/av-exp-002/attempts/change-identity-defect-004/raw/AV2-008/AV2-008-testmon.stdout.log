@@ -1,0 +1,170 @@
+tests/test_custom_classes.py::test_context_formatter_class
+tests/test_context.py::test_no_state_leaks
+tests/test_context.py::test_propagate_show_default_setting
+tests/test_formatting.py::test_truncating_docstring
+tests/test_formatting.py::test_formatting_with_options_metavar_empty
+tests/test_formatting.py::test_truncating_docstring_no_help
+tests/test_formatting.py::test_global_show_default
+tests/test_formatting.py::test_formatting_empty_help_lines
+tests/test_formatting.py::test_command_write_usage_no_args[none-options-metavar-no-params]
+tests/test_formatting.py::test_removing_multiline_marker
+tests/test_formatting.py::test_command_write_usage_no_args[empty-options-metavar-no-params]
+tests/test_formatting.py::test_formatting_custom_type_metavar
+tests/test_formatting.py::test_basic_functionality
+tests/test_formatting.py::test_wrapping_long_options_strings
+tests/test_formatting.py::test_wrapping_long_command_name
+tests/test_commands.py::test_command_no_args_is_help
+tests/test_commands.py::test_deprecated_in_help_messages[USE OTHER COMMAND INSTEAD-CLI HELP]
+tests/test_commands.py::test_deprecated_in_help_messages[True-None]
+tests/test_commands.py::test_group_with_args[args3-2-Show this message and exit.]
+tests/test_commands.py::test_deprecated_empty_help_no_leading_space[None-True]
+tests/test_commands.py::test_deprecated_empty_help_no_leading_space[-True]
+tests/test_commands.py::test_deprecated_in_help_messages[True-CLI HELP]
+tests/test_commands.py::test_aliased_command_canonical_name
+tests/test_commands.py::test_group_with_args[args1-0-Show this message and exit.]
+tests/test_commands.py::test_deprecated_empty_help_no_leading_space[None-USE OTHER COMMAND INSTEAD]
+tests/test_commands.py::test_deprecated_in_help_messages[USE OTHER COMMAND INSTEAD-None]
+tests/test_commands.py::test_subcommand_metavar_marks_optional[True-False-COMMAND1 [ARGS]... [COMMAND2 [ARGS]...]...]
+tests/test_commands.py::test_deprecated_empty_help_no_leading_space[-USE OTHER COMMAND INSTEAD]
+tests/test_commands.py::test_subcommand_metavar_marks_optional[False-False-COMMAND [ARGS]...]
+tests/test_commands.py::test_subcommand_metavar_marks_optional[False-True-[COMMAND] [ARGS]...]
+tests/test_commands.py::test_subcommand_metavar_marks_optional[True-True-[COMMAND1] [ARGS]... [COMMAND2 [ARGS]...]...]
+tests/test_commands.py::test_auto_shorthelp
+tests/test_commands.py::test_help_param_priority
+tests/test_arguments.py::test_argument_metavar_marks_optional[kwargs7-[FOO]...]
+tests/test_arguments.py::test_deprecated_usage_help_record_without_help
+tests/test_arguments.py::test_argument_metavar_marks_optional[kwargs0-FOO]
+tests/test_arguments.py::test_deprecated_usage_help_record[True-(DEPRECATED)]
+tests/test_arguments.py::test_argument_metavar_marks_optional[kwargs5-FOO...]
+tests/test_arguments.py::test_argument_metavar_marks_optional[kwargs4-[FOO]...]
+tests/test_arguments.py::test_deprecated_usage_help_record[use g instead-(DEPRECATED: use g instead)]
+tests/test_arguments.py::test_argument_help_optional_metavar
+tests/test_arguments.py::test_argument_metavar_marks_optional[kwargs6-FOO...]
+tests/test_arguments.py::test_argument_metavar_marks_optional[kwargs1-FOO]
+tests/test_arguments.py::test_argument_metavar_marks_optional[kwargs3-[FOO]]
+tests/test_arguments.py::test_argument_help
+tests/test_arguments.py::test_subcommand_help
+tests/test_arguments.py::test_argument_help_options_only_no_arguments_section
+tests/test_arguments.py::test_argument_metavar_marks_optional[kwargs2-[FOO]]
+tests/test_arguments.py::test_deprecated_usage
+tests/test_arguments.py::test_nested_subcommand_help
+tests/test_defaults.py::test_lookup_default_callable_in_default_map
+tests/test_defaults.py::test_lookup_default_override_respected
+tests/test_defaults.py::test_flag_default_map
+tests/test_options.py::test_do_not_show_default_empty_multiple
+tests/test_options.py::test_do_not_show_no_default
+tests/test_options.py::test_count_default_type_help
+tests/test_options.py::test_file_type_help_default
+tests/test_options.py::test_show_default_string
+tests/test_options.py::test_deprecated_empty_help_no_leading_space[-True-(DEPRECATED)]
+tests/test_options.py::test_intrange_default_help_text[type0-1<=x<=32]
+tests/test_options.py::test_show_default_boolean_flag_name[True-cache]
+tests/test_options.py::test_hide_false_default_boolean_flag_value[False]
+tests/test_options.py::test_intrange_default_help_text[type1-1<x<32]
+tests/test_options.py::test_deprecated_empty_help_no_leading_space[-USE B INSTEAD-(DEPRECATED: USE B INSTEAD)]
+tests/test_options.py::test_deprecated_empty_help_no_leading_space[None-USE B INSTEAD-(DEPRECATED: USE B INSTEAD)]
+tests/test_options.py::test_show_default_precedence[False-False-extra_value4-False]
+tests/test_options.py::test_show_true_default_boolean_flag_value
+tests/test_options.py::test_show_default_with_empty_string[non-string-comparable-object]
+tests/test_options.py::test_show_default_precedence[None-None-extra_value0-False]
+tests/test_options.py::test_show_default_precedence[True-None-extra_value6-True]
+tests/test_options.py::test_show_default_with_empty_string[empty-string]
+tests/test_options.py::test_intrange_default_help_text[type3-x<=32]
+tests/test_options.py::test_show_default_boolean_flag_name[False-no-cache]
+tests/test_options.py::test_dynamic_default_help_special_method
+tests/test_options.py::test_show_default_precedence[False-None-extra_value3-False]
+tests/test_options.py::test_show_default_precedence[True-False-extra_value7-False]
+tests/test_options.py::test_show_default_precedence[None-False-extra_value1-False]
+tests/test_options.py::test_show_default_precedence[False-one-extra_value9-True]
+tests/test_options.py::test_show_default_precedence[None-True-extra_value2-True]
+tests/test_options.py::test_deprecated_empty_help_no_leading_space[None-True-(DEPRECATED)]
+tests/test_options.py::test_show_default_precedence[False-True-extra_value5-True]
+tests/test_options.py::test_show_default_precedence[True-True-extra_value8-True]
+tests/test_options.py::test_intrange_default_help_text[type2-x>=1]
+tests/test_options.py::test_show_envvar
+tests/test_options.py::test_show_default_default_map
+tests/test_options.py::test_deprecated_usage[True]
+tests/test_options.py::test_choice_default_rendering[choices1-random-random]
+tests/test_options.py::test_help_option_custom_names_and_class[name_specs2-  --help  Show this message and exit.\n-True]
+tests/test_options.py::test_hide_false_default_boolean_flag_value[None]
+tests/test_options.py::test_dynamic_default_help_unset
+tests/test_options.py::test_option_custom_class
+tests/test_options.py::test_choice_default_rendering[choices5-2-2]
+tests/test_options.py::test_choice_default_rendering[ColorInt-GREEN-GREEN]
+tests/test_options.py::test_choice_default_rendering[choices8-True-True]
+tests/test_options.py::test_option_help_preserve_paragraphs
+tests/test_options.py::test_choice_default_rendering[Letter-NAME_2-NAME_2]
+tests/test_options.py::test_deprecated_usage[USE B INSTEAD]
+tests/test_options.py::test_choice_default_rendering[choices11-1-1]
+tests/test_options.py::test_choice_default_rendering[Letter-42_value-NAME_3]
+tests/test_options.py::test_callable_flag_value_show_default
+tests/test_options.py::test_choice_default_rendering[Letter-NAME_3-NAME_3]
+tests/test_options.py::test_choice_default_rendering[choices2-None-None]
+tests/test_options.py::test_choice_default_rendering[Number-TWO-TWO]
+tests/test_options.py::test_choice_default_rendering[Number-2-TWO]
+tests/test_options.py::test_choice_default_rendering[Letter-Value-1-NAME_1]
+tests/test_options.py::test_dynamic_default_help_text
+tests/test_options.py::test_choice_default_rendering[choices9-False-False]
+tests/test_options.py::test_show_envvar_auto_prefix
+tests/test_options.py::test_prefixes
+tests/test_options.py::test_choice_default_rendering[HashType-HashType.SHA256-SHA256]
+tests/test_options.py::test_choice_default_rendering[Color-Color.GREEN-GREEN]
+tests/test_options.py::test_choice_default_rendering[ColorInt-2-GREEN]
+tests/test_options.py::test_choice_default_rendering[choices3-0-0]
+tests/test_options.py::test_choice_default_rendering[choices10-foo-foo]
+tests/test_options.py::test_choice_default_rendering[choices0-bar-bar]
+tests/test_options.py::test_help_option_custom_names_and_class[name_specs1-  -h      Show this message and exit.\n  --help  Show this message and exit.\n-True]
+tests/test_options.py::test_choice_default_rendering[choices6-2-2]
+tests/test_options.py::test_option_custom_class_reusable
+tests/test_options.py::test_show_envvar_auto_prefix_dash_in_command
+tests/test_options.py::test_help_option_custom_names_and_class[name_specs0-  -h, --help  Show this message and exit.\n-True]
+tests/test_options.py::test_help_option_custom_names_and_class[name_specs2-  --help  Show this message and exit.\n-False]
+tests/test_options.py::test_choice_default_rendering[Color-GREEN-GREEN]
+tests/test_options.py::test_help_option_custom_names_and_class[name_specs0-  -h, --help  Show this message and exit.\n-False]
+tests/test_options.py::test_choice_default_rendering[Letter-Value_2-NAME_2]
+tests/test_options.py::test_help_option_custom_names_and_class[name_specs1-  -h      Show this message and exit.\n  --help  Show this message and exit.\n-False]
+tests/test_options.py::test_choice_default_rendering[choices4-0.0-0.0]
+tests/test_options.py::test_choice_default_rendering[HashType-HashType.SHA1-SHA1]
+tests/test_options.py::test_choice_default_rendering[choices7-2.0-2.0]
+tests/test_options.py::test_choice_default_rendering[Letter-NAME_1-NAME_1]
+tests/test_options.py::test_multiple_default_help
+tests/test_options.py::test_winstyle_options
+tests/test_options.py::test_choice_default_rendering[HashType-SHA256-SHA256]
+tests/test_options.py::test_counting
+tests/test_options.py::test_choice_usage_rendering[HashType-[HASHTYPE]]
+tests/test_options.py::test_choice_usage_rendering[choices0-[TEXT]]
+tests/test_options.py::test_choice_usage_rendering[Number-[NUMBER]]
+tests/test_options.py::test_choice_usage_rendering[ColorInt-[COLORINT]]
+tests/test_options.py::test_choice_usage_rendering[Color-[COLOR]]
+tests/test_options.py::test_choice_usage_rendering[choices4-[TEXT|INTEGER]]
+tests/test_options.py::test_choice_usage_rendering[Letter-[LETTER]]
+tests/test_options.py::test_choice_usage_rendering[choices2-[FLOAT]]
+tests/test_options.py::test_choice_usage_rendering[choices1-[INTEGER]]
+tests/test_options.py::test_choice_usage_rendering[choices3-[BOOLEAN]]
+tests/test_normalization.py::test_choice_normalization
+tests/test_basic.py::test_datetime_argument_optional_metavar
+tests/test_basic.py::test_hidden_option
+tests/test_basic.py::test_hidden_command
+tests/test_basic.py::test_basic_functionality
+tests/test_basic.py::test_summary_line
+tests/test_basic.py::test_choice_argument_optional_metavar
+tests/test_basic.py::test_param_named_help[no-collision]
+tests/test_basic.py::test_basic_group
+tests/test_basic.py::test_help_invalid_default
+tests/test_basic.py::test_param_named_help[argument]
+tests/test_basic.py::test_choice_argument_custom_type
+tests/test_basic.py::test_param_named_help[option]
+tests/test_basic.py::test_param_named_help[custom-flags]
+tests/test_basic.py::test_hidden_group
+tests/test_basic.py::test_choice_option
+tests/test_basic.py::test_choice_argument
+tests/test_basic.py::test_choice_argument_enum
+tests/test_basic.py::test_choice_argument_none
+tests/test_basic.py::test_datetime_option_default
+tests/test_chain.py::test_chaining_help[args0-COMMAND1 [ARGS]... [COMMAND2 [ARGS]...]...]
+tests/test_chain.py::test_chaining_help[args1-ROOT HELP]
+tests/test_chain.py::test_chaining_help[args2-SDIST HELP]
+tests/test_chain.py::test_chaining_help[args4-SDIST HELP]
+tests/test_chain.py::test_chaining_help[args3-BDIST HELP]
+
+168/32180 tests collected (32012 deselected) in 2.13s
