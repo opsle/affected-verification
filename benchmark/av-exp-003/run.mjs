@@ -289,7 +289,25 @@ const summary = {
 };
 summary.result_identity = contentIdentity(summary);
 
-writeJson(path.join(outputDir, 'boundary-evidence.json'), boundaryEvidence);
+const boundaryEvidenceRecord = {
+  schema: boundaryEvidence.schema,
+  target: boundaryEvidence.target,
+  checks_assessed: boundaryEvidence.assessments.length,
+  assessment_catalog_identity: contentIdentity(boundaryEvidence.assessments),
+  completeness_counts: Object.fromEntries(
+    [...new Set(boundaryEvidence.assessments.map((item) => item.completeness))]
+      .sort()
+      .map((state) => [
+        state,
+        boundaryEvidence.assessments.filter((item) => item.completeness === state).length,
+      ]),
+  ),
+  opaque_check_ids: boundaryEvidence.opaque_check_ids,
+  opaque_assessments: boundaryEvidence.assessments
+    .filter((item) => item.completeness === 'OPAQUE_BOUNDARY'),
+};
+boundaryEvidenceRecord.identity = contentIdentity(boundaryEvidenceRecord);
+writeJson(path.join(outputDir, 'boundary-evidence.json'), boundaryEvidenceRecord);
 writeJson(path.join(outputDir, 'repair-regression-matrix.json'), regressionMatrix);
 for (const item of adversarial) {
   writeJson(
