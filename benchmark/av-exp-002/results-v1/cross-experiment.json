@@ -1,0 +1,161 @@
+{
+  "schema": "opsle.affected-verification.cross-experiment-observation.v1",
+  "experiments": {
+    "AV-EXP-001": {
+      "result_identity": "sha256:68b8582a9ce7b86bfa5431d89d2dea07f8c34b88d1d0350bab25c99fa5b236df",
+      "selector": "Vitest related",
+      "ecosystem": "JavaScript/TypeScript"
+    },
+    "AV-EXP-002": {
+      "result_identity": "sha256:5b3f99bfbebd3a0d061651d66adfb5a6aaef899475c6267cb20e4040e6ed5768",
+      "selector": "pytest-testmon",
+      "ecosystem": "Python"
+    }
+  },
+  "normalized": {
+    "relevant_check_recall": {
+      "AV-EXP-001": {
+        "NATIVE": {
+          "relevant_checks": 8,
+          "selected_relevant_checks": 6,
+          "missed_relevant_checks": 2,
+          "relevant_check_recall": "6/8",
+          "scenario_level_miss_count": 2,
+          "escalations": 0,
+          "misses": [
+            {
+              "scenario_id": "AVS-003",
+              "check_id": "check:lint"
+            },
+            {
+              "scenario_id": "AVS-008",
+              "check_id": "check:typecheck"
+            }
+          ]
+        },
+        "AV_CORE": {
+          "relevant_checks": 8,
+          "selected_relevant_checks": 8,
+          "missed_relevant_checks": 0,
+          "relevant_check_recall": "8/8",
+          "scenario_level_miss_count": 0,
+          "escalations": 3,
+          "misses": []
+        },
+        "AV_WITH_NATIVE_EVIDENCE": {
+          "relevant_checks": 8,
+          "selected_relevant_checks": 8,
+          "missed_relevant_checks": 0,
+          "relevant_check_recall": "8/8",
+          "scenario_level_miss_count": 0,
+          "escalations": 3,
+          "misses": []
+        }
+      },
+      "AV-EXP-002": {
+        "FULL": {
+          "relevant_checks": 87,
+          "relevant_selected": 87,
+          "misses": 0,
+          "recall": "87/87",
+          "scenario_misses": [],
+          "broadening_events": []
+        },
+        "ECOSYSTEM_SELECTOR": {
+          "relevant_checks": 87,
+          "relevant_selected": 77,
+          "misses": 10,
+          "recall": "77/87",
+          "scenario_misses": [
+            "AV2-004",
+            "AV2-005",
+            "AV2-006",
+            "AV2-007",
+            "AV2-008",
+            "AV2-009",
+            "AV2-010"
+          ],
+          "broadening_events": []
+        },
+        "AV_CORE": {
+          "relevant_checks": 87,
+          "relevant_selected": 86,
+          "misses": 1,
+          "recall": "86/87",
+          "scenario_misses": [
+            "AV2-006"
+          ],
+          "broadening_events": [
+            "AV2-003",
+            "AV2-005",
+            "AV2-007",
+            "AV2-009",
+            "AV2-010",
+            "AV2-011"
+          ]
+        },
+        "AV_WITH_SELECTOR_EVIDENCE": {
+          "relevant_checks": 87,
+          "relevant_selected": 86,
+          "misses": 1,
+          "recall": "86/87",
+          "scenario_misses": [
+            "AV2-006"
+          ],
+          "broadening_events": [
+            "AV2-003",
+            "AV2-005",
+            "AV2-007",
+            "AV2-010",
+            "AV2-011"
+          ]
+        }
+      }
+    },
+    "scenario_misses": {
+      "AV-EXP-002": {
+        "FULL": [],
+        "ECOSYSTEM_SELECTOR": [
+          "AV2-004",
+          "AV2-005",
+          "AV2-006",
+          "AV2-007",
+          "AV2-008",
+          "AV2-009",
+          "AV2-010"
+        ],
+        "AV_CORE": [
+          "AV2-006"
+        ],
+        "AV_WITH_SELECTOR_EVIDENCE": [
+          "AV2-006"
+        ]
+      }
+    },
+    "broadening_events": {
+      "AV-EXP-002": {
+        "AV_CORE": [
+          "AV2-003",
+          "AV2-005",
+          "AV2-007",
+          "AV2-009",
+          "AV2-010",
+          "AV2-011"
+        ],
+        "AV_WITH_SELECTOR_EVIDENCE": [
+          "AV2-003",
+          "AV2-005",
+          "AV2-007",
+          "AV2-010",
+          "AV2-011"
+        ]
+      }
+    }
+  },
+  "non_comparable_units": [
+    "Vitest files versus pytest nodes",
+    "wall clock across ecosystems",
+    "unlike non-test classes"
+  ],
+  "identity": "sha256:6ac2695ee80c9cb711e756846dad4c7138a3177c11d733456636259c36948da0"
+}

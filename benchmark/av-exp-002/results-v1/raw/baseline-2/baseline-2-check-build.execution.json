@@ -1,0 +1,17 @@
+{
+  "command": [
+    "/tmp/av-exp-002-run.v987Ig/click/.venv/bin/python",
+    "-m",
+    "build",
+    "--no-isolation",
+    "--outdir",
+    "/tmp/av2-build.igZ7tP"
+  ],
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "spawn_error": null,
+  "duration_ms_observed": 703.73,
+  "stdout_sha256": "sha256:f47d7aa7ddbdaf50b6e7b97e680bcbaff7d15325ce21a4e7b93d04ad27726f6a",
+  "stderr_sha256": "sha256:603aaa980899184ecf20e27008ad95ffe05a4a5e272aec80abb0658913bace94"
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "opsle.affected-verification.cross-experiment-comparison.v1",
+  "experiments": [
+    "AV-EXP-001",
+    "AV-EXP-002"
+  ],
+  "compatible": [
+    "oracle-relevant check recall",
+    "scenario misses",
+    "broadening events",
+    "targeted scenarios",
+    "test units selected/skipped within each experiment",
+    "non-test selection by normalized class",
+    "uncertainty frequency"
+  ],
+  "prohibited_direct_aggregation": [
+    "Vitest files with pytest nodes",
+    "cross-ecosystem runtime",
+    "unlike non-test classes"
+  ],
+  "identity": "sha256:65ffed1e73929cb1e058f9ebd1ac116cb2daa20af7de3c483c833a9f74df011f"
+}

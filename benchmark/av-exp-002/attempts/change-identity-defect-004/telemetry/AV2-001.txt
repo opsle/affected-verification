@@ -1,0 +1,8 @@
+[Affected Verification]
+Target: pallets/click@36baa15ff831b939a22bc527cd76ce653ef6f66d
+Scenario: AV2-001
+Selected tests: 1839 / 2016
+Skipped tests: 177
+Sufficiency: SUFFICIENT_TARGETED
+Oracle-relevant checks selected: 0 / 0
+Shadow miss: NO

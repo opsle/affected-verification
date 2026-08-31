@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/tmp/av-exp-002-run.v987Ig/click/.venv/bin/ruff",
+    "format",
+    "--check",
+    "src",
+    "tests"
+  ],
+  "exit_code": 2,
+  "signal": null,
+  "timed_out": false,
+  "spawn_error": null,
+  "duration_ms_observed": 25.832,
+  "stdout_sha256": "sha256:43476fb9601a542841f6cba73a03155ef5792f5324f2380538c7f276a7b8ed2f",
+  "stderr_sha256": "sha256:3a471afed5188744f07b496392bcccada926e67225748dc96bae2bdacca71553"
+}

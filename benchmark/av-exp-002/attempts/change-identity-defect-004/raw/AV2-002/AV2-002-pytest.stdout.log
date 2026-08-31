@@ -1,0 +1,955 @@
+........x.......................................................F....... [  3%]
+........................................................................ [  7%]
+.................................................F...........F.......... [ 10%]
+.........F.............................................................. [ 14%]
+...................................................................F.... [ 17%]
+........................................................................ [ 21%]
+........................................F.......................F....... [ 25%]
+...............................F........................................ [ 28%]
+........................................................................ [ 32%]
+........................................................................ [ 35%]
+........................................................................ [ 39%]
+........................................................................ [ 42%]
+........................................................................ [ 46%]
+........................................................................ [ 50%]
+.............................F.FFFF..FF....F.............s.............. [ 53%]
+........................................................................ [ 57%]
+........................................................................ [ 60%]
+........................................................................ [ 64%]
+.........s.........................................s.............s...... [ 67%]
+....s........s..s.......s........s............s.............s........... [ 71%]
+..........s...........s..........................s..............s....... [ 75%]
+...........s......s......s.................s..s.........s.s....s........ [ 78%]
+s....................................................................... [ 82%]
+........................................................................ [ 85%]
+........................................................................ [ 89%]
+........................................................................ [ 92%]
+........................................................................ [ 96%]
+........................................................................ [100%]
+=================================== FAILURES ===================================
+_ test_help_option_custom_names_and_class[name_specs2-  --help  Show this message and exit.\n-True] _
+
+runner = <click.testing.CliRunner object at 0x74ee873f94e0>, custom_class = True
+name_specs = ('--help',), expected = '  --help  Show this message and exit.\n'
+
+    @pytest.mark.parametrize("custom_class", (True, False))
+    @pytest.mark.parametrize(
+        ("name_specs", "expected"),
+        (
+            (
+                ("-h", "--help"),
+                "  -h, --help  Show this message and exit.\n",
+            ),
+            (
+                ("-h",),
+                "  -h      Show this message and exit.\n"
+                "  --help  Show this message and exit.\n",
+            ),
+            (
+                ("--help",),
+                "  --help  Show this message and exit.\n",
+            ),
+        ),
+    )
+    def test_help_option_custom_names_and_class(runner, custom_class, name_specs, expected):
+        class CustomHelpOption(click.Option):
+            pass
+    
+        option_attrs = {}
+        if custom_class:
+            option_attrs["cls"] = CustomHelpOption
+    
+        @click.command()
+        @click.help_option(*name_specs, **option_attrs)
+        def cmd():
+            pass
+    
+        for arg in name_specs:
+            result = runner.invoke(cmd, [arg])
+            assert not result.exception
+            assert result.exit_code == 0
+>           assert expected in result.output
+E           AssertionError: assert '  --help  Show this message and exit.\n' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  --help\n    Show this message and exit.\n'
+E            +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  --help\n    Show this message and exit.\n' = <Result okay>.output
+
+tests/test_options.py:1141: AssertionError
+_ test_help_option_custom_names_and_class[name_specs1-  -h      Show this message and exit.\n  --help  Show this message and exit.\n-True] _
+
+runner = <click.testing.CliRunner object at 0x74ee87398910>, custom_class = True
+name_specs = ('-h',)
+expected = '  -h      Show this message and exit.\n  --help  Show this message and exit.\n'
+
+    @pytest.mark.parametrize("custom_class", (True, False))
+    @pytest.mark.parametrize(
+        ("name_specs", "expected"),
+        (
+            (
+                ("-h", "--help"),
+                "  -h, --help  Show this message and exit.\n",
+            ),
+            (
+                ("-h",),
+                "  -h      Show this message and exit.\n"
+                "  --help  Show this message and exit.\n",
+            ),
+            (
+                ("--help",),
+                "  --help  Show this message and exit.\n",
+            ),
+        ),
+    )
+    def test_help_option_custom_names_and_class(runner, custom_class, name_specs, expected):
+        class CustomHelpOption(click.Option):
+            pass
+    
+        option_attrs = {}
+        if custom_class:
+            option_attrs["cls"] = CustomHelpOption
+    
+        @click.command()
+        @click.help_option(*name_specs, **option_attrs)
+        def cmd():
+            pass
+    
+        for arg in name_specs:
+            result = runner.invoke(cmd, [arg])
+            assert not result.exception
+            assert result.exit_code == 0
+>           assert expected in result.output
+E           AssertionError: assert '  -h      Show this message and exit.\n  --help  Show this message and exit.\n' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h\n    Show this message and exit.\n  --help\n    Show this message and exit.\n'
+E            +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h\n    Show this message and exit.\n  --help\n    Show this message and exit.\n' = <Result okay>.output
+
+tests/test_options.py:1141: AssertionError
+____________________________ test_winstyle_options _____________________________
+
+runner = <click.testing.CliRunner object at 0x74ee874b0c20>
+
+    def test_winstyle_options(runner):
+        @click.command()
+        @click.option("/debug;/no-debug", help="Enables or disables debug mode.")
+        def cmd(debug):
+            click.echo(debug)
+    
+        result = runner.invoke(cmd, ["/debug"], help_option_names=["/?"])
+        assert result.output == "True\n"
+        result = runner.invoke(cmd, ["/no-debug"], help_option_names=["/?"])
+        assert result.output == "False\n"
+        result = runner.invoke(cmd, [], help_option_names=["/?"])
+        assert result.output == "False\n"
+        result = runner.invoke(cmd, ["/?"], help_option_names=["/?"])
+>       assert "/debug; /no-debug  Enables or disables debug mode." in result.output
+E       AssertionError: assert '/debug; /no-debug  Enables or disables debug mode.' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  /debug; /no-debug\n    Enables or disables debug mode.\n  /?\n    Show this message and exit.\n'
+E        +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  /debug; /no-debug\n    Enables or disables debug mode.\n  /?\n    Show this message and exit.\n' = <Result okay>.output
+
+tests/test_options.py:842: AssertionError
+_____________________ test_option_help_preserve_paragraphs _____________________
+
+runner = <click.testing.CliRunner object at 0x74ee87454750>
+
+    def test_option_help_preserve_paragraphs(runner):
+        @click.command()
+        @click.option(
+            "-C",
+            "--config",
+            type=click.Path(),
+            help="""Configuration file to use.
+    
+            If not given, the environment variable CONFIG_FILE is consulted
+            and used if set. If neither are given, a default configuration
+            file is loaded.""",
+        )
+        def cmd(config):
+            pass
+    
+        result = runner.invoke(cmd, ["--help"])
+        assert result.exit_code == 0
+        i = " " * 21
+>       assert (
+            "  -C, --config PATH  Configuration file to use.\n"
+            f"{i}\n"
+            f"{i}If not given, the environment variable CONFIG_FILE is\n"
+            f"{i}consulted and used if set. If neither are given, a default\n"
+            f"{i}configuration file is loaded."
+        ) in result.output
+E       AssertionError: assert '  -C, --config PATH  Configuration file to use.\n                     \n                     If not given, the enviro...        consulted and used if set. If neither are given, a default\n                     configuration file is loaded.' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  -C, --config PATH\n    Configuration file to use.\n    \n    If not given, the en...f\n    set. If neither are given, a default configuration file is loaded.\n  --help\n    Show this message and exit.\n'
+E        +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  -C, --config PATH\n    Configuration file to use.\n    \n    If not given, the en...f\n    set. If neither are given, a default configuration file is loaded.\n  --help\n    Show this message and exit.\n' = <Result okay>.output
+
+tests/test_options.py:1000: AssertionError
+_ test_help_option_custom_names_and_class[name_specs0-  -h, --help  Show this message and exit.\n-False] _
+
+runner = <click.testing.CliRunner object at 0x74ee867e6a50>
+custom_class = False, name_specs = ('-h', '--help')
+expected = '  -h, --help  Show this message and exit.\n'
+
+    @pytest.mark.parametrize("custom_class", (True, False))
+    @pytest.mark.parametrize(
+        ("name_specs", "expected"),
+        (
+            (
+                ("-h", "--help"),
+                "  -h, --help  Show this message and exit.\n",
+            ),
+            (
+                ("-h",),
+                "  -h      Show this message and exit.\n"
+                "  --help  Show this message and exit.\n",
+            ),
+            (
+                ("--help",),
+                "  --help  Show this message and exit.\n",
+            ),
+        ),
+    )
+    def test_help_option_custom_names_and_class(runner, custom_class, name_specs, expected):
+        class CustomHelpOption(click.Option):
+            pass
+    
+        option_attrs = {}
+        if custom_class:
+            option_attrs["cls"] = CustomHelpOption
+    
+        @click.command()
+        @click.help_option(*name_specs, **option_attrs)
+        def cmd():
+            pass
+    
+        for arg in name_specs:
+            result = runner.invoke(cmd, [arg])
+            assert not result.exception
+            assert result.exit_code == 0
+>           assert expected in result.output
+E           AssertionError: assert '  -h, --help  Show this message and exit.\n' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h, --help\n    Show this message and exit.\n'
+E            +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h, --help\n    Show this message and exit.\n' = <Result okay>.output
+
+tests/test_options.py:1141: AssertionError
+_ test_help_option_custom_names_and_class[name_specs2-  --help  Show this message and exit.\n-False] _
+
+runner = <click.testing.CliRunner object at 0x74ee87340c20>
+custom_class = False, name_specs = ('--help',)
+expected = '  --help  Show this message and exit.\n'
+
+    @pytest.mark.parametrize("custom_class", (True, False))
+    @pytest.mark.parametrize(
+        ("name_specs", "expected"),
+        (
+            (
+                ("-h", "--help"),
+                "  -h, --help  Show this message and exit.\n",
+            ),
+            (
+                ("-h",),
+                "  -h      Show this message and exit.\n"
+                "  --help  Show this message and exit.\n",
+            ),
+            (
+                ("--help",),
+                "  --help  Show this message and exit.\n",
+            ),
+        ),
+    )
+    def test_help_option_custom_names_and_class(runner, custom_class, name_specs, expected):
+        class CustomHelpOption(click.Option):
+            pass
+    
+        option_attrs = {}
+        if custom_class:
+            option_attrs["cls"] = CustomHelpOption
+    
+        @click.command()
+        @click.help_option(*name_specs, **option_attrs)
+        def cmd():
+            pass
+    
+        for arg in name_specs:
+            result = runner.invoke(cmd, [arg])
+            assert not result.exception
+            assert result.exit_code == 0
+>           assert expected in result.output
+E           AssertionError: assert '  --help  Show this message and exit.\n' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  --help\n    Show this message and exit.\n'
+E            +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  --help\n    Show this message and exit.\n' = <Result okay>.output
+
+tests/test_options.py:1141: AssertionError
+_ test_help_option_custom_names_and_class[name_specs1-  -h      Show this message and exit.\n  --help  Show this message and exit.\n-False] _
+
+runner = <click.testing.CliRunner object at 0x74ee87347b60>
+custom_class = False, name_specs = ('-h',)
+expected = '  -h      Show this message and exit.\n  --help  Show this message and exit.\n'
+
+    @pytest.mark.parametrize("custom_class", (True, False))
+    @pytest.mark.parametrize(
+        ("name_specs", "expected"),
+        (
+            (
+                ("-h", "--help"),
+                "  -h, --help  Show this message and exit.\n",
+            ),
+            (
+                ("-h",),
+                "  -h      Show this message and exit.\n"
+                "  --help  Show this message and exit.\n",
+            ),
+            (
+                ("--help",),
+                "  --help  Show this message and exit.\n",
+            ),
+        ),
+    )
+    def test_help_option_custom_names_and_class(runner, custom_class, name_specs, expected):
+        class CustomHelpOption(click.Option):
+            pass
+    
+        option_attrs = {}
+        if custom_class:
+            option_attrs["cls"] = CustomHelpOption
+    
+        @click.command()
+        @click.help_option(*name_specs, **option_attrs)
+        def cmd():
+            pass
+    
+        for arg in name_specs:
+            result = runner.invoke(cmd, [arg])
+            assert not result.exception
+            assert result.exit_code == 0
+>           assert expected in result.output
+E           AssertionError: assert '  -h      Show this message and exit.\n  --help  Show this message and exit.\n' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h\n    Show this message and exit.\n  --help\n    Show this message and exit.\n'
+E            +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h\n    Show this message and exit.\n  --help\n    Show this message and exit.\n' = <Result okay>.output
+
+tests/test_options.py:1141: AssertionError
+_ test_help_option_custom_names_and_class[name_specs0-  -h, --help  Show this message and exit.\n-True] _
+
+runner = <click.testing.CliRunner object at 0x74ee86648bb0>, custom_class = True
+name_specs = ('-h', '--help')
+expected = '  -h, --help  Show this message and exit.\n'
+
+    @pytest.mark.parametrize("custom_class", (True, False))
+    @pytest.mark.parametrize(
+        ("name_specs", "expected"),
+        (
+            (
+                ("-h", "--help"),
+                "  -h, --help  Show this message and exit.\n",
+            ),
+            (
+                ("-h",),
+                "  -h      Show this message and exit.\n"
+                "  --help  Show this message and exit.\n",
+            ),
+            (
+                ("--help",),
+                "  --help  Show this message and exit.\n",
+            ),
+        ),
+    )
+    def test_help_option_custom_names_and_class(runner, custom_class, name_specs, expected):
+        class CustomHelpOption(click.Option):
+            pass
+    
+        option_attrs = {}
+        if custom_class:
+            option_attrs["cls"] = CustomHelpOption
+    
+        @click.command()
+        @click.help_option(*name_specs, **option_attrs)
+        def cmd():
+            pass
+    
+        for arg in name_specs:
+            result = runner.invoke(cmd, [arg])
+            assert not result.exception
+            assert result.exit_code == 0
+>           assert expected in result.output
+E           AssertionError: assert '  -h, --help  Show this message and exit.\n' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h, --help\n    Show this message and exit.\n'
+E            +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h, --help\n    Show this message and exit.\n' = <Result okay>.output
+
+tests/test_options.py:1141: AssertionError
+______________________ test_truncating_docstring_no_help _______________________
+
+runner = <click.testing.CliRunner object at 0x74ee875c3b60>
+
+    def test_truncating_docstring_no_help(runner):
+        @click.command()
+        @click.pass_context
+        def cli(ctx):
+            """
+            \f
+    
+            This text should be truncated.
+            """
+    
+        result = runner.invoke(cli, ["--help"], terminal_width=60)
+        assert not result.exception
+>       assert result.output.splitlines() == [
+            "Usage: cli [OPTIONS]",
+            "",
+            "Options:",
+            "  --help  Show this message and exit.",
+        ]
+E       AssertionError: assert ['Usage: cli ...ge and exit.'] == ['Usage: cli ...ge and exit.']
+E         
+E         At index 3 diff: '  --help' != '  --help  Show this message and exit.'
+E         Left contains one more item: '    Show this message and exit.'
+E         
+E         Full diff:
+E           [
+E               'Usage: cli [OPTIONS]',
+E               '',
+E               'Options:',
+E         +     '  --help',
+E         -     '  --help  Show this message and exit.',
+E         ?        ------
+E         +     '    Show this message and exit.',
+E           ]
+
+tests/test_formatting.py:379: AssertionError
+______________________ test_wrapping_long_options_strings ______________________
+
+runner = <click.testing.CliRunner object at 0x74ee8678cc20>
+
+    def test_wrapping_long_options_strings(runner):
+        @click.group()
+        def cli():
+            """Top level command"""
+    
+        @cli.group()
+        def a_very_long():
+            """Second level"""
+    
+        @a_very_long.command()
+        @click.argument("first")
+        @click.argument("second")
+        @click.argument("third")
+        @click.argument("fourth")
+        @click.argument("fifth")
+        @click.argument("sixth")
+        def command():
+            """A command."""
+    
+        # 54 is chosen as a length where the second line is one character
+        # longer than the maximum length.
+        result = runner.invoke(cli, ["a-very-long", "command", "--help"], terminal_width=54)
+        assert not result.exception
+>       assert result.output.splitlines() == [
+            "Usage: cli a-very-long command [OPTIONS] FIRST SECOND",
+            "                               THIRD FOURTH FIFTH",
+            "                               SIXTH",
+            "",
+            "  A command.",
+            "",
+            "Options:",
+            "  --help  Show this message and exit.",
+        ]
+E       AssertionError: assert ['Usage: cli ...nd.', '', ...] == ['Usage: cli ...nd.', '', ...]
+E         
+E         At index 7 diff: '  --help' != '  --help  Show this message and exit.'
+E         Left contains one more item: '    Show this message and exit.'
+E         
+E         Full diff:
+E           [
+E               'Usage: cli a-very-long command [OPTIONS] FIRST SECOND',
+E               '                               THIRD FOURTH FIFTH',
+E               '                               SIXTH',
+E               '',
+E               '  A command.',
+E               '',
+E               'Options:',
+E         +     '  --help',
+E         -     '  --help  Show this message and exit.',
+E         ?        ------
+E         +     '    Show this message and exit.',
+E           ]
+
+tests/test_formatting.py:78: AssertionError
+___________________________ test_global_show_default ___________________________
+
+runner = <click.testing.CliRunner object at 0x74ee872d51d0>
+
+    def test_global_show_default(runner):
+        @click.command(context_settings=dict(show_default=True))
+        @click.option("-f", "in_file", default="out.txt", help="Output file name")
+        def cli():
+            pass
+    
+        result = runner.invoke(cli, ["--help"])
+        # the default to "--help" is not shown because it is False
+>       assert result.output.splitlines() == [
+            "Usage: cli [OPTIONS]",
+            "",
+            "Options:",
+            "  -f TEXT  Output file name  [default: out.txt]",
+            "  --help   Show this message and exit.",
+        ]
+E       AssertionError: assert ['Usage: cli ... --help', ...] == ['Usage: cli ...ge and exit.']
+E         
+E         At index 3 diff: '  -f TEXT' != '  -f TEXT  Output file name  [default: out.txt]'
+E         Left contains 2 more items, first extra item: '  --help'
+E         
+E         Full diff:
+E           [
+E               'Usage: cli [OPTIONS]',
+E               '',
+E               'Options:',
+E         +     '  -f TEXT',
+E         -     '  -f TEXT  Output file name  [default: out.txt]',
+E         ?        -------
+E         +     '    Output file name  [default: out.txt]',
+E         +     '  --help',
+E         -     '  --help   Show this message and exit.',
+E         ?       -------
+E         +     '    Show this message and exit.',
+E           ]
+
+tests/test_formatting.py:414: AssertionError
+_______________________ test_formatting_empty_help_lines _______________________
+
+runner = <click.testing.CliRunner object at 0x74ee872d5b70>
+
+    def test_formatting_empty_help_lines(runner):
+        @click.command()
+        def cli():
+            # fmt: off
+            """Top level command
+    
+            """
+            # fmt: on
+    
+        result = runner.invoke(cli, ["--help"])
+        assert not result.exception
+>       assert result.output.splitlines() == [
+            "Usage: cli [OPTIONS]",
+            "",
+            "  Top level command",
+            "",
+            "",
+            "",
+            "Options:",
+            "  --help  Show this message and exit.",
+        ]
+E       AssertionError: assert ['Usage: cli ..., '', '', ...] == ['Usage: cli ..., '', '', ...]
+E         
+E         At index 7 diff: '  --help' != '  --help  Show this message and exit.'
+E         Left contains one more item: '    Show this message and exit.'
+E         
+E         Full diff:
+E           [
+E               'Usage: cli [OPTIONS]',
+E               '',
+E               '  Top level command',
+E               '',
+E               '',
+E               '',
+E               'Options:',
+E         +     '  --help',
+E         -     '  --help  Show this message and exit.',
+E         ?        ------
+E         +     '    Show this message and exit.',
+E           ]
+
+tests/test_formatting.py:136: AssertionError
+_____________________ test_formatting_custom_type_metavar ______________________
+
+runner = <click.testing.CliRunner object at 0x74ee872fd630>
+
+    def test_formatting_custom_type_metavar(runner):
+        class MyType(click.ParamType):
+            def get_metavar(self, param: click.Parameter, ctx: click.Context):
+                return "MY_TYPE"
+    
+        @click.command("foo")
+        @click.help_option()
+        @click.argument("param", type=MyType())
+        def cmd(param):
+            pass
+    
+        result = runner.invoke(cmd, "--help")
+        assert not result.exception
+>       assert result.output.splitlines() == [
+            "Usage: foo [OPTIONS] MY_TYPE",
+            "",
+            "Options:",
+            "  --help  Show this message and exit.",
+        ]
+E       AssertionError: assert ['Usage: foo ...ge and exit.'] == ['Usage: foo ...ge and exit.']
+E         
+E         At index 3 diff: '  --help' != '  --help  Show this message and exit.'
+E         Left contains one more item: '    Show this message and exit.'
+E         
+E         Full diff:
+E           [
+E               'Usage: foo [OPTIONS] MY_TYPE',
+E               '',
+E               'Options:',
+E         +     '  --help',
+E         -     '  --help  Show this message and exit.',
+E         ?        ------
+E         +     '    Show this message and exit.',
+E           ]
+
+tests/test_formatting.py:330: AssertionError
+__________________________ test_truncating_docstring ___________________________
+
+runner = <click.testing.CliRunner object at 0x74ee872fd470>
+
+    def test_truncating_docstring(runner):
+        @click.command()
+        @click.pass_context
+        def cli(ctx):
+            """First paragraph.
+    
+            This is a very long second
+            paragraph and not correctly
+            wrapped but it will be rewrapped.
+            \f
+    
+            :param click.core.Context ctx: Click context.
+            """
+    
+        result = runner.invoke(cli, ["--help"], terminal_width=60)
+        assert not result.exception
+>       assert result.output.splitlines() == [
+            "Usage: cli [OPTIONS]",
+            "",
+            "  First paragraph.",
+            "",
+            "  This is a very long second paragraph and not correctly",
+            "  wrapped but it will be rewrapped.",
+            "",
+            "Options:",
+            "  --help  Show this message and exit.",
+        ]
+E       AssertionError: assert ['Usage: cli ...rapped.', ...] == ['Usage: cli ...rapped.', ...]
+E         
+E         At index 8 diff: '  --help' != '  --help  Show this message and exit.'
+E         Left contains one more item: '    Show this message and exit.'
+E         
+E         Full diff:
+E           [
+E               'Usage: cli [OPTIONS]',
+E               '',
+E               '  First paragraph.',
+E               '',
+E               '  This is a very long second paragraph and not correctly',
+E               '  wrapped but it will be rewrapped.',
+E               '',
+E               'Options:',
+E         +     '  --help',
+E         -     '  --help  Show this message and exit.',
+E         ?        ------
+E         +     '    Show this message and exit.',
+E           ]
+
+tests/test_formatting.py:354: AssertionError
+_______________________ test_wrapping_long_command_name ________________________
+
+runner = <click.testing.CliRunner object at 0x74ee817a1320>
+
+    def test_wrapping_long_command_name(runner):
+        @click.group()
+        def cli():
+            """Top level command"""
+    
+        @cli.group()
+        def a_very_very_very_long():
+            """Second level"""
+    
+        @a_very_very_very_long.command()
+        @click.argument("first")
+        @click.argument("second")
+        @click.argument("third")
+        @click.argument("fourth")
+        @click.argument("fifth")
+        @click.argument("sixth")
+        def command():
+            """A command."""
+    
+        result = runner.invoke(
+            cli, ["a-very-very-very-long", "command", "--help"], terminal_width=54
+        )
+        assert not result.exception
+>       assert result.output.splitlines() == [
+            "Usage: cli a-very-very-very-long command ",
+            "           [OPTIONS] FIRST SECOND THIRD FOURTH FIFTH",
+            "           SIXTH",
+            "",
+            "  A command.",
+            "",
+            "Options:",
+            "  --help  Show this message and exit.",
+        ]
+E       AssertionError: assert ['Usage: cli ...nd.', '', ...] == ['Usage: cli ...nd.', '', ...]
+E         
+E         At index 7 diff: '  --help' != '  --help  Show this message and exit.'
+E         Left contains one more item: '    Show this message and exit.'
+E         
+E         Full diff:
+E           [
+E               'Usage: cli a-very-very-very-long command ',
+E               '           [OPTIONS] FIRST SECOND THIRD FOURTH FIFTH',
+E               '           SIXTH',
+E               '',
+E               '  A command.',
+E               '',
+E               'Options:',
+E         +     '  --help',
+E         -     '  --help  Show this message and exit.',
+E         ?        ------
+E         +     '    Show this message and exit.',
+E           ]
+
+tests/test_formatting.py:113: AssertionError
+___________________________ test_basic_functionality ___________________________
+
+runner = <click.testing.CliRunner object at 0x74ee875c2270>
+
+    def test_basic_functionality(runner):
+        @click.command()
+        def cli():
+            """First paragraph.
+    
+            This is a very long second
+            paragraph and not correctly
+            wrapped but it will be rewrapped.
+    
+            \b
+            This is
+            a paragraph
+            without rewrapping.
+    
+            \b
+            1
+             2
+              3
+    
+            And this is a paragraph
+            that will be rewrapped again.
+            """
+    
+        result = runner.invoke(cli, ["--help"], terminal_width=60)
+        assert not result.exception
+>       assert result.output.splitlines() == [
+            "Usage: cli [OPTIONS]",
+            "",
+            "  First paragraph.",
+            "",
+            "  This is a very long second paragraph and not correctly",
+            "  wrapped but it will be rewrapped.",
+            "",
+            "  This is",
+            "  a paragraph",
+            "  without rewrapping.",
+            "",
+            "  1",
+            "   2",
+            "    3",
+            "",
+            "  And this is a paragraph that will be rewrapped again.",
+            "",
+            "Options:",
+            "  --help  Show this message and exit.",
+        ]
+E       AssertionError: assert ['Usage: cli ...rapped.', ...] == ['Usage: cli ...rapped.', ...]
+E         
+E         At index 18 diff: '  --help' != '  --help  Show this message and exit.'
+E         Left contains one more item: '    Show this message and exit.'
+E         
+E         Full diff:
+E           [
+E               'Usage: cli [OPTIONS]',
+E               '',
+E               '  First paragraph.',
+E               '',
+E               '  This is a very long second paragraph and not correctly',
+E               '  wrapped but it will be rewrapped.',
+E               '',
+E               '  This is',
+E               '  a paragraph',
+E               '  without rewrapping.',
+E               '',
+E               '  1',
+E               '   2',
+E               '    3',
+E               '',
+E               '  And this is a paragraph that will be rewrapped again.',
+E               '',
+E               'Options:',
+E         +     '  --help',
+E         -     '  --help  Show this message and exit.',
+E         ?        ------
+E         +     '    Show this message and exit.',
+E           ]
+
+tests/test_formatting.py:32: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_options.py::test_help_option_custom_names_and_class[name_specs2-  --help  Show this message and exit.\n-True] - AssertionError: assert '  --help  Show this message and exit.\n' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  --help\n    Show this message and exit.\n'
+ +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  --help\n    Show this message and exit.\n' = <Result okay>.output
+FAILED tests/test_options.py::test_help_option_custom_names_and_class[name_specs1-  -h      Show this message and exit.\n  --help  Show this message and exit.\n-True] - AssertionError: assert '  -h      Show this message and exit.\n  --help  Show this message and exit.\n' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h\n    Show this message and exit.\n  --help\n    Show this message and exit.\n'
+ +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h\n    Show this message and exit.\n  --help\n    Show this message and exit.\n' = <Result okay>.output
+FAILED tests/test_options.py::test_winstyle_options - AssertionError: assert '/debug; /no-debug  Enables or disables debug mode.' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  /debug; /no-debug\n    Enables or disables debug mode.\n  /?\n    Show this message and exit.\n'
+ +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  /debug; /no-debug\n    Enables or disables debug mode.\n  /?\n    Show this message and exit.\n' = <Result okay>.output
+FAILED tests/test_options.py::test_option_help_preserve_paragraphs - AssertionError: assert '  -C, --config PATH  Configuration file to use.\n                     \n                     If not given, the enviro...        consulted and used if set. If neither are given, a default\n                     configuration file is loaded.' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  -C, --config PATH\n    Configuration file to use.\n    \n    If not given, the en...f\n    set. If neither are given, a default configuration file is loaded.\n  --help\n    Show this message and exit.\n'
+ +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  -C, --config PATH\n    Configuration file to use.\n    \n    If not given, the en...f\n    set. If neither are given, a default configuration file is loaded.\n  --help\n    Show this message and exit.\n' = <Result okay>.output
+FAILED tests/test_options.py::test_help_option_custom_names_and_class[name_specs0-  -h, --help  Show this message and exit.\n-False] - AssertionError: assert '  -h, --help  Show this message and exit.\n' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h, --help\n    Show this message and exit.\n'
+ +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h, --help\n    Show this message and exit.\n' = <Result okay>.output
+FAILED tests/test_options.py::test_help_option_custom_names_and_class[name_specs2-  --help  Show this message and exit.\n-False] - AssertionError: assert '  --help  Show this message and exit.\n' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  --help\n    Show this message and exit.\n'
+ +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  --help\n    Show this message and exit.\n' = <Result okay>.output
+FAILED tests/test_options.py::test_help_option_custom_names_and_class[name_specs1-  -h      Show this message and exit.\n  --help  Show this message and exit.\n-False] - AssertionError: assert '  -h      Show this message and exit.\n  --help  Show this message and exit.\n' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h\n    Show this message and exit.\n  --help\n    Show this message and exit.\n'
+ +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h\n    Show this message and exit.\n  --help\n    Show this message and exit.\n' = <Result okay>.output
+FAILED tests/test_options.py::test_help_option_custom_names_and_class[name_specs0-  -h, --help  Show this message and exit.\n-True] - AssertionError: assert '  -h, --help  Show this message and exit.\n' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h, --help\n    Show this message and exit.\n'
+ +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h, --help\n    Show this message and exit.\n' = <Result okay>.output
+FAILED tests/test_formatting.py::test_truncating_docstring_no_help - AssertionError: assert ['Usage: cli ...ge and exit.'] == ['Usage: cli ...ge and exit.']
+  
+  At index 3 diff: '  --help' != '  --help  Show this message and exit.'
+  Left contains one more item: '    Show this message and exit.'
+  
+  Full diff:
+    [
+        'Usage: cli [OPTIONS]',
+        '',
+        'Options:',
+  +     '  --help',
+  -     '  --help  Show this message and exit.',
+  ?        ------
+  +     '    Show this message and exit.',
+    ]
+FAILED tests/test_formatting.py::test_wrapping_long_options_strings - AssertionError: assert ['Usage: cli ...nd.', '', ...] == ['Usage: cli ...nd.', '', ...]
+  
+  At index 7 diff: '  --help' != '  --help  Show this message and exit.'
+  Left contains one more item: '    Show this message and exit.'
+  
+  Full diff:
+    [
+        'Usage: cli a-very-long command [OPTIONS] FIRST SECOND',
+        '                               THIRD FOURTH FIFTH',
+        '                               SIXTH',
+        '',
+        '  A command.',
+        '',
+        'Options:',
+  +     '  --help',
+  -     '  --help  Show this message and exit.',
+  ?        ------
+  +     '    Show this message and exit.',
+    ]
+FAILED tests/test_formatting.py::test_global_show_default - AssertionError: assert ['Usage: cli ... --help', ...] == ['Usage: cli ...ge and exit.']
+  
+  At index 3 diff: '  -f TEXT' != '  -f TEXT  Output file name  [default: out.txt]'
+  Left contains 2 more items, first extra item: '  --help'
+  
+  Full diff:
+    [
+        'Usage: cli [OPTIONS]',
+        '',
+        'Options:',
+  +     '  -f TEXT',
+  -     '  -f TEXT  Output file name  [default: out.txt]',
+  ?        -------
+  +     '    Output file name  [default: out.txt]',
+  +     '  --help',
+  -     '  --help   Show this message and exit.',
+  ?       -------
+  +     '    Show this message and exit.',
+    ]
+FAILED tests/test_formatting.py::test_formatting_empty_help_lines - AssertionError: assert ['Usage: cli ..., '', '', ...] == ['Usage: cli ..., '', '', ...]
+  
+  At index 7 diff: '  --help' != '  --help  Show this message and exit.'
+  Left contains one more item: '    Show this message and exit.'
+  
+  Full diff:
+    [
+        'Usage: cli [OPTIONS]',
+        '',
+        '  Top level command',
+        '',
+        '',
+        '',
+        'Options:',
+  +     '  --help',
+  -     '  --help  Show this message and exit.',
+  ?        ------
+  +     '    Show this message and exit.',
+    ]
+FAILED tests/test_formatting.py::test_formatting_custom_type_metavar - AssertionError: assert ['Usage: foo ...ge and exit.'] == ['Usage: foo ...ge and exit.']
+  
+  At index 3 diff: '  --help' != '  --help  Show this message and exit.'
+  Left contains one more item: '    Show this message and exit.'
+  
+  Full diff:
+    [
+        'Usage: foo [OPTIONS] MY_TYPE',
+        '',
+        'Options:',
+  +     '  --help',
+  -     '  --help  Show this message and exit.',
+  ?        ------
+  +     '    Show this message and exit.',
+    ]
+FAILED tests/test_formatting.py::test_truncating_docstring - AssertionError: assert ['Usage: cli ...rapped.', ...] == ['Usage: cli ...rapped.', ...]
+  
+  At index 8 diff: '  --help' != '  --help  Show this message and exit.'
+  Left contains one more item: '    Show this message and exit.'
+  
+  Full diff:
+    [
+        'Usage: cli [OPTIONS]',
+        '',
+        '  First paragraph.',
+        '',
+        '  This is a very long second paragraph and not correctly',
+        '  wrapped but it will be rewrapped.',
+        '',
+        'Options:',
+  +     '  --help',
+  -     '  --help  Show this message and exit.',
+  ?        ------
+  +     '    Show this message and exit.',
+    ]
+FAILED tests/test_formatting.py::test_wrapping_long_command_name - AssertionError: assert ['Usage: cli ...nd.', '', ...] == ['Usage: cli ...nd.', '', ...]
+  
+  At index 7 diff: '  --help' != '  --help  Show this message and exit.'
+  Left contains one more item: '    Show this message and exit.'
+  
+  Full diff:
+    [
+        'Usage: cli a-very-very-very-long command ',
+        '           [OPTIONS] FIRST SECOND THIRD FOURTH FIFTH',
+        '           SIXTH',
+        '',
+        '  A command.',
+        '',
+        'Options:',
+  +     '  --help',
+  -     '  --help  Show this message and exit.',
+  ?        ------
+  +     '    Show this message and exit.',
+    ]
+FAILED tests/test_formatting.py::test_basic_functionality - AssertionError: assert ['Usage: cli ...rapped.', ...] == ['Usage: cli ...rapped.', ...]
+  
+  At index 18 diff: '  --help' != '  --help  Show this message and exit.'
+  Left contains one more item: '    Show this message and exit.'
+  
+  Full diff:
+    [
+        'Usage: cli [OPTIONS]',
+        '',
+        '  First paragraph.',
+        '',
+        '  This is a very long second paragraph and not correctly',
+        '  wrapped but it will be rewrapped.',
+        '',
+        '  This is',
+        '  a paragraph',
+        '  without rewrapping.',
+        '',
+        '  1',
+        '   2',
+        '    3',
+        '',
+        '  And this is a paragraph that will be rewrapped again.',
+        '',
+        'Options:',
+  +     '  --help',
+  -     '  --help  Show this message and exit.',
+  ?        ------
+  +     '    Show this message and exit.',
+    ]
+16 failed, 1975 passed, 24 skipped, 31000 deselected, 1 xfailed in 6.44s

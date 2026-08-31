@@ -1,0 +1,17 @@
+{
+  "command": [
+    "/tmp/av-exp-002-run.avyXfH/click/.venv/bin/pytest",
+    "--override-ini=addopts=",
+    "-p",
+    "pytest_av_catalog",
+    "--testmon",
+    "-q"
+  ],
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "spawn_error": null,
+  "duration_ms_observed": 17965.747,
+  "stdout_sha256": "sha256:d4e20833616ffe66c3b9375e388a8d0d06927d364d4be9b1072b43bbef8bf60d",
+  "stderr_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

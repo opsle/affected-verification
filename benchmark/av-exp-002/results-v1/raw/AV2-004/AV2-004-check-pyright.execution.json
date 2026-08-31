@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/tmp/av-exp-002-run.v987Ig/click/.venv/bin/pyright",
+    "--ignoreexternal",
+    "--verifytypes",
+    "click"
+  ],
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "spawn_error": null,
+  "duration_ms_observed": 1199.953,
+  "stdout_sha256": "sha256:ab03b9859ee58e0c905fe46a45c4ce410ca1b42b8666fc858815752c995ce855",
+  "stderr_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

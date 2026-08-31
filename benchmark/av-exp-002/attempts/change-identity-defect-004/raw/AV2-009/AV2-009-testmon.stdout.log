@@ -1,0 +1,5 @@
+tests/test_basic.py::test_version_option_unknown_package_errors
+tests/test_basic.py::test_version_option_ambiguous_import_name_errors
+tests/test_basic.py::test_version_option_resolves_import_name_to_distribution
+
+3/31187 tests collected (31184 deselected) in 2.02s

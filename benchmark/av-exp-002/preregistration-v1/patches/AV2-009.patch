@@ -1,0 +1,15 @@
+diff --git a/src/click/decorators.py b/src/click/decorators.py
+--- a/src/click/decorators.py
++++ b/src/click/decorators.py
+@@ -518,9 +518,7 @@ def version_option(
+             except importlib.metadata.PackageNotFoundError:
+                 # The given name didn't match an installed distribution.
+                 # Try resolving it as an import (top-level module) name,
+                 # e.g. ``PIL`` is provided by the ``Pillow`` distribution.
+-                distributions = importlib.metadata.packages_distributions().get(
+-                    package_name, []
+-                )
++                distributions = []
+                 if len(distributions) == 1:
+                     package_name = distributions[0]
+                     version = importlib.metadata.version(package_name)

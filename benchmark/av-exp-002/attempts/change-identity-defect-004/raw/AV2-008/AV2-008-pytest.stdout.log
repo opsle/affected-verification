@@ -1,0 +1,164 @@
+........................................................................ [  3%]
+.......................s................................................ [  7%]
+........................................................................ [ 10%]
+........................................................................ [ 14%]
+........................................................................ [ 17%]
+...............................F.........................F.............. [ 21%]
+........................................................................ [ 25%]
+........................................................F............... [ 28%]
+........................................................................ [ 32%]
+........................................................................ [ 35%]
+..............................................................x......... [ 39%]
+........................................................................ [ 42%]
+........................................................................ [ 46%]
+........................................................................ [ 50%]
+........................................................................ [ 53%]
+.............................................s.........................s [ 57%]
+............s.........s......s...s....s...s.......s.....s.......s....... [ 60%]
+.........s......s........s........s.s........................s.......... [ 64%]
+.....s..s.............................s.............................s... [ 67%]
+....s............s...................................................... [ 71%]
+........................................................................ [ 75%]
+........................................................................ [ 78%]
+........................................................................ [ 82%]
+........................................................................ [ 85%]
+........................................................................ [ 89%]
+........................................................................ [ 92%]
+........................................................................ [ 96%]
+........................................................................ [100%]
+=================================== FAILURES ===================================
+_ test_help_option_custom_names_and_class[name_specs0-  -h, --help  Show this message and exit.\n-True] _
+
+runner = <click.testing.CliRunner object at 0x72a39f3e9a20>, custom_class = True
+name_specs = ('-h', '--help')
+expected = '  -h, --help  Show this message and exit.\n'
+
+    @pytest.mark.parametrize("custom_class", (True, False))
+    @pytest.mark.parametrize(
+        ("name_specs", "expected"),
+        (
+            (
+                ("-h", "--help"),
+                "  -h, --help  Show this message and exit.\n",
+            ),
+            (
+                ("-h",),
+                "  -h      Show this message and exit.\n"
+                "  --help  Show this message and exit.\n",
+            ),
+            (
+                ("--help",),
+                "  --help  Show this message and exit.\n",
+            ),
+        ),
+    )
+    def test_help_option_custom_names_and_class(runner, custom_class, name_specs, expected):
+        class CustomHelpOption(click.Option):
+            pass
+    
+        option_attrs = {}
+        if custom_class:
+            option_attrs["cls"] = CustomHelpOption
+    
+        @click.command()
+        @click.help_option(*name_specs, **option_attrs)
+        def cmd():
+            pass
+    
+        for arg in name_specs:
+            result = runner.invoke(cmd, [arg])
+            assert not result.exception
+            assert result.exit_code == 0
+>           assert expected in result.output
+E           AssertionError: assert '  -h, --help  Show this message and exit.\n' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h | --help  Show this message and exit.\n'
+E            +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h | --help  Show this message and exit.\n' = <Result okay>.output
+
+tests/test_options.py:1141: AssertionError
+_ test_help_option_custom_names_and_class[name_specs0-  -h, --help  Show this message and exit.\n-False] _
+
+runner = <click.testing.CliRunner object at 0x72a39e83cbb0>
+custom_class = False, name_specs = ('-h', '--help')
+expected = '  -h, --help  Show this message and exit.\n'
+
+    @pytest.mark.parametrize("custom_class", (True, False))
+    @pytest.mark.parametrize(
+        ("name_specs", "expected"),
+        (
+            (
+                ("-h", "--help"),
+                "  -h, --help  Show this message and exit.\n",
+            ),
+            (
+                ("-h",),
+                "  -h      Show this message and exit.\n"
+                "  --help  Show this message and exit.\n",
+            ),
+            (
+                ("--help",),
+                "  --help  Show this message and exit.\n",
+            ),
+        ),
+    )
+    def test_help_option_custom_names_and_class(runner, custom_class, name_specs, expected):
+        class CustomHelpOption(click.Option):
+            pass
+    
+        option_attrs = {}
+        if custom_class:
+            option_attrs["cls"] = CustomHelpOption
+    
+        @click.command()
+        @click.help_option(*name_specs, **option_attrs)
+        def cmd():
+            pass
+    
+        for arg in name_specs:
+            result = runner.invoke(cmd, [arg])
+            assert not result.exception
+            assert result.exit_code == 0
+>           assert expected in result.output
+E           AssertionError: assert '  -h, --help  Show this message and exit.\n' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h | --help  Show this message and exit.\n'
+E            +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h | --help  Show this message and exit.\n' = <Result okay>.output
+
+tests/test_options.py:1141: AssertionError
+_____________________ test_option_help_preserve_paragraphs _____________________
+
+runner = <click.testing.CliRunner object at 0x72a39e82c360>
+
+    def test_option_help_preserve_paragraphs(runner):
+        @click.command()
+        @click.option(
+            "-C",
+            "--config",
+            type=click.Path(),
+            help="""Configuration file to use.
+    
+            If not given, the environment variable CONFIG_FILE is consulted
+            and used if set. If neither are given, a default configuration
+            file is loaded.""",
+        )
+        def cmd(config):
+            pass
+    
+        result = runner.invoke(cmd, ["--help"])
+        assert result.exit_code == 0
+        i = " " * 21
+>       assert (
+            "  -C, --config PATH  Configuration file to use.\n"
+            f"{i}\n"
+            f"{i}If not given, the environment variable CONFIG_FILE is\n"
+            f"{i}consulted and used if set. If neither are given, a default\n"
+            f"{i}configuration file is loaded."
+        ) in result.output
+E       AssertionError: assert '  -C, --config PATH  Configuration file to use.\n                     \n                     If not given, the enviro...        consulted and used if set. If neither are given, a default\n                     configuration file is loaded.' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  -C | --config PATH  Configuration file to use.\n                      \n         ...n, a default\n                      configuration file is loaded.\n  --help              Show this message and exit.\n'
+E        +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  -C | --config PATH  Configuration file to use.\n                      \n         ...n, a default\n                      configuration file is loaded.\n  --help              Show this message and exit.\n' = <Result okay>.output
+
+tests/test_options.py:1000: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_options.py::test_help_option_custom_names_and_class[name_specs0-  -h, --help  Show this message and exit.\n-True] - AssertionError: assert '  -h, --help  Show this message and exit.\n' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h | --help  Show this message and exit.\n'
+ +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h | --help  Show this message and exit.\n' = <Result okay>.output
+FAILED tests/test_options.py::test_help_option_custom_names_and_class[name_specs0-  -h, --help  Show this message and exit.\n-False] - AssertionError: assert '  -h, --help  Show this message and exit.\n' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h | --help  Show this message and exit.\n'
+ +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  -h | --help  Show this message and exit.\n' = <Result okay>.output
+FAILED tests/test_options.py::test_option_help_preserve_paragraphs - AssertionError: assert '  -C, --config PATH  Configuration file to use.\n                     \n                     If not given, the enviro...        consulted and used if set. If neither are given, a default\n                     configuration file is loaded.' in 'Usage: cmd [OPTIONS]\n\nOptions:\n  -C | --config PATH  Configuration file to use.\n                      \n         ...n, a default\n                      configuration file is loaded.\n  --help              Show this message and exit.\n'
+ +  where 'Usage: cmd [OPTIONS]\n\nOptions:\n  -C | --config PATH  Configuration file to use.\n                      \n         ...n, a default\n                      configuration file is loaded.\n  --help              Show this message and exit.\n' = <Result okay>.output
+3 failed, 1988 passed, 24 skipped, 31000 deselected, 1 xfailed in 5.91s

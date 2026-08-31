@@ -1,0 +1,75 @@
+Traceback (most recent call last):
+  File "/tmp/av-exp-002-run.H9jggi/click/.venv/bin/pytest", line 10, in <module>
+    sys.exit(console_main())
+             ~~~~~~~~~~~~^^
+  File "/tmp/av-exp-002-run.H9jggi/click/.venv/lib/python3.13/site-packages/_pytest/config/__init__.py", line 223, in console_main
+    code = main()
+  File "/tmp/av-exp-002-run.H9jggi/click/.venv/lib/python3.13/site-packages/_pytest/config/__init__.py", line 199, in main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/tmp/av-exp-002-run.H9jggi/click/.venv/lib/python3.13/site-packages/pluggy/_hooks.py", line 512, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/av-exp-002-run.H9jggi/click/.venv/lib/python3.13/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/av-exp-002-run.H9jggi/click/.venv/lib/python3.13/site-packages/pluggy/_callers.py", line 167, in _multicall
+    raise exception
+  File "/tmp/av-exp-002-run.H9jggi/click/.venv/lib/python3.13/site-packages/pluggy/_callers.py", line 121, in _multicall
+    res = hook_impl.function(*args)
+  File "/tmp/av-exp-002-run.H9jggi/click/.venv/lib/python3.13/site-packages/_pytest/main.py", line 365, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "/tmp/av-exp-002-run.H9jggi/click/.venv/lib/python3.13/site-packages/_pytest/main.py", line 353, in wrap_session
+    config.hook.pytest_sessionfinish(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        session=session, exitstatus=session.exitstatus
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/tmp/av-exp-002-run.H9jggi/click/.venv/lib/python3.13/site-packages/pluggy/_hooks.py", line 512, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/av-exp-002-run.H9jggi/click/.venv/lib/python3.13/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/av-exp-002-run.H9jggi/click/.venv/lib/python3.13/site-packages/pluggy/_callers.py", line 167, in _multicall
+    raise exception
+  File "/tmp/av-exp-002-run.H9jggi/click/.venv/lib/python3.13/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/tmp/av-exp-002-run.H9jggi/click/.venv/lib/python3.13/site-packages/_pytest/logging.py", line 873, in pytest_sessionfinish
+    return (yield)
+            ^^^^^
+  File "/tmp/av-exp-002-run.H9jggi/click/.venv/lib/python3.13/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/tmp/av-exp-002-run.H9jggi/click/.venv/lib/python3.13/site-packages/_pytest/terminal.py", line 960, in pytest_sessionfinish
+    result = yield
+             ^^^^^
+  File "/tmp/av-exp-002-run.H9jggi/click/.venv/lib/python3.13/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/tmp/av-exp-002-run.H9jggi/click/.venv/lib/python3.13/site-packages/_pytest/warnings.py", line 118, in pytest_sessionfinish
+    return (yield)
+            ^^^^^
+  File "/tmp/av-exp-002-run.H9jggi/click/.venv/lib/python3.13/site-packages/pluggy/_callers.py", line 121, in _multicall
+    res = hook_impl.function(*args)
+  File "/tmp/affected-verification-av-exp-002/benchmark/av-exp-002/pytest_av_catalog.py", line 58, in pytest_sessionfinish
+    Path(report_path).write_text(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        encoding="utf-8",
+        ^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/deploy/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py", line 555, in write_text
+    return PathBase.write_text(self, data, encoding, errors, newline)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/deploy/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/lib/python3.13/pathlib/_abc.py", line 651, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/deploy/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/affected-verification-av-exp-002/benchmark/av-exp-002/results-v1/raw/preflight/catalog.pytest.json'

@@ -1,0 +1,69 @@
+{
+  "schema": "opsle.affected-verification.av-exp-002.policy.v1",
+  "version": "av-exp-002-click-v1",
+  "rules": [
+    {
+      "id": "PYTHON-HYGIENE",
+      "match": [
+        "**/*.py"
+      ],
+      "require": [
+        "check:lint",
+        "check:format"
+      ]
+    },
+    {
+      "id": "SOURCE-TYPING",
+      "match": [
+        "src/**/*.py"
+      ],
+      "require": [
+        "check:mypy",
+        "check:pyright"
+      ]
+    },
+    {
+      "id": "SHARED-CORE-FULL",
+      "match": [
+        "src/click/core.py",
+        "src/click/types.py",
+        "src/click/utils.py",
+        "src/click/__init__.py"
+      ],
+      "escalation": "FULL"
+    },
+    {
+      "id": "PACKAGE-METADATA-FULL",
+      "match": [
+        "pyproject.toml",
+        "uv.lock"
+      ],
+      "escalation": "FULL"
+    },
+    {
+      "id": "PYTEST-CONFIG-FULL",
+      "match": [
+        "tests/conftest.py"
+      ],
+      "escalation": "FULL"
+    },
+    {
+      "id": "UNKNOWN-OR-PARSE-FAIL",
+      "match_evidence": [
+        "unknown_path",
+        "parse_error"
+      ],
+      "escalation": "FULL"
+    },
+    {
+      "id": "DYNAMIC-STATIC-UNCERTAINTY",
+      "match_evidence": [
+        "dynamic_import",
+        "plugin_discovery"
+      ],
+      "escalation": "FULL_UNLESS_COMPLETE_RUNTIME_SELECTOR"
+    }
+  ],
+  "skip_requirement": "Every omitted catalog check must carry a reason, evidence references, policy state, and uncertainty state.",
+  "identity": "sha256:f8dc6e2c1f69957fdced2b6ca8554fc90fc829152f66cee1961eeb501c137c8c"
+}

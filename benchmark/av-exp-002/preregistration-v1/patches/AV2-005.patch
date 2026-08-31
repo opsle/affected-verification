@@ -1,0 +1,12 @@
+diff --git a/src/click/core.py b/src/click/core.py
+--- a/src/click/core.py
++++ b/src/click/core.py
+@@ -99,7 +99,7 @@
+     raise RuntimeError(message)
+ 
+ 
+-def _format_deprecated_label(deprecated: bool | str) -> str:
++def _format_deprecated_label(deprecated: bool | str) -> int:
+     """Return the parenthesized deprecation label shown in help text."""
+     label = _("deprecated").upper()
+     if isinstance(deprecated, str):

@@ -1,0 +1,17 @@
+invalid-syntax: Expected a parameter or the end of the parameter list
+ --> src/click/_av_unknown.py:2:12
+  |
+1 | # Synthetic unknown source path with an invalid definition.
+2 | def broken(:
+  |            ^
+  |
+
+invalid-syntax: unexpected EOF while parsing
+ --> src/click/_av_unknown.py:3:1
+  |
+1 | # Synthetic unknown source path with an invalid definition.
+2 | def broken(:
+  |             ^
+  |
+
+Found 2 errors.

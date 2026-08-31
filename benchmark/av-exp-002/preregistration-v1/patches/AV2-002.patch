@@ -1,0 +1,11 @@
+diff --git a/src/click/formatting.py b/src/click/formatting.py
+--- a/src/click/formatting.py
++++ b/src/click/formatting.py
+@@ -16,6 +16,6 @@ def measure_table(rows: cabc.Iterable[tuple[str, str]]) -> tuple[int, ...]:
+ 
+     for row in rows:
+         for idx, col in enumerate(row):
+-            widths[idx] = max(widths.get(idx, 0), term_len(col))
++            widths[idx] = min(widths.get(idx, 0), term_len(col))
+ 
+     return tuple(y for x, y in sorted(widths.items()))

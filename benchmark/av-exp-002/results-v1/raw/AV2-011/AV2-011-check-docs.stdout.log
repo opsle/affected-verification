@@ -1,0 +1,106 @@
+Running Sphinx v9.1.0
+loading translations [en]... done
+loading intersphinx inventory 'python' from https://docs.python.org/3/objects.inv ...
+myst v5.0.0: MdParserConfig(commonmark_only=False, gfm_only=False, enable_extensions={'attrs_block'}, disable_syntax=[], all_links_external=False, links_external_new_tab=False, url_schemes=('http', 'https', 'mailto', 'ftp'), ref_domains=None, fence_as_directive=set(), number_code_blocks=[], title_to_header=False, heading_anchors=3, heading_slug_func=None, html_meta={}, footnote_sort=True, footnote_transition=True, words_per_minute=200, substitutions={}, linkify_fuzzy_links=True, dmath_allow_labels=True, dmath_allow_space=True, dmath_allow_digits=True, dmath_double_inline=False, update_mathjax=True, mathjax_classes='tex2jax_process|mathjax_process|math|output_area', enable_checkboxes=False, suppress_warnings=[], highlight_code_blocks=True)
+building [mo]: targets for 0 po files that are out of date
+writing output... 
+building [dirhtml]: targets for 37 source files that are out of date
+updating environment: [new config] 37 added, 0 changed, 0 removed
+reading sources... [  3%] advanced
+reading sources... [  5%] api
+reading sources... [  8%] arguments
+reading sources... [ 11%] changes
+reading sources... [ 14%] click-concepts
+reading sources... [ 16%] command-line-reference
+reading sources... [ 19%] commands
+reading sources... [ 22%] commands-and-groups
+reading sources... [ 24%] complex
+reading sources... [ 27%] contrib
+reading sources... [ 30%] contributing
+reading sources... [ 32%] design-opinions
+reading sources... [ 35%] documentation
+reading sources... [ 38%] entry-points
+reading sources... [ 41%] exceptions
+reading sources... [ 43%] extending-click
+reading sources... [ 46%] faqs
+reading sources... [ 49%] handling-files
+reading sources... [ 51%] index
+reading sources... [ 54%] license
+reading sources... [ 57%] option-decorators
+reading sources... [ 59%] options
+reading sources... [ 62%] parameter-types
+reading sources... [ 65%] parameters
+reading sources... [ 68%] prompts
+reading sources... [ 70%] quickstart
+reading sources... [ 73%] setuptools
+reading sources... [ 76%] shell-completion
+reading sources... [ 78%] standalone-apps
+reading sources... [ 81%] support-multiple-versions
+reading sources... [ 84%] testing
+reading sources... [ 86%] unicode-support
+reading sources... [ 89%] upgrade-guides
+reading sources... [ 92%] utils
+reading sources... [ 95%] virtualenv
+reading sources... [ 97%] why
+reading sources... [100%] wincmd
+
+looking for now-outdated files... none found
+pickling environment... done
+checking consistency... done
+preparing documents... done
+copying assets... 
+copying static files... 
+Writing evaluated template result to /tmp/av2-docs.h95tuN/_static/documentation_options.js
+Writing evaluated template result to /tmp/av2-docs.h95tuN/_static/language_data.js
+Writing evaluated template result to /tmp/av2-docs.h95tuN/_static/basic.css
+copying static files: done
+copying extra files... 
+copying extra files: done
+copying assets: done
+writing output... [  3%] advanced
+writing output... [  5%] api
+writing output... [  8%] arguments
+writing output... [ 11%] changes
+writing output... [ 14%] click-concepts
+writing output... [ 16%] command-line-reference
+writing output... [ 19%] commands
+writing output... [ 22%] commands-and-groups
+writing output... [ 24%] complex
+writing output... [ 27%] contrib
+writing output... [ 30%] contributing
+writing output... [ 32%] design-opinions
+writing output... [ 35%] documentation
+writing output... [ 38%] entry-points
+writing output... [ 41%] exceptions
+writing output... [ 43%] extending-click
+writing output... [ 46%] faqs
+writing output... [ 49%] handling-files
+writing output... [ 51%] index
+writing output... [ 54%] license
+writing output... [ 57%] option-decorators
+writing output... [ 59%] options
+writing output... [ 62%] parameter-types
+writing output... [ 65%] parameters
+writing output... [ 68%] prompts
+writing output... [ 70%] quickstart
+writing output... [ 73%] setuptools
+writing output... [ 76%] shell-completion
+writing output... [ 78%] standalone-apps
+writing output... [ 81%] support-multiple-versions
+writing output... [ 84%] testing
+writing output... [ 86%] unicode-support
+writing output... [ 89%] upgrade-guides
+writing output... [ 92%] utils
+writing output... [ 95%] virtualenv
+writing output... [ 97%] why
+writing output... [100%] wincmd
+
+generating indices... genindex done
+writing additional pages... search done
+copying images... [100%] _static/click-name.svg
+
+dumping search index in English (code: en)... done
+dumping object inventory... done
+build succeeded.
+
+The HTML pages are in ../../av2-docs.h95tuN.

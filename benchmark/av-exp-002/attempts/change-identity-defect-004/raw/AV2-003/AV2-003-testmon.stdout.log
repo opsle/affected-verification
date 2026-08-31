@@ -1,0 +1,61 @@
+tests/test_context.py::test_pass_obj
+tests/test_context.py::test_get_context_objects
+tests/test_context.py::test_make_pass_meta_decorator
+tests/test_context.py::test_get_context_objects_missing
+tests/test_context.py::test_propagate_show_default_setting
+tests/test_context.py::test_get_context_objects_no_ensuring
+tests/test_context.py::test_ensure_context_objects
+tests/test_context.py::test_make_pass_decorator_args
+tests/test_command_decorators.py::test_group_no_parens
+tests/test_shell_completion.py::test_help_option
+tests/test_shell_completion.py::test_nested_group[args1--expect1]
+tests/test_shell_completion.py::test_nested_group[args2--expect2]
+tests/test_shell_completion.py::test_nested_group[args3---expect3]
+tests/test_shell_completion.py::test_nested_group[args5---expect5]
+tests/test_shell_completion.py::test_nested_group[args4--expect4]
+tests/test_shell_completion.py::test_hidden
+tests/test_shell_completion.py::test_group_command_same_option
+tests/test_shell_completion.py::test_chained
+tests/test_formatting.py::test_formatting_usage_error_help_hint[help_names0-extra_options0-Try 'cli foo --help' for help.]
+tests/test_formatting.py::test_formatting_usage_error_help_hint[help_names1-extra_options1-Try 'cli foo --help' for help.]
+tests/test_formatting.py::test_formatting_usage_error_nested
+tests/test_formatting.py::test_formatting_usage_error_help_hint[help_names4-extra_options4-Try 'cli foo --man' for help.]
+tests/test_formatting.py::test_formatting_usage_error_help_hint[help_names3-extra_options3-None]
+tests/test_formatting.py::test_formatting_usage_error_help_hint[help_names5-extra_options5-Try 'cli foo --help' for help.]
+tests/test_formatting.py::test_formatting_usage_error_help_hint[help_names2-extra_options2-Try 'cli foo -h' for help.]
+tests/test_formatting.py::test_wrapping_long_options_strings
+tests/test_formatting.py::test_wrapping_long_command_name
+tests/test_commands.py::test_group_add_command_name
+tests/test_commands.py::test_forwarded_params_consistency
+tests/test_commands.py::test_other_command_forward
+tests/test_commands.py::test_invoked_subcommand
+tests/test_commands.py::test_group_invoke_collects_used_option_prefixes
+tests/test_commands.py::test_unknown_command
+tests/test_commands.py::test_suggest_possible_commands[decline-(Did you mean one of: 'declare', 'refine'?)]
+tests/test_commands.py::test_suggest_possible_commands[pause-Did you mean 'push'?]
+tests/test_commands.py::test_aliased_command_canonical_name
+tests/test_commands.py::test_group_with_args[args1-0-Show this message and exit.]
+tests/test_commands.py::test_default_maps
+tests/test_commands.py::test_object_propagation
+tests/test_commands.py::test_group_with_args[args2-0-obj=obj1\nmove\n]
+tests/test_commands.py::test_custom_parser
+tests/test_arguments.py::test_subcommand_help
+tests/test_arguments.py::test_nested_subcommand_help
+tests/test_defaults.py::test_flag_default_map
+tests/test_options.py::test_show_envvar_auto_prefix_dash_in_command
+tests/test_normalization.py::test_command_normalization
+tests/test_basic.py::test_group_from_list
+tests/test_basic.py::test_basic_group
+tests/test_basic.py::test_group_commands_dict
+tests/test_chain.py::test_group_arg_behavior
+tests/test_chain.py::test_chaining_with_options
+tests/test_chain.py::test_args_and_chain
+tests/test_chain.py::test_chaining_with_arguments
+tests/test_chain.py::test_chaining_help[args2-SDIST HELP]
+tests/test_chain.py::test_pipeline[args2-foo \n bar-expect2]
+tests/test_chain.py::test_basic_chaining
+tests/test_chain.py::test_pipeline[args1-foo \n bar-expect1]
+tests/test_chain.py::test_chaining_help[args4-SDIST HELP]
+tests/test_chain.py::test_chaining_help[args3-BDIST HELP]
+
+59/32241 tests collected (32182 deselected) in 2.15s

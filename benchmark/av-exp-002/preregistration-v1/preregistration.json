@@ -1,0 +1,213 @@
+{
+  "schema": "opsle.affected-verification.preregistration.v1",
+  "experiment_id": "AV-EXP-002",
+  "title": "Cross-Ecosystem Minimum Defensible Verification Shadow Calibration",
+  "revision": 1,
+  "stage": "CALIBRATION_SHADOW",
+  "trust_stage": "OBSERVE/SHADOW",
+  "question": "Does Affected Verification preserve oracle-relevant verification while reducing proposed verification workload in a second ecosystem with a different established affected-test selector?",
+  "secondary_questions": [
+    "Does the normalized evidence model remain usable outside JavaScript/TypeScript?",
+    "Which verification classes are invisible to pytest-testmon?",
+    "Does AV incorporate selector evidence without blindly trusting it?",
+    "Does uncertainty broaden correctly?",
+    "How much proposed verification work can be omitted within compatible units?",
+    "Which AV-EXP-001 assumptions fail in Python?"
+  ],
+  "target": {
+    "url": "https://github.com/pallets/click.git",
+    "commit": "36baa15ff831b939a22bc527cd76ce653ef6f66d",
+    "license": "BSD-3-Clause"
+  },
+  "toolchain": "sha256:de3e202da80ba40cd14352b38d27ab96e47ead6e7ab9cd43e831e25a6a93d3c8",
+  "selector": "sha256:fdd2b00fa631660f159f8c21c7d4a4dcffa180f82185b359fdc773fc660d5590",
+  "catalog": "sha256:28ed20abf60e7c785052308298dc6ed647b7a20a737513e8fb3c76aa62d9094c",
+  "policy": "sha256:f8dc6e2c1f69957fdced2b6ca8554fc90fc829152f66cee1961eeb501c137c8c",
+  "corpus": "sha256:d5bc43405a5ab0ac34feef6d5fd5df111eace7f1a355400f963f8a7d4399640b",
+  "comparison": "sha256:65ffed1e73929cb1e058f9ebd1ac116cb2daa20af7de3c483c833a9f74df011f",
+  "arms": [
+    {
+      "id": "FULL",
+      "definition": "Execute every frozen catalog unit; authoritative."
+    },
+    {
+      "id": "ECOSYSTEM_SELECTOR",
+      "definition": "pytest-testmon 2.2.0 proposes affected pytest nodes under its documented tests-only contract."
+    },
+    {
+      "id": "AV_CORE",
+      "definition": "AV consumes Git change, Python import/symbol evidence, catalog, and policy without testmon output."
+    },
+    {
+      "id": "AV_WITH_SELECTOR_EVIDENCE",
+      "definition": "AV additionally consumes normalized testmon node selection and database readiness; AV still owns cross-class sufficiency."
+    }
+  ],
+  "relevance_oracle": {
+    "scope": "Relevant within this frozen verification catalog.",
+    "procedure": [
+      "qualifying clean baseline",
+      "exact patch identity",
+      "complete frozen catalog execution",
+      "freeze checks whose normalized PASS outcome changes to FAIL"
+    ],
+    "limit": "No complete semantic-correctness claim."
+  },
+  "metrics": {
+    "safety": [
+      "relevant checks",
+      "selected relevant checks",
+      "individual misses",
+      "scenario misses",
+      "broadening"
+    ],
+    "workload": [
+      "pytest nodes selected/skipped",
+      "pytest files selected/skipped",
+      "non-test checks by class"
+    ],
+    "runtime": "OBSERVED only; excluded from semantic identity and causal-savings claims."
+  },
+  "shadow_miss": "A frozen oracle-relevant check omitted by a proposing arm.",
+  "stop_conditions": [
+    "identity drift",
+    "unstable clean baseline",
+    "incomplete FULL",
+    "harness defect affecting outcomes",
+    "unpreserved raw evidence",
+    "attempt to bypass FULL"
+  ],
+  "analysis_rules": [
+    "safety before workload",
+    "every miss individual",
+    "missing is not zero",
+    "unlike units stay separate",
+    "zero observed misses is corpus-bounded",
+    "revision 1 is immutable after outcomes"
+  ],
+  "dynamic_language_hazards": [
+    "dynamic imports",
+    "monkeypatching",
+    "runtime distribution/plugin discovery",
+    "conftest/fixture coupling",
+    "environment-dependent behavior"
+  ],
+  "evidence_adapters": {
+    "pytest_av_catalog.py": "sha256:98dec93147edd3ed67be7d2420f141f2b42534f7837ffa3a0985e2e4abf1a135",
+    "python_graph.py": "sha256:159f5f264902c331750e5ddef6074e61e4350e24a8a5bbd702db9d276ba4b59c",
+    "run.mjs": "sha256:49f9b829628f9fb0c8fca4f60cbf4f5f30b1b088f659716ab00bbbedf8798f2e",
+    "lib.mjs": "sha256:0ca1c26eaf446ad3a13070a4df86684c3fcdae1b61f5acb8bb5a472ca557fb83"
+  },
+  "fault_injections": [
+    {
+      "id": "AV2-001",
+      "title": "isolated implementation fault",
+      "kind": "SYNTHETIC_FAULT",
+      "changed_paths": [
+        "src/click/parser.py"
+      ],
+      "evidence": {}
+    },
+    {
+      "id": "AV2-002",
+      "title": "direct formatting dependency fault",
+      "kind": "SYNTHETIC_FAULT",
+      "changed_paths": [
+        "src/click/formatting.py"
+      ],
+      "evidence": {}
+    },
+    {
+      "id": "AV2-003",
+      "title": "shared/transitive utility fault",
+      "kind": "SYNTHETIC_FAULT",
+      "changed_paths": [
+        "src/click/utils.py"
+      ],
+      "evidence": {}
+    },
+    {
+      "id": "AV2-004",
+      "title": "test-only benign change",
+      "kind": "BENIGN_SYNTHETIC_CHANGE",
+      "changed_paths": [
+        "tests/test_parser.py"
+      ],
+      "evidence": {}
+    },
+    {
+      "id": "AV2-005",
+      "title": "public interface typing fault",
+      "kind": "SYNTHETIC_FAULT",
+      "changed_paths": [
+        "src/click/core.py"
+      ],
+      "evidence": {}
+    },
+    {
+      "id": "AV2-006",
+      "title": "lint-sensitive unused import",
+      "kind": "SYNTHETIC_FAULT",
+      "changed_paths": [
+        "src/click/parser.py"
+      ],
+      "evidence": {}
+    },
+    {
+      "id": "AV2-007",
+      "title": "package metadata/build fault",
+      "kind": "SYNTHETIC_FAULT",
+      "changed_paths": [
+        "pyproject.toml"
+      ],
+      "evidence": {}
+    },
+    {
+      "id": "AV2-008",
+      "title": "multi-file formatting behavior fault",
+      "kind": "SYNTHETIC_FAULT",
+      "changed_paths": [
+        "src/click/formatting.py",
+        "tests/test_formatting.py"
+      ],
+      "evidence": {}
+    },
+    {
+      "id": "AV2-009",
+      "title": "dynamic plugin-discovery fault with incomplete static evidence",
+      "kind": "UNCERTAINTY_SCENARIO",
+      "changed_paths": [
+        "src/click/decorators.py"
+      ],
+      "evidence": {
+        "static_evidence_complete": false,
+        "runtime_selector_can_repair": true
+      }
+    },
+    {
+      "id": "AV2-010",
+      "title": "unknown source path with missing selector database",
+      "kind": "UNCERTAINTY_SCENARIO",
+      "changed_paths": [
+        "src/click/_av_unknown.py"
+      ],
+      "evidence": {
+        "static_evidence_complete": false,
+        "selector_database": "MISSING"
+      }
+    },
+    {
+      "id": "AV2-011",
+      "title": "shared conftest configuration change",
+      "kind": "UNCERTAINTY_SCENARIO",
+      "changed_paths": [
+        "tests/conftest.py"
+      ],
+      "evidence": {
+        "static_evidence_complete": false
+      }
+    }
+  ],
+  "providers": "No external model/provider benchmark subjects.",
+  "identity": "sha256:93743e15caee647de1807ee27d35518cd9520394983803e1b93a58e9a2841db6"
+}

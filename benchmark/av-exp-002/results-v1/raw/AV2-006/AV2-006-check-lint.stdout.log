@@ -1,0 +1,13 @@
+F401 [*] `json` imported but unused
+  --> src/click/parser.py:28:8
+   |
+27 | import collections.abc as cabc
+28 | import json
+   |        ^^^^
+29 | import typing as t
+30 | from collections import deque
+   |
+help: Remove unused import: `json`
+
+Found 1 error.
+[*] 1 fixable with the `--fix` option.

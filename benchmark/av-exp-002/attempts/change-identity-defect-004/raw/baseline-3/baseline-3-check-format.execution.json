@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/tmp/av-exp-002-run.dn27iQ/click/.venv/bin/ruff",
+    "format",
+    "--check",
+    "src",
+    "tests"
+  ],
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "spawn_error": null,
+  "duration_ms_observed": 17.796,
+  "stdout_sha256": "sha256:43476fb9601a542841f6cba73a03155ef5792f5324f2380538c7f276a7b8ed2f",
+  "stderr_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
