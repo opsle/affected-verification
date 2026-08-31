@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/tmp/av-exp-002-run.H2IQv6/click/.venv/bin/sphinx-build",
+    "-E",
+    "-W",
+    "-b",
+    "dirhtml",
+    "docs",
+    "/tmp/av2-docs.IjtUoQ"
+  ],
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "spawn_error": null,
+  "duration_ms_observed": 10148.782,
+  "stdout_sha256": "sha256:5decf904544a352384c874f422efae6dee84d2d207fa5adbc4bcf22208be7d3a",
+  "stderr_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

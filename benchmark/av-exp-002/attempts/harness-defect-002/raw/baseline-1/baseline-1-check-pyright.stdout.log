@@ -1,0 +1,30 @@
+Module name: "click"
+Package directory: ""
+Module directory: ""
+   error: No py.typed file found
+
+Symbols used in public interface:
+
+Symbols exported by "click": 0
+  With known type: 0
+  With ambiguous type: 0
+  With unknown type: 0
+    (Ignoring unknown types imported from other packages)
+
+Other symbols referenced but not exported by "click": 0
+  With known type: 0
+  With ambiguous type: 0
+  With unknown type: 0
+
+Symbols without documentation:
+  Functions without docstring: 0
+  Functions without default param: 0
+  Classes without docstring: 0
+
+Type completeness score: 0%
+
+Completed in 0.262sec
+
+WARNING: there is a new pyright version available (v1.1.408 -> v1.1.411).
+Please install the new version or set PYRIGHT_PYTHON_FORCE_VERSION to `latest`
+

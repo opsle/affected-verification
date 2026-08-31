@@ -177,10 +177,14 @@ function prepareTarget(prereg) {
 function runNonTestCheck(worktree, rawDir, runId, checkId) {
   let command;
   let args;
+  let env = {};
   if (checkId === 'check:lint') [command, args] = [path.join(worktree, '.venv/bin/ruff'), ['check', '--no-fix', 'src', 'tests']];
   else if (checkId === 'check:format') [command, args] = [path.join(worktree, '.venv/bin/ruff'), ['format', '--check', 'src', 'tests']];
   else if (checkId === 'check:mypy') [command, args] = [path.join(worktree, '.venv/bin/mypy'), []];
-  else if (checkId === 'check:pyright') [command, args] = [path.join(worktree, '.venv/bin/pyright'), ['--ignoreexternal', '--verifytypes', 'click']];
+  else if (checkId === 'check:pyright') {
+    [command, args] = [path.join(worktree, '.venv/bin/pyright'), ['--ignoreexternal', '--verifytypes', 'click']];
+    env = { PYTHONPATH: path.join(worktree, 'src') };
+  }
   else if (checkId === 'check:build') {
     const out = fs.mkdtempSync(path.join(os.tmpdir(), 'av2-build.'));
     [command, args] = [path.join(worktree, '.venv/bin/python'), ['-m', 'build', '--no-isolation', '--outdir', out]];
@@ -189,7 +193,7 @@ function runNonTestCheck(worktree, rawDir, runId, checkId) {
     [command, args] = [path.join(worktree, '.venv/bin/sphinx-build'), ['-E', '-W', '-b', 'dirhtml', 'docs', out]];
   } else if (checkId === 'check:lock') [command, args] = ['uv', ['lock', '--check']];
   else throw new Error(`unknown non-test check: ${checkId}`);
-  const execution = run(command, args, { cwd: worktree, timeout: 15 * 60 * 1000 });
+  const execution = run(command, args, { cwd: worktree, env, timeout: 15 * 60 * 1000 });
   const record = persistExecution(rawDir, `${runId}-${checkId.replace(':', '-')}`, execution);
   return { failed: execution.exit_code !== 0 || execution.timed_out || execution.spawn_error, record };
 }
@@ -204,7 +208,8 @@ function runFullCatalog(worktree, rawDir, runId, prereg) {
   for (const [nodeid, outcome] of Object.entries(pytest.report.outcomes)) {
     if (outcome.outcome === 'failed') failed.push(`pytest:${nodeid}`);
   }
-  if (pytest.execution.exit_code === 2 || JSON.stringify(selected) !== JSON.stringify(expected)) {
+  const pytestCompleteExit = [0, 1].includes(pytest.execution.exit_code);
+  if (!pytestCompleteExit || JSON.stringify(selected) !== JSON.stringify(expected)) {
     failed.push('check:pytest-collection');
   }
   const timings = [{ check_id: 'pytest:catalog', duration_ms_observed: pytest.execution.duration_ms_observed }];
@@ -219,7 +224,7 @@ function runFullCatalog(worktree, rawDir, runId, prereg) {
     executed_check_ids: prereg.catalog.checks.map((check) => check.id).sort(),
     failed_check_ids: [...new Set(failed)].sort(),
     pytest_selected_nodeids: selected,
-    full_complete: JSON.stringify(selected) === JSON.stringify(expected)
+    full_complete: pytestCompleteExit && JSON.stringify(selected) === JSON.stringify(expected)
       && !pytest.execution.timed_out && !pytest.execution.spawn_error,
   };
   return { ...semantic, identity: contentIdentity(semantic), timings_observed: timings };
@@ -597,7 +602,7 @@ function rawManifest(root) {
 }
 
 const prereg = verifyPreregistration();
-const amendmentFiles = ['001-report-directory.md'];
+const amendmentFiles = ['001-report-directory.md', '002-pytest-report-and-pyright-resolution.md'];
 const amendments = amendmentFiles.map((name) => ({
   name,
   identity: sha256File(path.join(here, 'amendments', name)),
