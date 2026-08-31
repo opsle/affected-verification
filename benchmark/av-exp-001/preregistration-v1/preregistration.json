@@ -1,0 +1,114 @@
+{
+  "schema": "opsle.affected-verification.preregistration.v1",
+  "experiment_id": "AV-EXP-001",
+  "title": "Minimum Defensible Verification — Real Repository Shadow Calibration",
+  "revision": 1,
+  "stage": "CALIBRATION_SHADOW",
+  "question": "On the pinned real public repository and frozen corpus, can Affected Verification reduce proposed verification workload while selecting every check that the frozen full-verification oracle demonstrates was relevant?",
+  "target": {
+    "url": "https://github.com/pmndrs/zustand.git",
+    "commit": "b57db4f86ef179285da216eeb291266da82c361c",
+    "license": "MIT"
+  },
+  "artifacts": {
+    "environment": "environment.json",
+    "catalog": "catalog.json",
+    "native_selector": "native-selector.json",
+    "policy": "policy.json",
+    "scenarios": "scenarios.json"
+  },
+  "arms": [
+    {
+      "id": "FULL",
+      "definition": "Execute every frozen catalog check. This arm is authoritative."
+    },
+    {
+      "id": "NATIVE",
+      "definition": "Use Vitest 4.1.10 related selection for frozen changed paths. It predicts test checks only."
+    },
+    {
+      "id": "AV_CORE",
+      "definition": "Use Git change identity, deterministic static source graph, frozen catalog, and frozen policy without native selection output."
+    },
+    {
+      "id": "AV_WITH_NATIVE_EVIDENCE",
+      "definition": "Use AV_CORE evidence plus normalized native-selected tests as one additional evidence source; native evidence never replaces policy or the full oracle."
+    }
+  ],
+  "baseline": {
+    "repetitions": 3,
+    "requirement": "Every frozen check must pass in every clean repetition with stable test-file and test-execution counts.",
+    "stop": "Stop before comparative scenarios if the baseline materially fails, flakes, drifts, or cannot complete within the practical host bound."
+  },
+  "relevance_oracle": {
+    "scope": "Relevant within this frozen verification catalog.",
+    "procedure": [
+      "Confirm the check passes on every qualifying clean baseline repetition.",
+      "Materialize the exact scenario patch and validate its identity.",
+      "Execute the complete frozen catalog regardless of predicted plans.",
+      "A check is relevant when its normalized outcome changes from clean PASS to scenario FAIL.",
+      "Preserve raw command output and normalized identity-bound outcomes."
+    ],
+    "limit": "The oracle identifies known catalog checks that expose a scenario effect; it does not prove complete software correctness or production-bug representativeness."
+  },
+  "primary_metric": {
+    "id": "selection_miss",
+    "definition": "A frozen relevant check failed under FULL and was omitted by the selector arm.",
+    "rule": "Report every miss individually. Any Affected Verification miss prevents movement beyond SHADOW and requires root-cause analysis."
+  },
+  "metrics": {
+    "safety": [
+      "scenarios with relevant failures",
+      "relevant checks",
+      "selected relevant checks",
+      "missed relevant checks",
+      "relevant-check recall",
+      "scenario-level miss rate",
+      "escalations",
+      "insufficient-evidence cases"
+    ],
+    "workload": [
+      "test executions available, selected, and skipped",
+      "test files available, selected, and skipped",
+      "non-test checks selected and skipped by type"
+    ],
+    "runtime": "Wall-clock durations are OBSERVED only, excluded from semantic identities, and do not by subtraction establish causal time saved.",
+    "native_comparison": "Report where either selector is narrower, where AV broadens native output, and where either misses a relevant check."
+  },
+  "failure_taxonomy": [
+    "SELECTION_MISS",
+    "NO_SELECTION_MISS",
+    "BASELINE_FAILURE",
+    "BASELINE_FLAKE",
+    "HARNESS_DEFECT",
+    "TARGET_IDENTITY_MISMATCH",
+    "PATCH_IDENTITY_MISMATCH",
+    "CATALOG_DRIFT",
+    "NATIVE_VERSION_DRIFT",
+    "MALFORMED_EVIDENCE",
+    "INCOMPLETE_EVIDENCE_ESCALATION",
+    "FULL_RUN_INCOMPLETE",
+    "RESULT_TAMPERING",
+    "INTERRUPTED_RUN"
+  ],
+  "analysis_rules": [
+    "Correctness and misses are reported before workload.",
+    "No missing observation is interpreted as zero.",
+    "Unlike workload units are not combined.",
+    "Synthetic faults test selection correctness but do not estimate production-bug frequency.",
+    "Zero observed misses means only that no miss was observed in this frozen corpus.",
+    "No post-outcome policy, catalog, scenario, oracle, or metric change is permitted in revision 1.",
+    "A genuine harness defect requires a preserved revision-1 record and a versioned amended preregistration."
+  ],
+  "stop_conditions": [
+    "target, lockfile, tool, catalog, scenario, or patch identity drift",
+    "materially failing or flaky clean baseline",
+    "incomplete FULL execution for an analyzed scenario",
+    "a harness defect that can affect selection, relevance, or result identity",
+    "inability to preserve raw full-run evidence",
+    "attempt to let an affected arm replace or bypass FULL"
+  ],
+  "trust_decision_rule": "Remain OBSERVE/SHADOW. This first calibration cannot authorize TRUSTED_BOUNDED even with zero observed misses.",
+  "providers": "No model or external provider subject is used or permitted.",
+  "identity": "sha256:d25cbcda7f920716ff291d18f20eca2af010ebab62a09e849cdc4ea70ad5ff80"
+}

@@ -1,0 +1,531 @@
+{
+  "schema": "opsle.affected-verification.shadow-benchmark-analysis.v1",
+  "experiment_id": "AV-EXP-001",
+  "summary_identity": "sha256:68b8582a9ce7b86bfa5431d89d2dea07f8c34b88d1d0350bab25c99fa5b236df",
+  "target": {
+    "repository": "https://github.com/pmndrs/zustand.git",
+    "sha": "b57db4f86ef179285da216eeb291266da82c361c"
+  },
+  "corpus": {
+    "scenarios": 10,
+    "synthetic_faults": 6,
+    "synthetic_benign_change_shapes": 4,
+    "scenarios_with_relevant_failures": 6,
+    "relevant_checks": 8
+  },
+  "safety": {
+    "NATIVE": {
+      "relevant_checks": 8,
+      "selected_relevant_checks": 6,
+      "missed_relevant_checks": 2,
+      "relevant_check_recall": "6/8",
+      "scenario_level_miss_count": 2,
+      "escalations": 0,
+      "misses": [
+        {
+          "scenario_id": "AVS-003",
+          "check_id": "check:lint"
+        },
+        {
+          "scenario_id": "AVS-008",
+          "check_id": "check:typecheck"
+        }
+      ]
+    },
+    "AV_CORE": {
+      "relevant_checks": 8,
+      "selected_relevant_checks": 8,
+      "missed_relevant_checks": 0,
+      "relevant_check_recall": "8/8",
+      "scenario_level_miss_count": 0,
+      "escalations": 3,
+      "misses": []
+    },
+    "AV_WITH_NATIVE_EVIDENCE": {
+      "relevant_checks": 8,
+      "selected_relevant_checks": 8,
+      "missed_relevant_checks": 0,
+      "relevant_check_recall": "8/8",
+      "scenario_level_miss_count": 0,
+      "escalations": 3,
+      "misses": []
+    }
+  },
+  "workload": {
+    "class": "EXACT",
+    "units_not_combined": true,
+    "aggregate_across_10_scenarios": {
+      "FULL": {
+        "test_files": {
+          "available": 130,
+          "selected": 130,
+          "skipped": 0
+        },
+        "test_executions": {
+          "available": 2240,
+          "selected": 2240,
+          "skipped": 0
+        },
+        "non_test_checks": {
+          "available": 40,
+          "selected": 40,
+          "skipped": 0
+        }
+      },
+      "NATIVE": {
+        "test_files": {
+          "available": 130,
+          "selected": 70,
+          "skipped": 60
+        },
+        "test_executions": {
+          "available": 2240,
+          "selected": 1358,
+          "skipped": 882
+        },
+        "non_test_checks": {
+          "available": 40,
+          "selected": 0,
+          "skipped": 40
+        }
+      },
+      "AV_CORE": {
+        "test_files": {
+          "available": 130,
+          "selected": 89,
+          "skipped": 41
+        },
+        "test_executions": {
+          "available": 2240,
+          "selected": 1640,
+          "skipped": 600
+        },
+        "non_test_checks": {
+          "available": 40,
+          "selected": 40,
+          "skipped": 0
+        }
+      },
+      "AV_WITH_NATIVE_EVIDENCE": {
+        "test_files": {
+          "available": 130,
+          "selected": 89,
+          "skipped": 41
+        },
+        "test_executions": {
+          "available": 2240,
+          "selected": 1640,
+          "skipped": 600
+        },
+        "non_test_checks": {
+          "available": 40,
+          "selected": 40,
+          "skipped": 0
+        }
+      }
+    },
+    "per_scenario": {
+      "AVS-001": {
+        "relevant_check_ids": [],
+        "NATIVE": {
+          "selected_test_executions": 166,
+          "skipped_test_executions": 58,
+          "selection_misses": []
+        },
+        "AV_CORE": {
+          "selected_test_executions": 166,
+          "skipped_test_executions": 58,
+          "sufficiency": "SUFFICIENT_TARGETED",
+          "escalation": {
+            "state": "NONE",
+            "reasons": []
+          },
+          "selection_misses": []
+        },
+        "AV_WITH_NATIVE_EVIDENCE": {
+          "selected_test_executions": 166,
+          "skipped_test_executions": 58,
+          "sufficiency": "SUFFICIENT_TARGETED",
+          "escalation": {
+            "state": "NONE",
+            "reasons": []
+          },
+          "selection_misses": []
+        }
+      },
+      "AVS-002": {
+        "relevant_check_ids": [
+          "test:tests/vanilla/shallow.test.tsx"
+        ],
+        "NATIVE": {
+          "selected_test_executions": 19,
+          "skipped_test_executions": 205,
+          "selection_misses": []
+        },
+        "AV_CORE": {
+          "selected_test_executions": 19,
+          "skipped_test_executions": 205,
+          "sufficiency": "SUFFICIENT_TARGETED",
+          "escalation": {
+            "state": "NONE",
+            "reasons": []
+          },
+          "selection_misses": []
+        },
+        "AV_WITH_NATIVE_EVIDENCE": {
+          "selected_test_executions": 19,
+          "skipped_test_executions": 205,
+          "sufficiency": "SUFFICIENT_TARGETED",
+          "escalation": {
+            "state": "NONE",
+            "reasons": []
+          },
+          "selection_misses": []
+        }
+      },
+      "AVS-003": {
+        "relevant_check_ids": [
+          "check:lint",
+          "test:tests/subscribe.test.tsx"
+        ],
+        "NATIVE": {
+          "selected_test_executions": 211,
+          "skipped_test_executions": 13,
+          "selection_misses": [
+            "check:lint"
+          ]
+        },
+        "AV_CORE": {
+          "selected_test_executions": 211,
+          "skipped_test_executions": 13,
+          "sufficiency": "SUFFICIENT_BROADENED",
+          "escalation": {
+            "state": "BROADENED",
+            "reasons": [
+              {
+                "rule_id": "public-contract-broaden",
+                "escalation": "BROADEN"
+              }
+            ]
+          },
+          "selection_misses": []
+        },
+        "AV_WITH_NATIVE_EVIDENCE": {
+          "selected_test_executions": 211,
+          "skipped_test_executions": 13,
+          "sufficiency": "SUFFICIENT_BROADENED",
+          "escalation": {
+            "state": "BROADENED",
+            "reasons": [
+              {
+                "rule_id": "public-contract-broaden",
+                "escalation": "BROADEN"
+              }
+            ]
+          },
+          "selection_misses": []
+        }
+      },
+      "AVS-004": {
+        "relevant_check_ids": [
+          "test:tests/persistSync.test.tsx"
+        ],
+        "NATIVE": {
+          "selected_test_executions": 166,
+          "skipped_test_executions": 58,
+          "selection_misses": []
+        },
+        "AV_CORE": {
+          "selected_test_executions": 166,
+          "skipped_test_executions": 58,
+          "sufficiency": "SUFFICIENT_TARGETED",
+          "escalation": {
+            "state": "NONE",
+            "reasons": []
+          },
+          "selection_misses": []
+        },
+        "AV_WITH_NATIVE_EVIDENCE": {
+          "selected_test_executions": 166,
+          "skipped_test_executions": 58,
+          "sufficiency": "SUFFICIENT_TARGETED",
+          "escalation": {
+            "state": "NONE",
+            "reasons": []
+          },
+          "selection_misses": []
+        }
+      },
+      "AVS-005": {
+        "relevant_check_ids": [
+          "test:tests/vanilla/basic.test.ts"
+        ],
+        "NATIVE": {
+          "selected_test_executions": 10,
+          "skipped_test_executions": 214,
+          "selection_misses": []
+        },
+        "AV_CORE": {
+          "selected_test_executions": 10,
+          "skipped_test_executions": 214,
+          "sufficiency": "SUFFICIENT_TARGETED",
+          "escalation": {
+            "state": "NONE",
+            "reasons": []
+          },
+          "selection_misses": []
+        },
+        "AV_WITH_NATIVE_EVIDENCE": {
+          "selected_test_executions": 10,
+          "skipped_test_executions": 214,
+          "sufficiency": "SUFFICIENT_TARGETED",
+          "escalation": {
+            "state": "NONE",
+            "reasons": []
+          },
+          "selection_misses": []
+        }
+      },
+      "AVS-006": {
+        "relevant_check_ids": [],
+        "NATIVE": {
+          "selected_test_executions": 0,
+          "skipped_test_executions": 224,
+          "selection_misses": []
+        },
+        "AV_CORE": {
+          "selected_test_executions": 224,
+          "skipped_test_executions": 0,
+          "sufficiency": "FULL_VERIFICATION_REQUIRED",
+          "escalation": {
+            "state": "FULL",
+            "reasons": [
+              {
+                "rule_id": "verification-metadata-full",
+                "escalation": "FULL"
+              }
+            ]
+          },
+          "selection_misses": []
+        },
+        "AV_WITH_NATIVE_EVIDENCE": {
+          "selected_test_executions": 224,
+          "skipped_test_executions": 0,
+          "sufficiency": "FULL_VERIFICATION_REQUIRED",
+          "escalation": {
+            "state": "FULL",
+            "reasons": [
+              {
+                "rule_id": "verification-metadata-full",
+                "escalation": "FULL"
+              }
+            ]
+          },
+          "selection_misses": []
+        }
+      },
+      "AVS-007": {
+        "relevant_check_ids": [],
+        "NATIVE": {
+          "selected_test_executions": 224,
+          "skipped_test_executions": 0,
+          "selection_misses": []
+        },
+        "AV_CORE": {
+          "selected_test_executions": 224,
+          "skipped_test_executions": 0,
+          "sufficiency": "FULL_VERIFICATION_REQUIRED",
+          "escalation": {
+            "state": "FULL",
+            "reasons": [
+              {
+                "rule_id": "verification-metadata-full",
+                "escalation": "FULL"
+              }
+            ]
+          },
+          "selection_misses": []
+        },
+        "AV_WITH_NATIVE_EVIDENCE": {
+          "selected_test_executions": 224,
+          "skipped_test_executions": 0,
+          "sufficiency": "FULL_VERIFICATION_REQUIRED",
+          "escalation": {
+            "state": "FULL",
+            "reasons": [
+              {
+                "rule_id": "verification-metadata-full",
+                "escalation": "FULL"
+              }
+            ]
+          },
+          "selection_misses": []
+        }
+      },
+      "AVS-008": {
+        "relevant_check_ids": [
+          "check:typecheck"
+        ],
+        "NATIVE": {
+          "selected_test_executions": 211,
+          "skipped_test_executions": 13,
+          "selection_misses": [
+            "check:typecheck"
+          ]
+        },
+        "AV_CORE": {
+          "selected_test_executions": 211,
+          "skipped_test_executions": 13,
+          "sufficiency": "SUFFICIENT_BROADENED",
+          "escalation": {
+            "state": "BROADENED",
+            "reasons": [
+              {
+                "rule_id": "public-contract-broaden",
+                "escalation": "BROADEN"
+              }
+            ]
+          },
+          "selection_misses": []
+        },
+        "AV_WITH_NATIVE_EVIDENCE": {
+          "selected_test_executions": 211,
+          "skipped_test_executions": 13,
+          "sufficiency": "SUFFICIENT_BROADENED",
+          "escalation": {
+            "state": "BROADENED",
+            "reasons": [
+              {
+                "rule_id": "public-contract-broaden",
+                "escalation": "BROADEN"
+              }
+            ]
+          },
+          "selection_misses": []
+        }
+      },
+      "AVS-009": {
+        "relevant_check_ids": [
+          "test:tests/subscribe.test.tsx",
+          "test:tests/vanilla/subscribe.test.tsx"
+        ],
+        "NATIVE": {
+          "selected_test_executions": 185,
+          "skipped_test_executions": 39,
+          "selection_misses": []
+        },
+        "AV_CORE": {
+          "selected_test_executions": 185,
+          "skipped_test_executions": 39,
+          "sufficiency": "SUFFICIENT_TARGETED",
+          "escalation": {
+            "state": "NONE",
+            "reasons": []
+          },
+          "selection_misses": []
+        },
+        "AV_WITH_NATIVE_EVIDENCE": {
+          "selected_test_executions": 185,
+          "skipped_test_executions": 39,
+          "sufficiency": "SUFFICIENT_TARGETED",
+          "escalation": {
+            "state": "NONE",
+            "reasons": []
+          },
+          "selection_misses": []
+        }
+      },
+      "AVS-010": {
+        "relevant_check_ids": [],
+        "NATIVE": {
+          "selected_test_executions": 166,
+          "skipped_test_executions": 58,
+          "selection_misses": []
+        },
+        "AV_CORE": {
+          "selected_test_executions": 224,
+          "skipped_test_executions": 0,
+          "sufficiency": "FULL_VERIFICATION_REQUIRED",
+          "escalation": {
+            "state": "FULL",
+            "reasons": []
+          },
+          "selection_misses": []
+        },
+        "AV_WITH_NATIVE_EVIDENCE": {
+          "selected_test_executions": 224,
+          "skipped_test_executions": 0,
+          "sufficiency": "FULL_VERIFICATION_REQUIRED",
+          "escalation": {
+            "state": "FULL",
+            "reasons": []
+          },
+          "selection_misses": []
+        }
+      }
+    },
+    "claim_limit": "Proposed plan counts only; no correctness, cost, or causal savings claim."
+  },
+  "behavior": {
+    "av_full_escalations": [
+      "AVS-006",
+      "AVS-007",
+      "AVS-010"
+    ],
+    "av_policy_broadened": [
+      "AVS-003",
+      "AVS-008"
+    ],
+    "av_insufficient_evidence": [],
+    "native_test_selection_narrower_than_av": [
+      "AVS-006",
+      "AVS-010"
+    ],
+    "av_core_test_selection_narrower_than_native": [],
+    "native_evidence_changed_av_test_count": [],
+    "av_added_non_test_policy_checks_to_native": [
+      "AVS-001",
+      "AVS-002",
+      "AVS-003",
+      "AVS-004",
+      "AVS-005",
+      "AVS-006",
+      "AVS-007",
+      "AVS-008",
+      "AVS-009",
+      "AVS-010"
+    ]
+  },
+  "runtime_observed": {
+    "baseline_full_catalog": {
+      "count": 3,
+      "minimum_ms": 29329.277000000002,
+      "median_ms": 29506.057,
+      "maximum_ms": 32806.898,
+      "class": "OBSERVED",
+      "claim_limit": "Direct wall-clock observations only; no causal time-saved claim."
+    },
+    "scenario_full_catalog": {
+      "count": 10,
+      "minimum_ms": 29088.007999999994,
+      "median_ms": 30226.295500000004,
+      "maximum_ms": 33441.569,
+      "class": "OBSERVED",
+      "claim_limit": "Direct wall-clock observations only; no causal time-saved claim."
+    },
+    "native_selector_execution": {
+      "count": 10,
+      "minimum_ms": 1715.63,
+      "median_ms": 3953.683,
+      "maximum_ms": 5682.563,
+      "class": "OBSERVED",
+      "claim_limit": "Direct wall-clock observations only; no causal time-saved claim."
+    }
+  },
+  "trust_decision": {
+    "stage": "SHADOW",
+    "decision": "REMAIN_SHADOW",
+    "reason": "First calibration, synthetic faults, one repository and ecosystem, and no independent qualifying replication do not justify bounded trust."
+  },
+  "analysis_identity": "sha256:c431d8849edce79d6121a290f49288ed2710e406600d8b66d3588e6b82c73a1d"
+}

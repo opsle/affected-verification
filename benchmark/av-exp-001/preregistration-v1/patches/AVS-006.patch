@@ -1,0 +1,12 @@
+diff --git a/vitest.config.mts b/vitest.config.mts
+index bb1c6ad..c34af90 100644
+--- a/vitest.config.mts
++++ b/vitest.config.mts
+@@ -10,6 +10,7 @@ export default defineConfig({
+     name: 'zustand',
+     // Keeping globals to true triggers React Testing Library's auto cleanup
+     // https://vitest.dev/guide/migration.html
++    slowTestThreshold: 5000,
+     globals: true,
+     environment: 'jsdom',
+     dir: 'tests',

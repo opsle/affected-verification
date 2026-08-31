@@ -1,0 +1,16 @@
+[ERR_PNPM_ABORTED_REMOVE_MODULES_DIR_NO_TTY] Aborted removal of modules directory due to no TTY
+
+If you are running pnpm in CI, set the CI environment variable to "true", or set "confirmModulesPurge" to "false".
+[ERROR] Command failed with exit code 1: /usr/bin/node /home/deploy/.cache/node/corepack/v1/pnpm/11.3.0/bin/pnpm.mjs install
+
+pnpm: Command failed with exit code 1: /usr/bin/node /home/deploy/.cache/node/corepack/v1/pnpm/11.3.0/bin/pnpm.mjs install
+    at getFinalError (file:///home/deploy/.cache/node/corepack/v1/pnpm/11.3.0/dist/pnpm.mjs:29514:14)
+    at makeError (file:///home/deploy/.cache/node/corepack/v1/pnpm/11.3.0/dist/pnpm.mjs:31821:21)
+    at getSyncResult (file:///home/deploy/.cache/node/corepack/v1/pnpm/11.3.0/dist/pnpm.mjs:33665:10)
+    at spawnSubprocessSync (file:///home/deploy/.cache/node/corepack/v1/pnpm/11.3.0/dist/pnpm.mjs:33625:14)
+    at execaCoreSync (file:///home/deploy/.cache/node/corepack/v1/pnpm/11.3.0/dist/pnpm.mjs:33555:23)
+    at callBoundExeca (file:///home/deploy/.cache/node/corepack/v1/pnpm/11.3.0/dist/pnpm.mjs:36083:23)
+    at boundExeca (file:///home/deploy/.cache/node/corepack/v1/pnpm/11.3.0/dist/pnpm.mjs:36060:49)
+    at sync (file:///home/deploy/.cache/node/corepack/v1/pnpm/11.3.0/dist/pnpm.mjs:36219:10)
+    at runPnpmCli (file:///home/deploy/.cache/node/corepack/v1/pnpm/11.3.0/dist/pnpm.mjs:213566:5)
+    at runDepsStatusCheck (file:///home/deploy/.cache/node/corepack/v1/pnpm/11.3.0/dist/pnpm.mjs:215280:7)

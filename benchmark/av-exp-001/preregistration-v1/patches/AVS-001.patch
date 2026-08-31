@@ -1,0 +1,13 @@
+diff --git a/src/middleware/ssrSafe.ts b/src/middleware/ssrSafe.ts
+index e324965..7c7467e 100644
+--- a/src/middleware/ssrSafe.ts
++++ b/src/middleware/ssrSafe.ts
+@@ -12,7 +12,7 @@ export function ssrSafe<
+   Mcs extends [StoreMutatorIdentifier, unknown][] = [],
+ >(
+   config: StateCreator<T, Mps, Mcs, U>,
+-  isSSR: boolean = typeof window === 'undefined',
++  isSSR: boolean = typeof globalThis.window === 'undefined',
+ ): StateCreator<T, Mps, Mcs, U> {
+   return (set, get, api) => {
+     if (!isSSR) {

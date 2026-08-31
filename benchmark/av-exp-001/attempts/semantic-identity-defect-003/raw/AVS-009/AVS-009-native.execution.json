@@ -1,0 +1,21 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "exec",
+    "vitest",
+    "related",
+    "src/middleware/subscribeWithSelector.ts",
+    "src/vanilla/shallow.ts",
+    "--run",
+    "--reporter=json",
+    "--outputFile=/home/deploy/apps/opsle-bootstrap/repos/affected-verification/benchmark/av-exp-001/results-v1/raw/AVS-009/AVS-009-native.vitest.json"
+  ],
+  "exit_code": 1,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms_observed": 4073.451,
+  "spawn_error": null,
+  "stdout_sha256": "sha256:7c331dde9e69e75d32d3f26a9544daa46ff1016eebb63829800a6137e45bf22a",
+  "stderr_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

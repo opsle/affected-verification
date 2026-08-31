@@ -25,13 +25,14 @@ npm run verify
 - [SPEC.md](SPEC.md) — normative prototype contract and sufficiency states
 - [PRIOR_ART.md](PRIOR_ART.md) — source-linked reconciliation with existing selectors
 - [ARCHITECTURE.md](ARCHITECTURE.md) — adapters, project boundaries, shadow mode, and trust ramp
-- [BENCHMARK.md](BENCHMARK.md) — controlled research plan; no results are claimed
+- [BENCHMARK.md](BENCHMARK.md) — controlled research method and AV-EXP-001 result
+- [benchmark/av-exp-001/REPORT.md](benchmark/av-exp-001/REPORT.md) — preregistered real-repository shadow calibration
 - [LIMITATIONS.md](LIMITATIONS.md) — current claim ceiling and non-goals
 - [fixtures/scenarios.js](fixtures/scenarios.js) and [fixtures/negative-cases.js](fixtures/negative-cases.js) — twelve positive/boundary scenarios plus explicit conflicting, malformed, impossible, and tampered cases
 - [schemas/plan-v1.schema.json](schemas/plan-v1.schema.json) — plan shape
 
 ## Status
 
-This is a narrow research prototype, not a trusted replacement for full verification. It has not been benchmarked on a real repository, and it has no production adapters.
+This is a narrow research prototype, not a trusted replacement for full verification. AV-EXP-001 completed a preregistered shadow calibration on one pinned public repository with no observed AV miss in its frozen corpus. The result remains `SHADOW`, does not establish general safety, and does not provide a production adapter.
 
 Apache-2.0.

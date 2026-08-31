@@ -1,0 +1,235 @@
+{
+  "target_sha": "b57db4f86ef179285da216eeb291266da82c361c",
+  "catalog_identity": "sha256:8c5b224deaa7077690341248a18a2155310e2b16072e1607a9b4cd546e3a0914",
+  "repetitions": [
+    {
+      "full_run_identity": "sha256:ef11bc72be2ba6ea66dbc14ca16f28ee876fc1c22eb77f113d06e46bceaafba0",
+      "executed_check_ids": [
+        "check:build",
+        "check:format",
+        "check:lint",
+        "check:typecheck",
+        "test:tests/basic.test.tsx",
+        "test:tests/devtools.test.tsx",
+        "test:tests/immer.test.tsx",
+        "test:tests/middlewareTypes.test.tsx",
+        "test:tests/persistAsync.test.tsx",
+        "test:tests/persistSync.test.tsx",
+        "test:tests/shallow.test.tsx",
+        "test:tests/ssr.test.tsx",
+        "test:tests/subscribe.test.tsx",
+        "test:tests/types.test.tsx",
+        "test:tests/vanilla/basic.test.ts",
+        "test:tests/vanilla/shallow.test.tsx",
+        "test:tests/vanilla/subscribe.test.tsx"
+      ],
+      "failed_check_ids": [],
+      "test_count": 224,
+      "test_file_count": 13
+    },
+    {
+      "full_run_identity": "sha256:e34abd2985fdc3b04d5f43ed8ddd7ae7a0a0efc7b7b36fac200a30e796c4d890",
+      "executed_check_ids": [
+        "check:build",
+        "check:format",
+        "check:lint",
+        "check:typecheck",
+        "test:tests/basic.test.tsx",
+        "test:tests/devtools.test.tsx",
+        "test:tests/immer.test.tsx",
+        "test:tests/middlewareTypes.test.tsx",
+        "test:tests/persistAsync.test.tsx",
+        "test:tests/persistSync.test.tsx",
+        "test:tests/shallow.test.tsx",
+        "test:tests/ssr.test.tsx",
+        "test:tests/subscribe.test.tsx",
+        "test:tests/types.test.tsx",
+        "test:tests/vanilla/basic.test.ts",
+        "test:tests/vanilla/shallow.test.tsx",
+        "test:tests/vanilla/subscribe.test.tsx"
+      ],
+      "failed_check_ids": [],
+      "test_count": 224,
+      "test_file_count": 13
+    },
+    {
+      "full_run_identity": "sha256:b4fef55abe6afd6725e3388d3cf1ad0025b24b02aa853b985ec4e8e2378edeba",
+      "executed_check_ids": [
+        "check:build",
+        "check:format",
+        "check:lint",
+        "check:typecheck",
+        "test:tests/basic.test.tsx",
+        "test:tests/devtools.test.tsx",
+        "test:tests/immer.test.tsx",
+        "test:tests/middlewareTypes.test.tsx",
+        "test:tests/persistAsync.test.tsx",
+        "test:tests/persistSync.test.tsx",
+        "test:tests/shallow.test.tsx",
+        "test:tests/ssr.test.tsx",
+        "test:tests/subscribe.test.tsx",
+        "test:tests/types.test.tsx",
+        "test:tests/vanilla/basic.test.ts",
+        "test:tests/vanilla/shallow.test.tsx",
+        "test:tests/vanilla/subscribe.test.tsx"
+      ],
+      "failed_check_ids": [],
+      "test_count": 224,
+      "test_file_count": 13
+    }
+  ],
+  "stable": true,
+  "identity": "sha256:f60b3c5d52fdfb56a78b516a3a3482ae2729e746b01245a5f348c65a71e8a74e",
+  "observed_durations_ms": [
+    [
+      {
+        "command": [
+          "corepack",
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "--reporter=json",
+          "--outputFile=/home/deploy/apps/opsle-bootstrap/repos/affected-verification/benchmark/av-exp-001/results-v1/raw/baseline-1/baseline-1-tests.vitest.json"
+        ],
+        "duration_ms": 4104.673
+      },
+      {
+        "command": [
+          "corepack",
+          "pnpm",
+          "run",
+          "test:format"
+        ],
+        "duration_ms": 4215.113
+      },
+      {
+        "command": [
+          "corepack",
+          "pnpm",
+          "run",
+          "test:types"
+        ],
+        "duration_ms": 3528.323
+      },
+      {
+        "command": [
+          "corepack",
+          "pnpm",
+          "run",
+          "test:lint"
+        ],
+        "duration_ms": 5897.23
+      },
+      {
+        "command": [
+          "corepack",
+          "pnpm",
+          "run",
+          "build"
+        ],
+        "duration_ms": 9153.171
+      }
+    ],
+    [
+      {
+        "command": [
+          "corepack",
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "--reporter=json",
+          "--outputFile=/home/deploy/apps/opsle-bootstrap/repos/affected-verification/benchmark/av-exp-001/results-v1/raw/baseline-2/baseline-2-tests.vitest.json"
+        ],
+        "duration_ms": 4498.435
+      },
+      {
+        "command": [
+          "corepack",
+          "pnpm",
+          "run",
+          "test:format"
+        ],
+        "duration_ms": 5646.492
+      },
+      {
+        "command": [
+          "corepack",
+          "pnpm",
+          "run",
+          "test:types"
+        ],
+        "duration_ms": 3728.544
+      },
+      {
+        "command": [
+          "corepack",
+          "pnpm",
+          "run",
+          "test:lint"
+        ],
+        "duration_ms": 6042.029
+      },
+      {
+        "command": [
+          "corepack",
+          "pnpm",
+          "run",
+          "build"
+        ],
+        "duration_ms": 10373.665
+      }
+    ],
+    [
+      {
+        "command": [
+          "corepack",
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "--reporter=json",
+          "--outputFile=/home/deploy/apps/opsle-bootstrap/repos/affected-verification/benchmark/av-exp-001/results-v1/raw/baseline-3/baseline-3-tests.vitest.json"
+        ],
+        "duration_ms": 4332.366
+      },
+      {
+        "command": [
+          "corepack",
+          "pnpm",
+          "run",
+          "test:format"
+        ],
+        "duration_ms": 3934.101
+      },
+      {
+        "command": [
+          "corepack",
+          "pnpm",
+          "run",
+          "test:types"
+        ],
+        "duration_ms": 3529.235
+      },
+      {
+        "command": [
+          "corepack",
+          "pnpm",
+          "run",
+          "test:lint"
+        ],
+        "duration_ms": 5733.733
+      },
+      {
+        "command": [
+          "corepack",
+          "pnpm",
+          "run",
+          "build"
+        ],
+        "duration_ms": 9333.913
+      }
+    ]
+  ]
+}

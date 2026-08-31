@@ -1,0 +1,15 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "run",
+    "test:lint"
+  ],
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms_observed": 6541.436,
+  "spawn_error": null,
+  "stdout_sha256": "sha256:4080b4a779c77db79159fc87a97503ef6d0fcbb21191e3fa695c6996e03e2a45",
+  "stderr_sha256": "sha256:050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1"
+}

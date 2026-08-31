@@ -1,0 +1,8 @@
+[Affected Verification]
+Scenario: AVS-007
+Selected tests: 224 / 224
+Skipped tests: 0
+Other selected checks: format, typecheck, lint, build
+Sufficiency: FULL_VERIFICATION_REQUIRED
+Shadow relevant checks: 0 / 0 selected
+Selection miss: NO

@@ -1,0 +1,34 @@
+{
+  "schema": "opsle.affected-verification.benchmark-environment.v1",
+  "target": {
+    "url": "https://github.com/pmndrs/zustand.git",
+    "commit": "b57db4f86ef179285da216eeb291266da82c361c",
+    "license": "MIT"
+  },
+  "host": {
+    "os": "Linux",
+    "kernel": "6.8.0-136-generic",
+    "architecture": "x86_64",
+    "logical_cpus": 8,
+    "memory_kib": 32865100
+  },
+  "toolchain": {
+    "node": "24.20.0",
+    "pnpm": "11.3.0",
+    "vitest": "4.1.10",
+    "typescript": "6.0.3",
+    "eslint": "9.39.4",
+    "prettier": "3.9.6",
+    "rollup": "4.62.4"
+  },
+  "frozen_target_files": {
+    "pnpm-lock.yaml": "sha256:8df91da3f67633114f74632e132ee8e6cb37efb207f14cf4bbeba0ab0d60746f",
+    "package.json": "sha256:66c10be1445b353f73151396fa4c13f43731d501fe8d849abac92731cb668f44",
+    "vitest.config.mts": "sha256:153ba151198995019e3628dcc086cd9a11809ecdc387dfcd8d46b98a88fc10eb",
+    "tsconfig.json": "sha256:5ff1459b4039f46e2948b8f7a750c760fc5ee9348f8d7a604bec77d979ac1179",
+    "eslint.config.mjs": "sha256:968e0a6153994e03ea856566953598839b7382b579e551e22d33796bfea31d7f",
+    "rollup.config.mjs": "sha256:c9895310561f3d9933ff9b780cb54bc5098ee1a9522dfc2ca08861c8ec429faf"
+  },
+  "install": "corepack pnpm install --frozen-lockfile",
+  "timing_semantics": "Wall-clock duration is OBSERVED telemetry and is excluded from semantic result identities."
+}

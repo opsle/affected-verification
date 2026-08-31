@@ -1,0 +1,15 @@
+{
+  "command": [
+    "corepack",
+    "pnpm",
+    "run",
+    "build"
+  ],
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms_observed": 9153.171,
+  "spawn_error": null,
+  "stdout_sha256": "sha256:0a7ad1b05fe57fc5e70d1adbcb3216b274f105e7b4125e507926d6fd20d85659",
+  "stderr_sha256": "sha256:1407c9871d446f122a2df8ed5b9a49679b59f8460a43abcf1d60775c8bfc47e5"
+}

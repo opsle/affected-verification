@@ -1,0 +1,13 @@
+diff --git a/src/middleware/persist.ts b/src/middleware/persist.ts
+index c62b2d4..ca73125 100644
+--- a/src/middleware/persist.ts
++++ b/src/middleware/persist.ts
+@@ -371,7 +371,7 @@ const persistImpl: PersistImpl = (config, baseOptions) => (set, get, api) => {
+     hydrate()
+   }
+ 
+-  return stateFromStorage || configResult
++  return configResult
+ }
+ 
+ type Persist = <

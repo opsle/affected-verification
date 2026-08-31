@@ -1,0 +1,13 @@
+diff --git a/src/vanilla.ts b/src/vanilla.ts
+index d16a6a3..685ec87 100644
+--- a/src/vanilla.ts
++++ b/src/vanilla.ts
+@@ -72,7 +72,7 @@ const createStoreImpl: CreateStoreImpl = (createState) => {
+         (replace ?? (typeof nextState !== 'object' || nextState === null))
+           ? (nextState as TState)
+           : Object.assign({}, state, nextState)
+-      listeners.forEach((listener) => listener(state, previousState))
++      listeners.forEach((listener) => listener(state, state))
+     }
+   }
+ 

@@ -1,0 +1,12 @@
+diff --git a/package.json b/package.json
+index 076f99a..d047ad7 100644
+--- a/package.json
++++ b/package.json
+@@ -1,6 +1,6 @@
+ {
+   "name": "zustand",
+-  "description": "🐻 Bear necessities for state management in React",
++  "description": "🐻 Bear necessities for state management in React applications",
+   "private": true,
+   "type": "commonjs",
+   "version": "5.0.15",

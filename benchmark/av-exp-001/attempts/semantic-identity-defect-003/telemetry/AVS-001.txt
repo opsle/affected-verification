@@ -1,0 +1,8 @@
+[Affected Verification]
+Scenario: AVS-001
+Selected tests: 166 / 224
+Skipped tests: 58
+Other selected checks: format, typecheck, lint, build
+Sufficiency: SUFFICIENT_TARGETED
+Shadow relevant checks: 0 / 0 selected
+Selection miss: NO

@@ -1,0 +1,175 @@
+{
+  "scenario_id": "baseline-3",
+  "target_sha": "b57db4f86ef179285da216eeb291266da82c361c",
+  "catalog_identity": "sha256:8c5b224deaa7077690341248a18a2155310e2b16072e1607a9b4cd546e3a0914",
+  "executed_check_ids": [
+    "check:build",
+    "check:format",
+    "check:lint",
+    "check:typecheck",
+    "test:tests/basic.test.tsx",
+    "test:tests/devtools.test.tsx",
+    "test:tests/immer.test.tsx",
+    "test:tests/middlewareTypes.test.tsx",
+    "test:tests/persistAsync.test.tsx",
+    "test:tests/persistSync.test.tsx",
+    "test:tests/shallow.test.tsx",
+    "test:tests/ssr.test.tsx",
+    "test:tests/subscribe.test.tsx",
+    "test:tests/types.test.tsx",
+    "test:tests/vanilla/basic.test.ts",
+    "test:tests/vanilla/shallow.test.tsx",
+    "test:tests/vanilla/subscribe.test.tsx"
+  ],
+  "failed_check_ids": [],
+  "outcomes": {
+    "check:build": "PASS",
+    "check:format": "PASS",
+    "check:lint": "PASS",
+    "check:typecheck": "PASS",
+    "test:tests/basic.test.tsx": "PASS",
+    "test:tests/devtools.test.tsx": "PASS",
+    "test:tests/immer.test.tsx": "PASS",
+    "test:tests/middlewareTypes.test.tsx": "PASS",
+    "test:tests/persistAsync.test.tsx": "PASS",
+    "test:tests/persistSync.test.tsx": "PASS",
+    "test:tests/shallow.test.tsx": "PASS",
+    "test:tests/ssr.test.tsx": "PASS",
+    "test:tests/subscribe.test.tsx": "PASS",
+    "test:tests/types.test.tsx": "PASS",
+    "test:tests/vanilla/basic.test.ts": "PASS",
+    "test:tests/vanilla/shallow.test.tsx": "PASS",
+    "test:tests/vanilla/subscribe.test.tsx": "PASS"
+  },
+  "complete": true,
+  "command_outcomes": [
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "--reporter=json",
+        "--outputFile=<artifact>"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "timed_out": false,
+      "spawn_error": null
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "test:format"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "timed_out": false,
+      "spawn_error": null
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "test:types"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "timed_out": false,
+      "spawn_error": null
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "test:lint"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "timed_out": false,
+      "spawn_error": null
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "timed_out": false,
+      "spawn_error": null
+    }
+  ],
+  "identity": "sha256:2677cb78bb578fc9eb26c3b4f1527cf7e8fe9d98b55f908b8542a0ac567faaa4",
+  "observed_durations_ms": [
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "--reporter=json",
+        "--outputFile=/home/deploy/apps/opsle-bootstrap/repos/affected-verification/benchmark/av-exp-001/results-v2/raw/baseline-3/baseline-3-tests.vitest.json"
+      ],
+      "duration_ms": 4571.042
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "test:format"
+      ],
+      "duration_ms": 4277.026
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "test:types"
+      ],
+      "duration_ms": 3759.297
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "test:lint"
+      ],
+      "duration_ms": 6480.94
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "run",
+        "build"
+      ],
+      "duration_ms": 10417.752
+    }
+  ],
+  "evidence_files": [
+    "benchmark/av-exp-001/results-v2/raw/baseline-3/baseline-3-tests.stdout.log",
+    "benchmark/av-exp-001/results-v2/raw/baseline-3/baseline-3-tests.stderr.log",
+    "benchmark/av-exp-001/results-v2/raw/baseline-3/baseline-3-format.stdout.log",
+    "benchmark/av-exp-001/results-v2/raw/baseline-3/baseline-3-format.stderr.log",
+    "benchmark/av-exp-001/results-v2/raw/baseline-3/baseline-3-typecheck.stdout.log",
+    "benchmark/av-exp-001/results-v2/raw/baseline-3/baseline-3-typecheck.stderr.log",
+    "benchmark/av-exp-001/results-v2/raw/baseline-3/baseline-3-lint.stdout.log",
+    "benchmark/av-exp-001/results-v2/raw/baseline-3/baseline-3-lint.stderr.log",
+    "benchmark/av-exp-001/results-v2/raw/baseline-3/baseline-3-build.stdout.log",
+    "benchmark/av-exp-001/results-v2/raw/baseline-3/baseline-3-build.stderr.log"
+  ],
+  "test_count": 224,
+  "test_file_count": 13
+}

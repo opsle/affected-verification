@@ -1,0 +1,371 @@
+{
+  "schema": "opsle.affected-verification.shadow-benchmark-result.v1",
+  "result_identity": "sha256:c2619a38f736f04078b6822c432d6f2bf699b647f21d537770d272f2ab6da41b",
+  "experiment_id": "AV-EXP-001",
+  "benchmark_revision": "0544362d7659093b7f0b4f89ee8f68023fd269c3+sha256:80a04b99ad73e86ecb2e7c85dda3a11ddbe99cdf200ca38e2c1effe498184357+sha256:51437d6c3bfdd1461a9679a5055ab5c34d9eb603ba95b67f86f8516f8b93a25e",
+  "trust_stage": "SHADOW",
+  "target": {
+    "repository": "https://github.com/pmndrs/zustand.git",
+    "sha": "b57db4f86ef179285da216eeb291266da82c361c"
+  },
+  "scenario": {
+    "id": "AVS-007",
+    "identity": "sha256:fde4ddc1529178c432ab1487ec5f5545732e8955b70af8927747b2d80e38d6b0",
+    "patch_sha256": "sha256:93c1e2d1517eb1e220a1feddca02b5343a4e0a036612cc16ce834f8d5f1e856e",
+    "changed_paths": [
+      "package.json"
+    ]
+  },
+  "verification_catalog_identity": "sha256:8c5b224deaa7077690341248a18a2155310e2b16072e1607a9b4cd546e3a0914",
+  "planner": {
+    "version": "sha256:fab9cd599c7ee7e83cfd16bd6c29e5dbd82dcdf189c2ab79691a81e155d31dbd",
+    "policy_identity": "sha256:4ccefdc16896069237909f2e367ecd6d8a33b2aeca946a895b7da016e4452d88"
+  },
+  "native_selector": {
+    "identity": "sha256:f9f8f41244923a6daa6f86b0818889c955b6b26362432b76ae4ee361f10171d6",
+    "version": "4.1.10"
+  },
+  "baseline_identity": "sha256:f60b3c5d52fdfb56a78b516a3a3482ae2729e746b01245a5f348c65a71e8a74e",
+  "full_run": {
+    "identity": "sha256:e8af4905f13e1989e2d6e6169f8be8612edc5d54177062c9d99056c031263cca",
+    "executed_check_ids": [
+      "check:build",
+      "check:format",
+      "check:lint",
+      "check:typecheck",
+      "test:tests/basic.test.tsx",
+      "test:tests/devtools.test.tsx",
+      "test:tests/immer.test.tsx",
+      "test:tests/middlewareTypes.test.tsx",
+      "test:tests/persistAsync.test.tsx",
+      "test:tests/persistSync.test.tsx",
+      "test:tests/shallow.test.tsx",
+      "test:tests/ssr.test.tsx",
+      "test:tests/subscribe.test.tsx",
+      "test:tests/types.test.tsx",
+      "test:tests/vanilla/basic.test.ts",
+      "test:tests/vanilla/shallow.test.tsx",
+      "test:tests/vanilla/subscribe.test.tsx"
+    ],
+    "failed_check_ids": [],
+    "complete": true
+  },
+  "oracle": {
+    "identity": "sha256:e733eade19372223fa086c44a7be6075276a1fc36e3fa0dd175a2e99bab25fa7",
+    "relevant_check_ids": [],
+    "claim": "Relevant within this frozen verification catalog."
+  },
+  "arms": {
+    "FULL": {
+      "selected_check_ids": [
+        "check:build",
+        "check:format",
+        "check:lint",
+        "check:typecheck",
+        "test:tests/basic.test.tsx",
+        "test:tests/devtools.test.tsx",
+        "test:tests/immer.test.tsx",
+        "test:tests/middlewareTypes.test.tsx",
+        "test:tests/persistAsync.test.tsx",
+        "test:tests/persistSync.test.tsx",
+        "test:tests/shallow.test.tsx",
+        "test:tests/ssr.test.tsx",
+        "test:tests/subscribe.test.tsx",
+        "test:tests/types.test.tsx",
+        "test:tests/vanilla/basic.test.ts",
+        "test:tests/vanilla/shallow.test.tsx",
+        "test:tests/vanilla/subscribe.test.tsx"
+      ],
+      "skipped_checks": [],
+      "selection_misses": []
+    },
+    "NATIVE": {
+      "plan_identity": null,
+      "selected_check_ids": [
+        "test:tests/basic.test.tsx",
+        "test:tests/devtools.test.tsx",
+        "test:tests/immer.test.tsx",
+        "test:tests/middlewareTypes.test.tsx",
+        "test:tests/persistAsync.test.tsx",
+        "test:tests/persistSync.test.tsx",
+        "test:tests/shallow.test.tsx",
+        "test:tests/ssr.test.tsx",
+        "test:tests/subscribe.test.tsx",
+        "test:tests/types.test.tsx",
+        "test:tests/vanilla/basic.test.ts",
+        "test:tests/vanilla/shallow.test.tsx",
+        "test:tests/vanilla/subscribe.test.tsx"
+      ],
+      "skipped_checks": [
+        {
+          "check_id": "check:build",
+          "reason": "The native Vitest related arm does not select non-test catalog checks.",
+          "evidence_refs": [
+            "native-selector-output",
+            "native-selector:zustand-vitest-related-v1"
+          ]
+        },
+        {
+          "check_id": "check:format",
+          "reason": "The native Vitest related arm does not select non-test catalog checks.",
+          "evidence_refs": [
+            "native-selector-output",
+            "native-selector:zustand-vitest-related-v1"
+          ]
+        },
+        {
+          "check_id": "check:lint",
+          "reason": "The native Vitest related arm does not select non-test catalog checks.",
+          "evidence_refs": [
+            "native-selector-output",
+            "native-selector:zustand-vitest-related-v1"
+          ]
+        },
+        {
+          "check_id": "check:typecheck",
+          "reason": "The native Vitest related arm does not select non-test catalog checks.",
+          "evidence_refs": [
+            "native-selector-output",
+            "native-selector:zustand-vitest-related-v1"
+          ]
+        }
+      ],
+      "sufficiency": null,
+      "uncertainty": null,
+      "escalation": null,
+      "selection_misses": []
+    },
+    "AV_CORE": {
+      "plan_identity": "sha256:2d87f2a2c341e57a1ff54d6dc7c7b4742a18227aa8053512b3e5442912a21a46",
+      "selected_check_ids": [
+        "check:build",
+        "check:format",
+        "check:lint",
+        "check:typecheck",
+        "test:tests/basic.test.tsx",
+        "test:tests/devtools.test.tsx",
+        "test:tests/immer.test.tsx",
+        "test:tests/middlewareTypes.test.tsx",
+        "test:tests/persistAsync.test.tsx",
+        "test:tests/persistSync.test.tsx",
+        "test:tests/shallow.test.tsx",
+        "test:tests/ssr.test.tsx",
+        "test:tests/subscribe.test.tsx",
+        "test:tests/types.test.tsx",
+        "test:tests/vanilla/basic.test.ts",
+        "test:tests/vanilla/shallow.test.tsx",
+        "test:tests/vanilla/subscribe.test.tsx"
+      ],
+      "skipped_checks": [],
+      "sufficiency": "FULL_VERIFICATION_REQUIRED",
+      "uncertainty": {
+        "state": "NONE",
+        "reasons": []
+      },
+      "escalation": {
+        "state": "FULL",
+        "reasons": [
+          {
+            "rule_id": "verification-metadata-full",
+            "escalation": "FULL"
+          }
+        ]
+      },
+      "selection_misses": []
+    },
+    "AV_WITH_NATIVE_EVIDENCE": {
+      "plan_identity": "sha256:ac1a3825e96668e824e17a3b3f91ee0cd5c62a25d2275e7bb0352412d4414ee5",
+      "selected_check_ids": [
+        "check:build",
+        "check:format",
+        "check:lint",
+        "check:typecheck",
+        "test:tests/basic.test.tsx",
+        "test:tests/devtools.test.tsx",
+        "test:tests/immer.test.tsx",
+        "test:tests/middlewareTypes.test.tsx",
+        "test:tests/persistAsync.test.tsx",
+        "test:tests/persistSync.test.tsx",
+        "test:tests/shallow.test.tsx",
+        "test:tests/ssr.test.tsx",
+        "test:tests/subscribe.test.tsx",
+        "test:tests/types.test.tsx",
+        "test:tests/vanilla/basic.test.ts",
+        "test:tests/vanilla/shallow.test.tsx",
+        "test:tests/vanilla/subscribe.test.tsx"
+      ],
+      "skipped_checks": [],
+      "sufficiency": "FULL_VERIFICATION_REQUIRED",
+      "uncertainty": {
+        "state": "NONE",
+        "reasons": []
+      },
+      "escalation": {
+        "state": "FULL",
+        "reasons": [
+          {
+            "rule_id": "verification-metadata-full",
+            "escalation": "FULL"
+          }
+        ]
+      },
+      "selection_misses": []
+    }
+  },
+  "workload": {
+    "units_not_combined": true,
+    "arms": {
+      "FULL": {
+        "test_files": {
+          "available": 13,
+          "selected": 13,
+          "skipped": 0
+        },
+        "test_executions": {
+          "available": 224,
+          "selected": 224,
+          "skipped": 0
+        },
+        "non_test_checks": {
+          "build": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          },
+          "lint": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          },
+          "other": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          },
+          "typecheck": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          }
+        }
+      },
+      "NATIVE": {
+        "test_files": {
+          "available": 13,
+          "selected": 13,
+          "skipped": 0
+        },
+        "test_executions": {
+          "available": 224,
+          "selected": 224,
+          "skipped": 0
+        },
+        "non_test_checks": {
+          "build": {
+            "available": 1,
+            "selected": 0,
+            "skipped": 1
+          },
+          "lint": {
+            "available": 1,
+            "selected": 0,
+            "skipped": 1
+          },
+          "other": {
+            "available": 1,
+            "selected": 0,
+            "skipped": 1
+          },
+          "typecheck": {
+            "available": 1,
+            "selected": 0,
+            "skipped": 1
+          }
+        }
+      },
+      "AV_CORE": {
+        "test_files": {
+          "available": 13,
+          "selected": 13,
+          "skipped": 0
+        },
+        "test_executions": {
+          "available": 224,
+          "selected": 224,
+          "skipped": 0
+        },
+        "non_test_checks": {
+          "build": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          },
+          "lint": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          },
+          "other": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          },
+          "typecheck": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          }
+        }
+      },
+      "AV_WITH_NATIVE_EVIDENCE": {
+        "test_files": {
+          "available": 13,
+          "selected": 13,
+          "skipped": 0
+        },
+        "test_executions": {
+          "available": 224,
+          "selected": 224,
+          "skipped": 0
+        },
+        "non_test_checks": {
+          "build": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          },
+          "lint": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          },
+          "other": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          },
+          "typecheck": {
+            "available": 1,
+            "selected": 1,
+            "skipped": 0
+          }
+        }
+      }
+    }
+  },
+  "evidence_hashes": [
+    "benchmark/av-exp-001/results-v1/raw/AVS-007/AVS-007-build.stderr.log=sha256:1407c9871d446f122a2df8ed5b9a49679b59f8460a43abcf1d60775c8bfc47e5",
+    "benchmark/av-exp-001/results-v1/raw/AVS-007/AVS-007-build.stdout.log=sha256:c0f03adfd9a17e54bedef79c739f3fe064f30f23ed64e062be36d558c48aac35",
+    "benchmark/av-exp-001/results-v1/raw/AVS-007/AVS-007-format.stderr.log=sha256:18a39320051637915e489a32b00ab2f976d0c1a2a414a01b30e9a99a6b0bb544",
+    "benchmark/av-exp-001/results-v1/raw/AVS-007/AVS-007-format.stdout.log=sha256:1105272b9c26834636050d4c414fb857d3c3cd3d58b869699c9120b8c2161ac2",
+    "benchmark/av-exp-001/results-v1/raw/AVS-007/AVS-007-lint.stderr.log=sha256:050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1",
+    "benchmark/av-exp-001/results-v1/raw/AVS-007/AVS-007-lint.stdout.log=sha256:aa44a47853205b75555e1938193cd51fb33e21da3a6b028ea5fce1f463e404ad",
+    "benchmark/av-exp-001/results-v1/raw/AVS-007/AVS-007-native.stderr.log=sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "benchmark/av-exp-001/results-v1/raw/AVS-007/AVS-007-native.stdout.log=sha256:b4f4eb1f240036401f037e32c300dd6ec3aac2b54f9d3e28f0f55f48b3f29677",
+    "benchmark/av-exp-001/results-v1/raw/AVS-007/AVS-007-native.vitest.json=sha256:59de0049b05096a2b866f96de3116d74b090b07e7402647f89d658b72b071c27",
+    "benchmark/av-exp-001/results-v1/raw/AVS-007/AVS-007-tests.stderr.log=sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "benchmark/av-exp-001/results-v1/raw/AVS-007/AVS-007-tests.stdout.log=sha256:9aaf100929c4a0e7289b846c3e855083cff8b6b0ee4c0b20a1ffd34b75aa2452",
+    "benchmark/av-exp-001/results-v1/raw/AVS-007/AVS-007-typecheck.stderr.log=sha256:8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92",
+    "benchmark/av-exp-001/results-v1/raw/AVS-007/AVS-007-typecheck.stdout.log=sha256:2fb4b0fc9ac1841c8278c50c25affb0f1c45340cd314668572c70128dfb38ccc"
+  ]
+}

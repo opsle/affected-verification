@@ -1,0 +1,133 @@
+{
+  "schema": "opsle.affected-verification.scenario-manifest.v1",
+  "target_base_sha": "b57db4f86ef179285da216eeb291266da82c361c",
+  "scenarios": [
+    {
+      "id": "AVS-001",
+      "title": "isolated implementation refactor shape",
+      "classification": "SYNTHETIC_BENIGN_CHANGE_SHAPE",
+      "category": "isolated implementation change",
+      "patch": "patches/AVS-001.patch",
+      "patch_sha256": "sha256:8abdffcc1f1248e99db416778bf173edb49937314c36c187ecf766e0e8293628",
+      "changed_paths": ["src/middleware/ssrSafe.ts"],
+      "changed_regions": ["default isSSR parameter expression"],
+      "evidence_mode": "NORMAL",
+      "setup": "clean pinned target with frozen dependencies"
+    },
+    {
+      "id": "AVS-002",
+      "title": "direct shallow-comparison fault",
+      "classification": "SYNTHETIC_FAULT",
+      "category": "direct dependent test failure",
+      "patch": "patches/AVS-002.patch",
+      "patch_sha256": "sha256:9c396e49500eef387292d080284b0f90ddee40ef3fa1e2384ce60008283e2101",
+      "changed_paths": ["src/vanilla/shallow.ts"],
+      "changed_regions": ["identity comparison branch"],
+      "evidence_mode": "NORMAL",
+      "setup": "clean pinned target with frozen dependencies"
+    },
+    {
+      "id": "AVS-003",
+      "title": "shared store notification fault",
+      "classification": "SYNTHETIC_FAULT",
+      "category": "reverse-dependent and transitive change",
+      "patch": "patches/AVS-003.patch",
+      "patch_sha256": "sha256:4d84a752d7e9f3db0500ece7e40d048d263f6fa0b12a8da67f8d87a0f1d24d4c",
+      "changed_paths": ["src/vanilla.ts"],
+      "changed_regions": ["setState listener notification"],
+      "evidence_mode": "NORMAL",
+      "setup": "clean pinned target with frozen dependencies"
+    },
+    {
+      "id": "AVS-004",
+      "title": "persist hydration return fault",
+      "classification": "SYNTHETIC_FAULT",
+      "category": "multiple affected checks",
+      "patch": "patches/AVS-004.patch",
+      "patch_sha256": "sha256:7bdd67aab346fcf84697539d542bc7986e62b92abbe611f450ea05e438ef891d",
+      "changed_paths": ["src/middleware/persist.ts"],
+      "changed_regions": ["persist implementation return value"],
+      "evidence_mode": "NORMAL",
+      "setup": "clean pinned target with frozen dependencies"
+    },
+    {
+      "id": "AVS-005",
+      "title": "test-only expectation fault",
+      "classification": "SYNTHETIC_FAULT",
+      "category": "test-only change",
+      "patch": "patches/AVS-005.patch",
+      "patch_sha256": "sha256:06f678c60583d04137fcd8a205e637832cb4f4fa25d250ae7aa146a21aedb382",
+      "changed_paths": ["tests/vanilla/basic.test.ts"],
+      "changed_regions": ["uses the store expectation"],
+      "evidence_mode": "NORMAL",
+      "setup": "clean pinned target with frozen dependencies"
+    },
+    {
+      "id": "AVS-006",
+      "title": "verification configuration change",
+      "classification": "SYNTHETIC_BENIGN_CHANGE_SHAPE",
+      "category": "configuration change",
+      "patch": "patches/AVS-006.patch",
+      "patch_sha256": "sha256:5749030cf1e3ed2d329897a30eab6d50ca9ef260d973b1458f01041cdbf8aa45",
+      "changed_paths": ["vitest.config.mts"],
+      "changed_regions": ["test slow threshold"],
+      "evidence_mode": "NORMAL",
+      "setup": "clean pinned target with frozen dependencies"
+    },
+    {
+      "id": "AVS-007",
+      "title": "package metadata change",
+      "classification": "SYNTHETIC_BENIGN_CHANGE_SHAPE",
+      "category": "dependency or build metadata change",
+      "patch": "patches/AVS-007.patch",
+      "patch_sha256": "sha256:93c1e2d1517eb1e220a1feddca02b5343a4e0a036612cc16ce834f8d5f1e856e",
+      "changed_paths": ["package.json"],
+      "changed_regions": ["package description"],
+      "evidence_mode": "NORMAL",
+      "setup": "clean pinned target with frozen dependencies"
+    },
+    {
+      "id": "AVS-008",
+      "title": "public store contract fault",
+      "classification": "SYNTHETIC_FAULT",
+      "category": "interface and public contract change",
+      "patch": "patches/AVS-008.patch",
+      "patch_sha256": "sha256:86b67e0e8b7cb0815cbbf4419a028ba4d5c30b92176ac46ac23d6c62d6e4fb66",
+      "changed_paths": ["src/vanilla.ts"],
+      "changed_regions": ["StoreApi getState return type"],
+      "evidence_mode": "NORMAL",
+      "setup": "clean pinned target with frozen dependencies"
+    },
+    {
+      "id": "AVS-009",
+      "title": "two-boundary compound fault",
+      "classification": "SYNTHETIC_FAULT",
+      "category": "broad shared-boundary and multi-file change",
+      "patch": "patches/AVS-009.patch",
+      "patch_sha256": "sha256:063e1a57a509c40d1aebf35b1e054b48b9505257045f898c02018dd1b6df3662",
+      "changed_paths": [
+        "src/middleware/subscribeWithSelector.ts",
+        "src/vanilla/shallow.ts"
+      ],
+      "changed_regions": [
+        "selector equality branch",
+        "iterable equality branch"
+      ],
+      "evidence_mode": "NORMAL",
+      "setup": "clean pinned target with frozen dependencies"
+    },
+    {
+      "id": "AVS-010",
+      "title": "deliberately incomplete impact evidence",
+      "classification": "SYNTHETIC_BENIGN_CHANGE_SHAPE",
+      "category": "uncertainty and escalation",
+      "patch": "patches/AVS-010.patch",
+      "patch_sha256": "sha256:8dee6a157976f26f8a572bfa848b43ea22c7fb3b22cd8c941ea75f1bcdcbe669",
+      "changed_paths": ["src/middleware/ssrSafe.ts"],
+      "changed_regions": ["SSR mutation error message"],
+      "evidence_mode": "INCOMPLETE_DEPENDENCY_EVIDENCE",
+      "setup": "clean pinned target with frozen dependencies; AV adapter deliberately marks dependency evidence incomplete while native receives the complete changed path"
+    }
+  ],
+  "identity": "sha256:08e7af1ebad68cbe618efa771ceddd0fe65a9ee4ca069ff385436c5fdac9a0ce"
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "opsle.affected-verification.native-selector.v1",
+  "id": "zustand-vitest-related-v1",
+  "tool": "Vitest",
+  "version": "4.1.10",
+  "command_template": "pnpm exec vitest related <changed-paths> --run --reporter=json --outputFile=<artifact>",
+  "selection_unit": "frozen Vitest test file",
+  "inputs": "All scenario changed paths, exactly as frozen; no path is withheld.",
+  "output_normalization": "Test-file paths emitted by Vitest are mapped to frozen catalog check IDs.",
+  "empty_selection": "An empty native test-file set is preserved as empty, not rewritten.",
+  "failure_behavior": "Nonzero selector execution, unknown output paths, or version drift invalidate the arm result.",
+  "limitations": [
+    "Vitest related selection uses static import relationships and documents limitations around dynamic imports.",
+    "The native arm selects tests only and makes no claim about format, typecheck, lint, or build checks.",
+    "The benchmark does not deliberately alter Vitest configuration to improve or worsen its result."
+  ],
+  "identity": "sha256:f9f8f41244923a6daa6f86b0818889c955b6b26362432b76ae4ee361f10171d6"
+}

@@ -1,0 +1,26 @@
+diff --git a/src/middleware/subscribeWithSelector.ts b/src/middleware/subscribeWithSelector.ts
+index e109d1c..6779f2f 100644
+--- a/src/middleware/subscribeWithSelector.ts
++++ b/src/middleware/subscribeWithSelector.ts
+@@ -54,7 +54,7 @@ const subscribeWithSelectorImpl: SubscribeWithSelectorImpl =
+         let currentSlice = selector(api.getState())
+         listener = (state) => {
+           const nextSlice = selector(state)
+-          if (!equalityFn(currentSlice, nextSlice)) {
++          if (equalityFn(currentSlice, nextSlice)) {
+             const previousSlice = currentSlice
+             optListener((currentSlice = nextSlice), previousSlice)
+           }
+diff --git a/src/vanilla/shallow.ts b/src/vanilla/shallow.ts
+index e5b4bf6..b89289a 100644
+--- a/src/vanilla/shallow.ts
++++ b/src/vanilla/shallow.ts
+@@ -39,7 +39,7 @@ const compareIterables = (
+     nextA = iteratorA.next()
+     nextB = iteratorB.next()
+   }
+-  return !!nextA.done && !!nextB.done
++  return !!nextA.done || !!nextB.done
+ }
+ 
+ export function shallow<T>(valueA: T, valueB: T): boolean {
