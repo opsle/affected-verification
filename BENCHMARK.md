@@ -1,9 +1,12 @@
 # Benchmark and research record
 
 AV-EXP-001 completed the first preregistered real-repository `SHADOW`
-calibration. See [benchmark/av-exp-001/REPORT.md](benchmark/av-exp-001/REPORT.md)
-for the bounded result and immutable artifact identities. The method below
-remains authoritative for future runs.
+calibration. AV-EXP-002 completed a second Python/pytest-testmon calibration
+and exposed one AV selection miss. See
+[benchmark/av-exp-001/REPORT.md](benchmark/av-exp-001/REPORT.md) and
+[benchmark/av-exp-002/REPORT.md](benchmark/av-exp-002/REPORT.md) for the bounded
+results and immutable artifact identities. The method below remains
+authoritative for future runs.
 
 ## Central question
 
@@ -69,3 +72,9 @@ First, freeze a real public repository with a trustworthy full-verification base
 AV-EXP-001 satisfied that first calibration step for Zustand at
 `b57db4f86ef179285da216eeb291266da82c361c`. It remains `SHADOW`; its absence
 of observed AV misses in ten scenarios is not a bounded-trust decision.
+
+AV-EXP-002 tested Click at
+`36baa15ff831b939a22bc527cd76ce653ef6f66d` with pytest-testmon 2.2.0. Both AV
+arms selected 86 of 87 oracle-relevant checks and missed
+`tests/test_imports.py::test_light_imports` for a subprocess/runtime-import
+hazard. FULL remained authoritative, and the trust stage remains `SHADOW`.
