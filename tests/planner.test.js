@@ -34,6 +34,28 @@ test('identical input produces an identical deterministic plan', () => {
   assert.deepEqual(planVerification(input), planVerification(structuredClone(input)));
 });
 
+test('an unchanged tree is representable and can conservatively select the full catalog', () => {
+  const input = fixture('isolated-implementation');
+  input.change.paths = [];
+  input.evidence.impacts = [];
+  input.evidence.complete = false;
+  const plan = planVerification(input);
+  assert.equal(plan.sufficiency, 'FULL_VERIFICATION_REQUIRED');
+  assert.equal(plan.change.changed_paths.length, 0);
+  assert.equal(plan.skipped_checks.length, 0);
+});
+
+test('a repository with no automated checks returns explicit insufficient evidence', () => {
+  const input = fixture('readme-only');
+  input.catalog.checks = [];
+  input.evidence.check_dependencies = [];
+  const plan = planVerification(input);
+  assert.equal(plan.sufficiency, 'INSUFFICIENT_EVIDENCE');
+  assert.deepEqual(plan.selected_checks, []);
+  assert.deepEqual(plan.skipped_checks, []);
+  assert.ok(plan.uncertainty.reasons.includes('NO_VERIFICATION_COVERAGE:docs'));
+});
+
 test('unrelated checks are skipped with exact reasons', () => {
   const plan = planVerification(fixture('isolated-implementation'));
   const skipped = plan.skipped_checks.find((item) => item.id === 'unrelated.large-suite');
