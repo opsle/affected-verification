@@ -20,7 +20,7 @@
       "additionalProperties": false,
       "required": ["checks_assessed", "forced_check_ids", "states", "agreement_implies_completeness"],
       "properties": {
-        "checks_assessed": { "type": "integer", "minimum": 1 },
+        "checks_assessed": { "type": "integer", "minimum": 0 },
         "forced_check_ids": { "type": "array", "items": { "type": "string", "minLength": 1 } },
         "states": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
         "agreement_implies_completeness": { "const": false }

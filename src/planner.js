@@ -3,7 +3,7 @@ import { InputError, PLAN_SCHEMA, validateInput } from './validate.js';
 
 const ESCALATION_ORDER = { NONE: 0, BROADEN: 1, FULL: 2, INVALIDATE: 3 };
 
-function globMatches(pattern, path) {
+export function globMatches(pattern, path) {
   const escaped = pattern
     .replace(/[.+^${}()|[\]\\]/g, '\\$&')
     .replace(/\*\*/g, '\u0000')

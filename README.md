@@ -4,7 +4,16 @@ Affected Verification deterministically selects the smallest verification worklo
 
 The operative claim is **minimum defensible verification**, not mathematical global minimality. Unknown impact is never permission to skip work.
 
-This repository contains a dependency-free Node.js 20 prototype. It consumes normalized change, impact, check-level dependency-completeness, verification-catalog, and policy data and emits an `opsle.affected-verification.plan.v2` argument containing selected checks, skipped checks, boundary evidence, exact reasons, provenance hashes, uncertainty, escalation, and sufficiency. It plans work; it does not run CI.
+This repository contains a dependency-free Node.js 20 planner. It consumes normalized change, impact, check-level dependency-completeness, verification-catalog, and policy data and emits an `opsle.affected-verification.plan.v2` argument containing selected checks, skipped checks, boundary evidence, exact reasons, provenance hashes, uncertainty, escalation, and sufficiency. It plans work; it does not run commands.
+
+`opsle/tasks` is a production consumer of this public plan contract. Tasks captures
+the staged BUILD tree, derives normalized input from a base-revision manifest,
+invokes the CLI without a shell, validates the returned action IDs and commands
+against that immutable input, and retains execution authority. AV output never
+creates an unrestricted command surface. An empty change set and an empty
+verification catalog are valid inputs so consumers can represent unchanged
+builds and repositories with no automated checks without inventing work; the
+result remains subject to the ordinary sufficiency and uncertainty rules.
 
 ## Try it
 
@@ -36,6 +45,14 @@ npm run verify
 
 ## Status
 
-This is a narrow research prototype, not a trusted replacement for full verification. AV-EXP-001 observed no AV miss in its frozen JavaScript corpus; AV-EXP-002 permanently observed one AV miss in its frozen Python corpus; AV-EXP-003 selected that known check under the repair and observed zero repaired misses in its generalized and frozen replay corpora. All remain `SHADOW`, do not establish general safety, and do not provide production adapters.
+AV's research evidence remains narrow and does not establish general selector
+completeness. AV-EXP-001 observed no AV miss in its frozen JavaScript corpus;
+AV-EXP-002 permanently observed one AV miss in its frozen Python corpus;
+AV-EXP-003 selected that known check under the repair and observed zero repaired
+misses in its generalized and frozen replay corpora. Tasks therefore treats
+targeted selection as authoritative only when the repository manifest declares
+complete impact, catalog, and check-boundary evidence. Unknown or incomplete
+evidence broadens to the full configured command or stops; it never silently
+becomes a passing verification result.
 
 Apache-2.0.

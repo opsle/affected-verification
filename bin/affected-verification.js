@@ -8,6 +8,7 @@ import {
   canonicalJson,
   classifyShadow,
   operatorIndicator,
+  planTaskVerification,
   planVerification,
 } from '../src/index.js';
 import { scenarios } from '../fixtures/scenarios.js';
@@ -34,6 +35,7 @@ function loadFixture(id) {
 function usage() {
   return [
     'affected-verification plan <input.json> [--receipt <receipt.json>]',
+    'affected-verification task-plan <request.json> [--receipt <receipt.json>]',
     'affected-verification fixture <id> [--receipt <receipt.json>]',
     'affected-verification shadow <plan.json> <full-run.json>',
   ].join('\n');
@@ -43,13 +45,14 @@ try {
   const [command, ...args] = process.argv.slice(2);
   if (command === '--help' || command === '-h' || !command) {
     process.stdout.write(`${usage()}\n`);
-  } else if (command === 'plan' || command === 'fixture') {
+  } else if (command === 'plan' || command === 'fixture' || command === 'task-plan') {
     if (!args[0]) throw new InputError([`${command} requires an input`]);
-    const input = command === 'plan' ? readJson(args[0]) : loadFixture(args[0]);
-    const plan = planVerification(input);
+    const input = command === 'fixture' ? loadFixture(args[0]) : readJson(args[0]);
+    const taskPlan = command === 'task-plan' ? planTaskVerification(input) : null;
+    const plan = taskPlan?.plan ?? planVerification(input);
     const receiptPath = parseReceipt(args);
     if (receiptPath) writeFileSync(receiptPath, `${canonicalJson(buildValueReceipt(plan))}\n`);
-    process.stdout.write(`${canonicalJson(plan)}\n`);
+    process.stdout.write(`${canonicalJson(taskPlan ?? plan)}\n`);
     process.stderr.write(`${operatorIndicator(plan)}\n`);
   } else if (command === 'shadow') {
     if (!args[0] || !args[1]) throw new InputError(['shadow requires a plan and full-run input']);

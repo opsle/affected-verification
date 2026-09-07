@@ -126,7 +126,7 @@ function validateChange(raw, issues) {
   stringAt(change.base_revision, 'change.base_revision', issues);
   stringAt(change.target_revision, 'change.target_revision', issues);
   if (change.identity !== undefined) stringAt(change.identity, 'change.identity', issues);
-  const paths = arrayAt(change.paths, 'change.paths', issues, { nonempty: true });
+  const paths = arrayAt(change.paths, 'change.paths', issues);
   paths.forEach((rawPath, index) => {
     const path = objectAt(rawPath, `change.paths[${index}]`, issues);
     rejectUnknownKeys(path, ['path', 'regions', 'risk_tags'], `change.paths[${index}]`, issues);
@@ -201,7 +201,7 @@ function validateCheckDependencies(evidence, catalog, issues) {
     evidence.check_dependencies,
     'evidence.check_dependencies',
     issues,
-    { nonempty: true },
+    { nonempty: (catalog.checks ?? []).length > 0 },
   );
   assessments.forEach((rawAssessment, index) => {
     const path = `evidence.check_dependencies[${index}]`;
@@ -308,7 +308,7 @@ function validateCatalog(raw, componentIds, issues) {
   rejectUnknownKeys(catalog, ['identity', 'complete', 'checks'], 'catalog', issues);
   stringAt(catalog.identity, 'catalog.identity', issues);
   if (typeof catalog.complete !== 'boolean') issues.push('catalog.complete must be a boolean');
-  const checks = arrayAt(catalog.checks, 'catalog.checks', issues, { nonempty: true });
+  const checks = arrayAt(catalog.checks, 'catalog.checks', issues);
   checks.forEach((rawCheck, index) => {
     const check = objectAt(rawCheck, `catalog.checks[${index}]`, issues);
     rejectUnknownKeys(check, ['id', 'type', 'command', 'scope', 'tags', 'test_executions', 'cost'], `catalog.checks[${index}]`, issues);

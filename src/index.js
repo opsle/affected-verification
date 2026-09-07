@@ -10,6 +10,12 @@ export {
 } from './benchmark.js';
 export { buildValueReceipt, operatorIndicator } from './value-receipt.js';
 export {
+  TASK_MANIFEST_SCHEMA,
+  TASK_PLAN_SCHEMA,
+  TASK_REQUEST_SCHEMA,
+  planTaskVerification,
+} from './task.js';
+export {
   INPUT_SCHEMA,
   PLAN_SCHEMA,
   SHADOW_INPUT_SCHEMA,
