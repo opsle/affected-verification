@@ -1,0 +1,39 @@
+{
+  "kind": "development-compatibility-check",
+  "package": "@opsle/affected-verification-tasks-capability",
+  "version": "0.1.0",
+  "artifact_sha256": "06a5184cccffb0081bedd80a2aab12f2ee574f6ee11079bd54460e5b0c7268bd",
+  "npm_integrity": "sha512-DdM6bJn/+TnwoA25VXHlUxAh6kw28ta0HpCWDc7tdQbv2+zcHb4cBjnTD4nx50kS2EjV5thTkY+Rhtetkg281Q==",
+  "tasks_revision": "e1207c5264c59e14efe9838bba3a33ba504665d2",
+  "tasks_capabilities_source_sha256": "d8568872a1d76e5ac78e134154683b43c7ed46c2b583eaef0e9aac3569a09f30",
+  "central_tasks_source_unchanged": true,
+  "node_version": "24.20.0",
+  "command": "OPSLE_TASKS_RUNTIME_ROOT=<pinned-checkout> node --test tests/tasks-capability.test.js",
+  "tests": { "passed": 13, "failed": 0, "skipped": 0 },
+  "synthetic_compatible_upgrade": {
+    "version": "0.1.1",
+    "artifact_sha256": "9a3c0425fec8b0154086213bf8821bb3f6a082b49a881e952c5dd9869b0c69f5",
+    "published": false
+  },
+  "lifecycle": [
+    "isolated npm pack and install after source export removal",
+    "discovery without activation",
+    "operator grant activation",
+    "planning and capture through real generic runtime",
+    "repository authority selection rejected",
+    "revoke and disable for new runtimes",
+    "duplicate identities rejected",
+    "mutated installation rejected",
+    "removal blocks required authority and preserves evidence",
+    "reinstall and explicit regrant",
+    "separately packed compatible upgrade and fresh-process restart",
+    "empty catalog forces full verification or stop through real Tasks selection"
+  ],
+  "final_pipeline_checks_pending": [
+    "npm run verify",
+    "OPSLE_TASKS_RUNTIME_ROOT=<pinned-checkout> npm run verify:tasks-capability (includes existing Tasks regressions)",
+    "existing CI pinned gitleaks secret scan"
+  ],
+  "release_authorized": false,
+  "historical_benchmark_artifacts_modified": false
+}

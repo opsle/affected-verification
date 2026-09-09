@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/opsle/affected-verification/packages/tasks-capability/schemas/verification-analysis-v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "change",
+    "decision",
+    "error",
+    "evidencePath",
+    "inputPath",
+    "receiptPath",
+    "record"
+  ],
+  "properties": {
+    "schema": {
+      "const": "opsle.execution.verification-analysis.v1"
+    },
+    "change": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository_identity",
+        "base_revision",
+        "target_revision",
+        "identity",
+        "diff_sha256",
+        "paths"
+      ],
+      "properties": {
+        "repository_identity": {
+          "type": "string",
+          "minLength": 1
+        },
+        "base_revision": {
+          "type": "string",
+          "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"
+        },
+        "target_revision": {
+          "type": "string",
+          "pattern": "^git-tree:(?:[0-9a-f]{40}|[0-9a-f]{64})$"
+        },
+        "identity": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "diff_sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "paths": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path"
+            ],
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "regions": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "risk_tags": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "decision": {
+      "anyOf": [
+        {
+          "$ref": "task-plan-v1.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "error": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "evidencePath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inputPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "receiptPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "record": {
+      "$ref": "evidence-v1.schema.json"
+    }
+  }
+}

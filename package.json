@@ -16,7 +16,10 @@
     "benchmark:av-exp-001": "./benchmark/av-exp-001/reproduce.sh",
     "benchmark:av-exp-002": "./benchmark/av-exp-002/reproduce.sh",
     "benchmark:av-exp-003": "./benchmark/av-exp-003/reproduce.sh",
-    "verify:av-exp-003": "node ./benchmark/av-exp-003/verify-results.mjs"
+    "verify:av-exp-003": "node ./benchmark/av-exp-003/verify-results.mjs",
+    "build:tasks-capability": "npm --prefix packages/tasks-capability run build",
+    "pack:tasks-capability": "npm pack ./packages/tasks-capability",
+    "verify:tasks-capability": "node tools/verify-tasks-capability.js"
   },
   "engines": {
     "node": ">=20"
