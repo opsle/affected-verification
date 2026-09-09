@@ -1,0 +1,369 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/opsle/affected-verification/packages/tasks-capability/schemas/manifest-v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "evidence_complete",
+    "catalog_complete",
+    "components",
+    "checks",
+    "policy"
+  ],
+  "properties": {
+    "schema": {
+      "const": "opsle.affected-verification.manifest.v1"
+    },
+    "source_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_identity": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_complete": {
+      "type": "boolean"
+    },
+    "catalog_complete": {
+      "type": "boolean"
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "dependencies",
+          "path_globs"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "path_globs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "risk_tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "type",
+          "command",
+          "scope",
+          "tags",
+          "test_executions"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "enum": [
+              "unit-test",
+              "integration-test",
+              "end-to-end-test",
+              "lint",
+              "typecheck",
+              "build",
+              "compiler",
+              "schema",
+              "migration",
+              "api-contract",
+              "security",
+              "snapshot",
+              "visual",
+              "smoke",
+              "release",
+              "documentation",
+              "test-infrastructure",
+              "other"
+            ]
+          },
+          "command": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scope": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "components"
+            ],
+            "properties": {
+              "components": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "test_executions": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "cost": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "value",
+              "unit"
+            ],
+            "properties": {
+              "value": {
+                "type": "number",
+                "minimum": 0
+              },
+              "unit": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "dependency": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "completeness",
+              "mechanisms",
+              "boundaries",
+              "explanation"
+            ],
+            "properties": {
+              "completeness": {
+                "enum": [
+                  "COMPLETE_FOR_CHECK",
+                  "COMPLETE_WITH_DECLARED_BOUNDARIES",
+                  "INCOMPLETE",
+                  "OPAQUE_BOUNDARY",
+                  "UNKNOWN"
+                ]
+              },
+              "mechanisms": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "kind",
+                    "positive"
+                  ],
+                  "properties": {
+                    "kind": {
+                      "enum": [
+                        "DECLARED_SCOPE",
+                        "STATIC_IMPORT",
+                        "NATIVE_SELECTOR",
+                        "RUNTIME_TRACE",
+                        "COVERAGE",
+                        "SUBPROCESS",
+                        "CHILD_INTERPRETER",
+                        "DYNAMIC_IMPORT",
+                        "PLUGIN_OR_ENTRY_POINT_DISCOVERY",
+                        "EXEC_EVAL_OR_CODE_GENERATION",
+                        "RUNTIME_LOADED_MODULE",
+                        "REFLECTION_OR_REGISTRATION"
+                      ]
+                    },
+                    "positive": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              },
+              "boundaries": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "id",
+                    "kind",
+                    "status",
+                    "relevant",
+                    "explanation",
+                    "source"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "kind": {
+                      "enum": [
+                        "SUBPROCESS",
+                        "CHILD_INTERPRETER",
+                        "DYNAMIC_IMPORT",
+                        "PLUGIN_OR_ENTRY_POINT_DISCOVERY",
+                        "EXEC_EVAL_OR_CODE_GENERATION",
+                        "RUNTIME_LOADED_MODULE",
+                        "REFLECTION_OR_REGISTRATION"
+                      ]
+                    },
+                    "status": {
+                      "enum": [
+                        "OPEN",
+                        "CLOSED",
+                        "IRRELEVANT"
+                      ]
+                    },
+                    "relevant": {
+                      "type": "boolean"
+                    },
+                    "explanation": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "source": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "path",
+                        "line",
+                        "construct"
+                      ],
+                      "properties": {
+                        "path": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "line": {
+                          "type": "integer",
+                          "minimum": 1
+                        },
+                        "construct": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "explanation": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "rules"
+      ],
+      "properties": {
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "match",
+              "escalation",
+              "required_check_tags"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "match": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [],
+                "properties": {
+                  "path_globs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "risk_tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "component_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              },
+              "escalation": {
+                "enum": [
+                  "NONE",
+                  "BROADEN",
+                  "FULL",
+                  "INVALIDATE"
+                ]
+              },
+              "required_check_tags": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

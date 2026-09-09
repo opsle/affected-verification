@@ -1,0 +1,28 @@
+{
+  "schema": "opsle.capability-manifest.v1",
+  "id": "opsle.affected-verification",
+  "name": "Affected Verification",
+  "version": "0.1.0",
+  "adapter": "adapter.js",
+  "default_enabled": false,
+  "configuration_schema": "opsle.affected-verification.tasks-config.v2",
+  "configuration": {},
+  "hooks": [
+    {
+      "name": "verification.plan",
+      "input_schema": "opsle.execution.verification-request.v1",
+      "output_schema": "opsle.execution.verification-analysis.v1",
+      "role": "authority",
+      "execution": "deterministic",
+      "failure": "required"
+    },
+    {
+      "name": "verification.capture",
+      "input_schema": "opsle.execution.change-capture-request.v1",
+      "output_schema": "opsle.execution.change-set.v1",
+      "role": "authority",
+      "execution": "deterministic",
+      "failure": "required"
+    }
+  ]
+}

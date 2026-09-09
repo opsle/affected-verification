@@ -56,3 +56,12 @@ evidence broadens to the full configured command or stops; it never silently
 becomes a passing verification result.
 
 Apache-2.0.
+
+## Opsle Tasks capability package
+
+The independently versioned [Tasks capability package](packages/tasks-capability/README.md)
+ships the executable planning/capture adapter, AV runtime, and explicit schemas.
+Build an installable artifact with `npm run pack:tasks-capability`. Generic trusted
+discovery and operator project grants activate it; installation defaults to disabled.
+AV remains independent and owns verification planning, while Tasks owns command
+execution and release.

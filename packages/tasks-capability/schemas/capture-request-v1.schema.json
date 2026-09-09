@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/opsle/affected-verification/packages/tasks-capability/schemas/capture-request-v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "task"
+  ],
+  "properties": {
+    "schema": {
+      "const": "opsle.execution.change-capture-request.v1"
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "id",
+        "repo_name",
+        "repo_path",
+        "worktree_path",
+        "base_commit"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "repo_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "repo_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "repo_path": {
+          "type": "string",
+          "pattern": "^/[^\\u0000-\\u001f]+$"
+        },
+        "worktree_path": {
+          "type": "string",
+          "pattern": "^/[^\\u0000-\\u001f]+$"
+        },
+        "base_commit": {
+          "type": "string",
+          "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"
+        },
+        "ssh_host": {
+          "type": "string"
+        },
+        "ssh_user": {
+          "type": "string"
+        },
+        "test_command": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/opsle/affected-verification/packages/tasks-capability/schemas/tasks-config-v2.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [],
+  "properties": {
+    "schema": {
+      "const": "opsle.affected-verification.tasks-config.v2"
+    }
+  }
+}
