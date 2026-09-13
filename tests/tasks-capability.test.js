@@ -8,7 +8,7 @@ import { resolve } from 'node:path';
 import { pathToFileURL, fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
-const compatRevision = 'b76d6253b405469b79d30b260f7ad09827052a4a';
+const compatRevision = '3603c09dd01bfe5bb8f89cfd3e28cebbd4bdf2ec';
 const id = 'opsle.affected-verification';
 const schema = 'opsle.execution.verification-request.v1';
 const emptySelection = { schema: 'opsle.capability-selection.v1', enable: [], disable: [], configuration: {} };
