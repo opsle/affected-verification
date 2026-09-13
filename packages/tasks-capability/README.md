@@ -1,15 +1,19 @@
 # Affected Verification capability for Opsle Tasks
 
-`@opsle/affected-verification-tasks-capability` **0.1.0** is an independently
+`@opsle/affected-verification-tasks-capability` **0.2.0** is an independently
 versioned, dependency-free capability owned and released by the public Affected
 Verification repository. AV remains the verification planning authority. Tasks
 owns operator grants, command execution, observed results, repair, and release.
-The package neither runs catalog commands nor authorizes deployment.
+The package neither runs catalog commands nor authorizes deployment. AV remains
+`OBSERVE_SHADOW`: its proposal is not execution authority, and full verification
+must remain authoritative.
 
 The executable ESM entry point implements the generic
 `opsle.capability-manifest.v1` / `opsle.capability-result.v1` contract. Both
-`verification.plan` and `verification.capture` are **required deterministic
-authorities**. `default_enabled` is **false**. No AV identity branches, new central
+`verification.plan`, `verification.shadow`, and `verification.capture` are
+**required deterministic authorities**. The shadow hook validates the complete
+authoritative result, uses AV's native classifier, and returns a bound receipt.
+`default_enabled` is **false**. No AV identity branches, new central
 Tasks dependencies, private Tasks imports, sibling checkouts, Graphify dependency,
 or structural-evidence contract are needed.
 
@@ -19,7 +23,7 @@ Build from an AV checkout with Node 20+ and npm:
 
 ```sh
 npm run pack:tasks-capability
-sha256sum opsle-affected-verification-tasks-capability-0.1.0.tgz
+sha256sum opsle-affected-verification-tasks-capability-0.2.0.tgz
 ```
 
 `npm pack` builds the adapter, includes the current AV core, runtime helpers,
@@ -29,13 +33,13 @@ network dependencies are required. Review the artifact hash and provenance
 before an operator installs it outside repositories and agent-writable paths:
 
 ```sh
-npm install --prefix /srv/opsle-capabilities/av-0.1.0 \
+npm install --prefix /srv/opsle-capabilities/av-0.2.0 \
   --ignore-scripts --no-audit --no-fund \
-  ./opsle-affected-verification-tasks-capability-0.1.0.tgz
+  ./opsle-affected-verification-tasks-capability-0.2.0.tgz
 ```
 
 Set the operator-owned `OPSLE_CAPABILITY_PATH` to the installed directory:
-`/srv/opsle-capabilities/av-0.1.0/node_modules/@opsle/affected-verification-tasks-capability`.
+`/srv/opsle-capabilities/av-0.2.0/node_modules/@opsle/affected-verification-tasks-capability`.
 Tasks also accepts the generic `capabilityRoots` configuration. Multiple roots
 use the platform path delimiter. Include the individually installed roots for
 other required authorities and observers. **Replace** the bundled AV discovery
@@ -58,9 +62,9 @@ An absent required authority blocks verification, including after a revoke.
 ## Compatibility and schemas
 
 The real generic runtime compatibility target is Opsle Tasks revision
-`e1207c5264c59e14efe9838bba3a33ba504665d2` (Node 24+ for its complete regression
+`b76d6253b405469b79d30b260f7ad09827052a4a` (Node 24+ for its complete regression
 suite). Its `src/capabilities.js` SHA-256 is
-`d8568872a1d76e5ac78e134154683b43c7ed46c2b583eaef0e9aac3569a09f30`.
+`62dca002d729c82ca00a66fdb6edcbac692eca770ca6f771dea0c7e68ffd3408`.
 Tests import that unmodified runtime only as a compatibility test dependency;
 the installed capability never imports Tasks source. Execution metadata comes
 from generic `services.executionConfig`; project/task/attempt/execution bindings
@@ -70,6 +74,7 @@ operator-owned.
 | Hook | Request | Response |
 | --- | --- | --- |
 | `verification.plan` | `opsle.execution.verification-request.v1` | `opsle.execution.verification-analysis.v1` |
+| `verification.shadow` | `opsle.execution.verification-shadow-request.v1` | `opsle.execution.verification-shadow-result.v1` |
 | `verification.capture` | `opsle.execution.change-capture-request.v1` | `opsle.execution.change-set.v1` |
 
 All JSON Schemas are in `schemas/`. They include the immutable task manifest,
@@ -82,7 +87,10 @@ Structural validation supplements AV's native cross-field semantic validation;
 it cannot establish completeness or provenance by itself.
 
 The compatibility analysis envelope retains `change`, `decision`, `error`,
-`evidencePath`, `inputPath`, `receiptPath`, and `record`. An `ok` capability envelope
+`evidencePath`, `inputPath`, `receiptPath`, and `record`. Planning does not create
+a value receipt: one exists only after exact full-catalog results are validated
+and shadow-classified. The shadow response returns it through the ordinary
+`receipts` array and retains the matching private sidecar. An `ok` capability envelope
 means analysis completed, **not that verification passed**. A failed analysis has
 `decision: null`, an explicit error, and `ANALYSIS_FAILED` evidence. The Tasks
 consumer must use full configured verification or stop. Missing manifests use
@@ -97,9 +105,12 @@ and staged Git tree identities. The manifest is read from the immutable base,
 not agent-modified content. Every action must match the exact immutable catalog
 partition and command. The adapter validates canonical decision identity and
 recomputes the AV decision to check provenance/completeness. Unknown, incomplete,
-or opaque evidence cannot justify an unexplained skip. Tasks must compare the
-post-verification capture tree with the planned tree before accepting changes;
-the package never decides that command execution passed.
+or opaque evidence cannot justify an unexplained skip. Tasks must execute the
+full catalog, pass its exact results to the shadow hook, and compare the
+post-verification capture tree with the planned tree before accepting changes.
+Unknown trust state, stale execution identity, source drift, incomplete results,
+and invalid receipts fail closed; the package never decides that command
+execution passed.
 
 SSH target validation, argv quoting, strict host-key checking, connection and
 remote process deadlines, bounded Git output, and private evidence are retained
@@ -111,7 +122,8 @@ all packaged files that affect planning. Operator-protected installation roots
 remain the trust boundary; hashes do not make writable installations trustworthy.
 
 OBSERVE/SHADOW observations and historical benchmarks retain their existing
-limits. No observation is promoted to execution authority or production trust.
+limits. Proposed skips are proposals, not savings or avoided executions. No
+observation is promoted to execution authority or production trust.
 External structural evidence is not accepted by this interface and cannot narrow
 verification; only AV's own provenance and completeness decision can justify
 selection. The core remains separately usable without Tasks.
@@ -151,7 +163,7 @@ recorded revision, then run:
 npm run verify
 OPSLE_TASKS_RUNTIME_ROOT=/path/to/pinned/opsle-tasks npm run verify:tasks-capability
 npm run pack:tasks-capability
-sha256sum opsle-affected-verification-tasks-capability-0.1.0.tgz
+sha256sum opsle-affected-verification-tasks-capability-0.2.0.tgz
 ```
 
 The second command is mandatory for release: it refuses to skip if Tasks is

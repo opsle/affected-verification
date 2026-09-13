@@ -8,13 +8,19 @@ import { resolve } from 'node:path';
 import { pathToFileURL, fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
-const compatRevision = 'e1207c5264c59e14efe9838bba3a33ba504665d2';
+const compatRevision = 'b76d6253b405469b79d30b260f7ad09827052a4a';
 const id = 'opsle.affected-verification';
 const schema = 'opsle.execution.verification-request.v1';
 const emptySelection = { schema: 'opsle.capability-selection.v1', enable: [], disable: [], configuration: {} };
 const grant = { schema: 'opsle.capability-grants.v1', allow: [id] };
 const hash = value => createHash('sha256').update(value).digest('hex');
-const run = (cmd, args, cwd) => execFileSync(cmd, args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 60_000 });
+const commandEnvironment = { ...process.env };
+delete commandEnvironment.npm_config_allow_scripts;
+delete commandEnvironment.NPM_CONFIG_ALLOW_SCRIPTS;
+commandEnvironment.NODE_ENV = 'test';
+const run = (cmd, args, cwd) => execFileSync(cmd, args, { cwd,
+  env: commandEnvironment, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'],
+  timeout: 60_000 });
 const git = (cwd, args) => run('git', args, cwd).trim();
 let temp, tarball, packed, upgradeTarball;
 before(() => {
@@ -33,7 +39,7 @@ before(() => {
   // Build a second, synthetic compatible patch tarball for the restart contract.
   for (const name of ['package.json', 'opsle-capability.json']) {
     const path = resolve(packagePath, name);
-    const value = JSON.parse(readFileSync(path)); value.version = '0.1.1';
+    const value = JSON.parse(readFileSync(path)); value.version = '0.2.1';
     writeFileSync(path, JSON.stringify(value));
   }
   upgradeTarball = resolve(temp, JSON.parse(run('npm', ['pack', '--json', '--pack-destination', temp], packagePath))[0].filename);
@@ -77,6 +83,32 @@ async function direct(directory, f) {
     executionId: 'exec-1', executionConfig: { logsDir: f.logsDir } } });
 }
 const request = f => ({ schema, task: f.task, attemptId: 1, executionId: 'exec-1', generation: 1 });
+const shadowRequest = (f, plan, overrides = {}) => ({
+  schema: 'opsle.execution.verification-shadow-request.v1',
+  task: f.task,
+  attemptId: 1,
+  executionId: 'exec-1',
+  generation: 1,
+  trustStage: 'OBSERVE_SHADOW',
+  results: [...plan.selected_checks, ...plan.skipped_checks].map(item => ({
+    id: item.id,
+    type: item.type,
+    command: item.command,
+    status: 'PASSED',
+    command_outcome: 'PASSED',
+    exit_code: 0,
+    signal: null,
+    interrupted: false,
+    interruption_reason: null,
+    duration_ms: 1,
+    stdout_path: '/private/stdout',
+    stderr_path: '/private/stderr',
+    evidence_path: '/private/evidence',
+    evidence_status: 'VERIFIED',
+    evidence_limitation: null,
+  })),
+  ...overrides,
+});
 
 test('installable artifact contains planner and schemas, plans deterministically, captures drift and retains private evidence', async t => {
   const directory = install('standalone');
@@ -88,7 +120,23 @@ test('installable artifact contains planner and schemas, plans deterministically
   assert.equal(result.value.error, null);
   assert.deepEqual(result.value.decision.plan.selected_checks.map(x => x.id), ['a']);
   assert.deepEqual(result.value.decision.plan.skipped_checks.map(x => x.id), ['b']);
-  for (const path of [result.value.inputPath, result.value.receiptPath, result.value.evidencePath]) assert.equal(statSync(path).mode & 0o777, 0o600);
+  for (const path of [result.value.inputPath, result.value.evidencePath]) {
+    assert.equal(statSync(path).mode & 0o777, 0o600);
+  }
+  assert.equal(existsSync(result.value.receiptPath), false,
+    'planning cannot emit a receipt before authoritative comparison');
+  const finalized = adapter.invoke('verification.shadow',
+    shadowRequest(f, result.value.decision.plan));
+  assert.equal(finalized.receipts.length, 1);
+  assert.equal(finalized.value.status, 'SHADOW_HEALTHY');
+  assert.equal(finalized.value.shadow.classification, 'NO_SELECTION_MISS');
+  assert.equal(statSync(finalized.value.receiptPath).mode & 0o777, 0o600);
+  const receipt = finalized.receipts[0];
+  assert.equal(receipt.run.id, 'exec-1');
+  assert.equal(receipt.extensions.affected_verification.task.attempt_id, 1);
+  assert.match(receipt.mechanism.revision, /^sha256:[0-9a-f]{64}$/);
+  assert.equal(receipt.extensions.affected_verification.plan.identity,
+    result.value.decision.plan.plan_identity);
   const repeat = adapter.invoke('verification.plan', { ...request(f), generation: 2 });
   assert.deepEqual(repeat.value.decision, result.value.decision);
   const capture = () => adapter.invoke('verification.capture', { schema: 'opsle.execution.change-capture-request.v1', task: f.task }).value;
@@ -177,6 +225,27 @@ test('canonical decisions reject wrong task/change, catalog injection, and forge
   ]) { const decision = structuredClone(result.decision); mutate(decision); assert.throws(() => validateDecision(decision, input)); }
 });
 
+test('shadow finalization rejects stale execution evidence, source drift, and incomplete full results', async t => {
+  const directory = install('shadow-identity');
+  const f = fixture(t, 'shadow-identity-project');
+  const adapter = await direct(directory, f);
+  const analysis = adapter.invoke('verification.plan', request(f)).value;
+  const full = shadowRequest(f, analysis.decision.plan);
+  assert.throws(() => adapter.invoke('verification.shadow', {
+    ...full,
+    results: full.results.slice(0, 1),
+  }), /exact full catalog/);
+  const stored = JSON.parse(readFileSync(analysis.evidencePath));
+  writeFileSync(analysis.evidencePath, JSON.stringify({ ...stored, execution_id: 'stale' }));
+  assert.throws(() => adapter.invoke('verification.shadow', full),
+    /evidence identity/);
+  writeFileSync(analysis.evidencePath, JSON.stringify(stored));
+  writeFileSync(resolve(f.task.repo_path, 'b.js'), 'drift\n');
+  assert.throws(() => adapter.invoke('verification.shadow', full),
+    /source identity drifted/);
+  assert.equal(existsSync(analysis.receiptPath), false);
+});
+
 test('SSH failures, invalid targets and quoting remain bounded and fail closed', async t => {
   const directory = install('ssh');
   const { executionTarget, projectGit, sshArguments } = await import(pathToFileURL(resolve(directory, 'runtime/execution.js')));
@@ -233,6 +302,11 @@ test('real generic Tasks lifecycle: discover, grant, dispatch, revoke, remove, r
   const enabled = await runtime();
   const analysis = await enabled.authority('verification.plan', request(f));
   assert.equal(analysis.error, null);
+  const shadow = await enabled.authority('verification.shadow',
+    shadowRequest(f, analysis.decision.plan));
+  assert.equal(shadow.status, 'SHADOW_HEALTHY');
+  assert.equal(shadow.receipt.run.id, 'exec-1');
+  assert.ok(events.some(x => x.kind === 'AFFECTED_VERIFICATION_SHADOW'));
   const capture = await enabled.authority('verification.capture', { schema: 'opsle.execution.change-capture-request.v1', task: f.task });
   assert.equal(capture.identity, analysis.change.identity);
   assert.ok(events.some(x => x.kind === 'CAPABILITY_ARTIFACT'));
@@ -269,7 +343,7 @@ const runtime = await createCapabilityRuntime(context);
 const value = await runtime.authority('verification.capture', {schema:'opsle.execution.change-capture-request.v1',task:context.task});
 process.stdout.write(JSON.stringify({version:runtime.status[0].version,value}));`);
   const restarted = JSON.parse(run(process.execPath, [restart, JSON.stringify({ config: { ...config, capabilityRoots: [upgraded] }, task: f.task, attemptId: 1, executionId: 'exec-1', selection: emptySelection })], temp));
-  assert.equal(restarted.version, '0.1.1');
+  assert.equal(restarted.version, '0.2.1');
   assert.equal(restarted.value.identity, capture.identity);
   assert.deepEqual(readFileSync(analysis.evidencePath), history);
   assert.equal(git(tasksRoot, ['diff', 'HEAD', '--', 'src']), before);

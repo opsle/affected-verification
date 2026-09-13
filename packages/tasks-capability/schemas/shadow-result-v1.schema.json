@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/opsle/affected-verification/packages/tasks-capability/schemas/shadow-result-v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "shadow",
+    "receipt",
+    "receiptPath",
+    "evidencePath",
+    "record"
+  ],
+  "properties": {
+    "schema": {
+      "const": "opsle.execution.verification-shadow-result.v1"
+    },
+    "status": {
+      "enum": [
+        "SHADOW_HEALTHY",
+        "FULL_VERIFICATION_REQUIRED",
+        "SHADOW_BROADENED",
+        "SHADOW_MISS_REVIEW_REQUIRED",
+        "SHADOW_INDETERMINATE",
+        "AV_INVALID_DEGRADED"
+      ]
+    },
+    "shadow": { "type": "object" },
+    "receipt": { "type": "object" },
+    "receiptPath": { "type": "string", "minLength": 1 },
+    "evidencePath": { "type": "string", "minLength": 1 },
+    "record": { "type": "object" }
+  }
+}

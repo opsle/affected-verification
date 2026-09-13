@@ -8,7 +8,11 @@ export {
   validateScenarioManifest,
   validateShadowBenchmarkResult,
 } from './benchmark.js';
-export { buildValueReceipt, operatorIndicator } from './value-receipt.js';
+export {
+  buildShadowValueReceipt,
+  buildValueReceipt,
+  operatorIndicator,
+} from './value-receipt.js';
 export {
   TASK_MANIFEST_SCHEMA,
   TASK_PLAN_SCHEMA,
