@@ -1,11 +1,11 @@
 import { executionTarget, projectGit } from './execution.js';
-import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { existsSync, renameSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { contentIdentity } from './core/canonical.js';
+import { classifyShadow } from './core/shadow.js';
 import { planTaskVerification } from './core/task.js';
+import { buildShadowValueReceipt } from './core/value-receipt.js';
 import { validateSchema } from './schema.js';
 
 export const AV_MANIFEST_PATH = '.opsle/affected-verification.json';
@@ -16,7 +16,6 @@ const AV_MANIFEST_SCHEMA = 'opsle.affected-verification.manifest.v1';
 const AV_EVIDENCE_SCHEMA = 'opsle.tasks.affected-verification-evidence.v1';
 const MAX_MANIFEST_BYTES = 1_000_000;
 const MAX_ARTIFACT_BYTES = 5_000_000;
-const packageRoot = fileURLToPath(new URL('..', import.meta.url));
 
 const hash = value => `sha256:${createHash('sha256').update(value).digest('hex')}`;
 
@@ -189,20 +188,7 @@ export function analyzeAffectedVerification({ config, task, attemptId, execution
     if (manifest.checks.length === 0) {
       throw new Error('Affected Verification has no catalogued checks; full configured verification is required or execution must stop.');
     }
-    const binary = resolve(packageRoot, 'runtime', 'planner-cli.js');
-    if (!existsSync(binary)) throw new Error('Affected Verification CLI is unavailable.');
-    const result = spawnSync(process.execPath, [
-      binary, 'task-plan', inputPath, '--receipt', receiptPath,
-    ], { encoding: 'utf8', timeout: 10_000, maxBuffer: MAX_ARTIFACT_BYTES });
-    if (result.error) throw new Error(`Affected Verification failed internally: ${result.error.message}`);
-    if (result.status !== 0) {
-      throw new Error(`Affected Verification rejected the task change: ${(result.stdout || result.stderr || 'unknown error').trim().slice(0, 2000)}`);
-    }
-    try { decision = validateDecision(JSON.parse(result.stdout), request); }
-    catch (cause) {
-      if (cause instanceof SyntaxError) throw new Error('Affected Verification returned invalid JSON.');
-      throw cause;
-    }
+    decision = validateDecision(planTaskVerification(request), request);
   } catch (cause) {
     error = String(cause.message || cause).slice(0, 3000);
   }
@@ -236,11 +222,13 @@ export function analyzeAffectedVerification({ config, task, attemptId, execution
       catalog_complete: manifest.catalog_complete,
     } : null,
     input_path: existsSync(inputPath) ? inputPath : null,
-    value_receipt_path: existsSync(receiptPath) ? receiptPath : null,
+    value_receipt_path: null,
     decision,
     analysis_error: error,
     verification_results: [],
     fallback: null,
+    trust_stage: null,
+    shadow: null,
     limitations: [
       'Changed regions are not inferred; path ownership and check completeness come from the immutable base-revision manifest.',
       'Passing selected commands proves only their observed process results, not global correctness.',
@@ -249,6 +237,150 @@ export function analyzeAffectedVerification({ config, task, attemptId, execution
   validateSchema('evidence-v1', record);
   atomicJson(evidencePath, record);
   return { change, decision, error, evidencePath, inputPath, receiptPath, record };
+}
+
+function readJson(path, label) {
+  const raw = readFileSync(path);
+  if (raw.length > MAX_ARTIFACT_BYTES) throw new Error(`${label} exceeds the bounded artifact limit.`);
+  try { return JSON.parse(raw); }
+  catch { throw new Error(`${label} is not valid JSON.`); }
+}
+
+function exactResults(plan, results) {
+  if (!Array.isArray(results)) throw new Error('Authoritative verification results must be an array.');
+  const expected = new Map([...plan.selected_checks, ...plan.skipped_checks]
+    .map((item) => [item.id, { command: item.command, type: item.type }]));
+  if (results.length !== expected.size || new Set(results.map((item) => item?.id)).size !== results.length) {
+    throw new Error('Authoritative verification results do not cover the exact full catalog.');
+  }
+  return results.map((item) => {
+    const action = expected.get(item?.id);
+    if (!action || item.command !== action.command || item.type !== action.type
+      || !['PASSED', 'FAILED'].includes(item.status)
+      || !['PASSED', 'FAILED', 'SIGNALED', 'INTERRUPTED'].includes(
+        item.command_outcome ?? item.status,
+      )
+      || !Number.isInteger(item.exit_code)
+      || (item.signal !== null && typeof item.signal !== 'string')
+      || typeof item.interrupted !== 'boolean'
+      || !Number.isFinite(item.duration_ms) || item.duration_ms < 0) {
+      throw new Error('Authoritative verification result is invalid or does not match the immutable catalog.');
+    }
+    return {
+      id: item.id,
+      type: item.type,
+      command: item.command,
+      status: item.status,
+      command_outcome: item.command_outcome ?? item.status,
+      exit_code: item.exit_code,
+      signal: item.signal,
+      interrupted: item.interrupted,
+      interruption_reason: item.interruption_reason ?? null,
+      duration_ms: item.duration_ms,
+      stdout_path: item.stdout_path ?? null,
+      stderr_path: item.stderr_path ?? null,
+      evidence_path: item.evidence_path ?? null,
+      evidence_status: item.evidence_status ?? null,
+      evidence_limitation: item.evidence_limitation ?? null,
+    };
+  });
+}
+
+function shadowStatus(plan, shadow, trustStage) {
+  if (trustStage !== 'OBSERVE_SHADOW') return 'AV_INVALID_DEGRADED';
+  if (shadow.classification === 'SELECTION_MISS') return 'SHADOW_MISS_REVIEW_REQUIRED';
+  if (shadow.classification !== 'NO_SELECTION_MISS') return 'SHADOW_INDETERMINATE';
+  if (['FULL_VERIFICATION_REQUIRED', 'INSUFFICIENT_EVIDENCE']
+    .includes(plan.sufficiency)) return 'FULL_VERIFICATION_REQUIRED';
+  if (plan.sufficiency === 'SUFFICIENT_BROADENED'
+    || plan.uncertainty.state !== 'NONE'
+    || plan.dependency_completeness?.forced_check_ids?.length) return 'SHADOW_BROADENED';
+  return 'SHADOW_HEALTHY';
+}
+
+export function finalizeAffectedVerification({
+  config,
+  task,
+  attemptId,
+  executionId,
+  generation,
+  trustStage,
+  results,
+  mechanismVersion,
+}) {
+  const inputPath = resolve(config.logsDir, `task-${task.id}-attempt-${attemptId}-av-${generation}-input.json`);
+  const receiptPath = resolve(config.logsDir, `task-${task.id}-attempt-${attemptId}-av-${generation}-value-receipt.json`);
+  const evidencePath = resolve(config.logsDir, `task-${task.id}-attempt-${attemptId}-av-${generation}.json`);
+  const request = validateSchema('task-request-v1', readJson(inputPath, 'Affected Verification request'));
+  const previous = readJson(evidencePath, 'Affected Verification evidence');
+  if (previous?.schema !== AV_EVIDENCE_SCHEMA
+    || previous.task_id !== task.id
+    || previous.attempt_id !== attemptId
+    || previous.execution_id !== executionId
+    || previous.generation !== generation
+    || previous.mechanism?.revision !== config.packageIdentity
+    || !previous.decision) {
+    throw new Error('Affected Verification evidence identity does not match this execution.');
+  }
+  const decision = validateDecision(previous.decision, request);
+  const current = captureBuildChange(task, config);
+  if (current.identity !== previous.change.identity
+    || current.base_revision !== previous.repository.base_revision
+    || current.target_revision !== previous.repository.target_revision
+    || current.repository_identity !== previous.repository.identity) {
+    const mismatches = [
+      current.identity !== previous.change.identity && 'change',
+      current.base_revision !== previous.repository.base_revision && 'base',
+      current.target_revision !== previous.repository.target_revision && 'target',
+      current.repository_identity !== previous.repository.identity && 'repository',
+    ].filter(Boolean).join(',');
+    throw new Error(`Affected Verification source identity drifted after planning (${mismatches}).`);
+  }
+  const authoritativeResults = exactResults(decision.plan, results);
+  const shadow = classifyShadow(decision.plan, {
+    schema: 'opsle.affected-verification.shadow-input.v1',
+    change_identity: decision.plan.change.identity,
+    executed_check_ids: authoritativeResults.map((item) => item.id),
+    failures: authoritativeResults.filter((item) => item.status === 'FAILED').map((item) => ({
+      check_id: item.id,
+      relevant: true,
+      reason: 'Authoritative full verification failed for this catalogued check.',
+    })),
+  });
+  const status = shadowStatus(decision.plan, shadow, trustStage);
+  const manifest = {
+    source_path: previous.manifest.source_path,
+    source_identity: previous.manifest.source_identity,
+    evidence_complete: previous.manifest.evidence_complete,
+    catalog_complete: previous.manifest.catalog_complete,
+  };
+  const receipt = buildShadowValueReceipt(decision.plan, shadow, {
+    mechanismRevision: config.packageIdentity,
+    mechanismVersion,
+    runId: executionId,
+    repository: decision.repository.identity,
+    taskId: task.id,
+    attemptId,
+    executionId,
+    generation,
+    trustStage,
+    decisionIdentity: decision.decision_identity,
+    manifest,
+    authoritativeResults,
+  });
+  receipt.extensions.affected_verification.status = status;
+  atomicJson(receiptPath, receipt);
+  const record = {
+    ...previous,
+    status,
+    value_receipt_path: receiptPath,
+    verification_results: authoritativeResults,
+    trust_stage: trustStage,
+    shadow,
+  };
+  validateSchema('evidence-v1', record);
+  atomicJson(evidencePath, record);
+  return { status, shadow, receipt, receiptPath, evidencePath, record };
 }
 
 export function saveAffectedVerificationRecord(path, record) {

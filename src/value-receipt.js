@@ -91,6 +91,138 @@ export function buildValueReceipt(plan, { mechanismRevision = null, runId = null
   };
 }
 
+export function buildShadowValueReceipt(plan, shadow, {
+  mechanismRevision,
+  mechanismVersion,
+  runId,
+  repository,
+  taskId,
+  attemptId,
+  executionId,
+  generation,
+  trustStage,
+  decisionIdentity,
+  manifest,
+  authoritativeResults,
+} = {}) {
+  if (!mechanismRevision || !mechanismVersion || !runId || !repository
+    || !taskId || !attemptId || !executionId || !generation
+    || !decisionIdentity || !manifest || !Array.isArray(authoritativeResults)) {
+    throw new Error('A production shadow receipt requires complete execution and mechanism identity.');
+  }
+  if (shadow?.plan_identity !== plan.plan_identity) {
+    throw new Error('Shadow result does not match the verification plan.');
+  }
+  const all = [...plan.selected_checks, ...plan.skipped_checks];
+  const availableTests = all.filter(isTest).reduce((sum, item) => sum + item.test_executions, 0);
+  const selectedTests = plan.selected_checks.filter(isTest).reduce((sum, item) => sum + item.test_executions, 0);
+  const proposedSkippedTests = availableTests - selectedTests;
+  const proposedSkippedChecks = plan.skipped_checks.length;
+  const broadening = plan.sufficiency === 'SUFFICIENT_BROADENED'
+    || plan.sufficiency === 'FULL_VERIFICATION_REQUIRED'
+    || plan.sufficiency === 'INSUFFICIENT_EVIDENCE'
+    || plan.dependency_completeness?.forced_check_ids?.length > 0;
+  const evidence = [
+    { id: 'verification_plan', kind: 'CONTENT_HASH', locator: plan.plan_identity, trust: 'VERIFIED' },
+    { id: 'shadow_result', kind: 'CONTENT_HASH', locator: shadow.observation_identity, trust: 'VERIFIED' },
+  ];
+  const measured = input => measurement({
+    ...input,
+    limitation: input.limitation ?? [],
+  });
+  const measurements = [
+    measured({ id: 'checks_proposed_selected', baseline: null, result: plan.selected_checks.length,
+      delta: null, unit: 'count', direction: 'NEUTRAL', operatorDisplay: true }),
+    measured({ id: 'checks_proposed_skipped', baseline: null, result: proposedSkippedChecks,
+      delta: null, unit: 'count', direction: 'NEUTRAL', operatorDisplay: true }),
+    measured({ id: 'test_executions_available', baseline: null, result: availableTests,
+      delta: null, unit: 'count', direction: 'NEUTRAL', operatorDisplay: false }),
+    measured({ id: 'test_executions_proposed_selected', baseline: null, result: selectedTests,
+      delta: null, unit: 'count', direction: 'NEUTRAL', operatorDisplay: true }),
+    measured({ id: 'test_executions_proposed_skipped', baseline: null, result: proposedSkippedTests,
+      delta: null, unit: 'count', direction: 'NEUTRAL', operatorDisplay: true }),
+    measurement({ id: 'full_catalog_checks_executed', baseline: null,
+      result: shadow.full_run_executed_check_ids.length, delta: null, unit: 'count',
+      direction: 'PROTECTION_SIGNAL', operatorDisplay: true }),
+    measurement({ id: 'shadow_misses', baseline: null, result: shadow.selection_misses.length,
+      delta: null, unit: 'count', direction: 'PROTECTION_SIGNAL', operatorDisplay: true }),
+    measurement({ id: 'full_verification_authoritative', baseline: null, result: true,
+      delta: null, unit: 'boolean', direction: 'PROTECTION_SIGNAL', operatorDisplay: true }),
+    measured({ id: 'broadening_or_escalation', baseline: null, result: broadening,
+      delta: null, unit: 'boolean', direction: 'PROTECTION_SIGNAL', operatorDisplay: false }),
+  ];
+  for (const item of measurements.slice(5)) item.evidence_refs = ['shadow_result'];
+  const selectedByType = Object.fromEntries(
+    [...new Set(plan.selected_checks.map((item) => item.type))].sort().map((type) => [
+      type,
+      plan.selected_checks.filter((item) => item.type === type).length,
+    ]),
+  );
+  return {
+    schema: RECEIPT_SCHEMA,
+    mechanism: {
+      id: 'opsle.affected-verification',
+      name: 'Affected Verification',
+      version: mechanismVersion,
+      revision: mechanismRevision,
+    },
+    run: {
+      id: runId,
+      repository,
+      task_classification: `task-${taskId}`,
+      work_classification: 'DETERMINISTIC_VERIFICATION_SHADOW',
+    },
+    operation: {
+      id: shadow.observation_identity,
+      name: 'verification-shadow',
+      configuration_id: plan.provenance.verification_catalog_identity,
+      policy_id: plan.provenance.policy_identity,
+    },
+    measurements,
+    evidence,
+    limitations: [
+      'Full verification remained authoritative; proposed skips were not execution savings.',
+      'No time, token, cost, correctness, avoided-execution, or causal savings claim is made.',
+      'A shadow miss is a failed check that the targeted plan proposed skipping; full results remain authoritative.',
+    ],
+    extensions: {
+      affected_verification: {
+        trust_stage: trustStage,
+        authoritative_verification: 'FULL',
+        task: { id: taskId, attempt_id: attemptId, execution_id: executionId, generation },
+        mechanism: { packaged_revision: mechanismRevision },
+        source: {
+          repository,
+          base_revision: plan.change.base_revision,
+          target_revision: plan.change.target_revision,
+          change_identity: plan.change.identity,
+        },
+        manifest,
+        plan: {
+          identity: plan.plan_identity,
+          decision_identity: decisionIdentity,
+          sufficiency: plan.sufficiency,
+          uncertainty: plan.uncertainty,
+          dependency_completeness: plan.dependency_completeness,
+          selected_check_ids: plan.selected_checks.map((item) => item.id),
+          skipped_check_ids: plan.skipped_checks.map((item) => item.id),
+          selected_by_type: selectedByType,
+          selected_test_executions: selectedTests,
+          available_test_executions: availableTests,
+          proposed_skipped_test_executions: proposedSkippedTests,
+        },
+        policy: {
+          identity: plan.provenance.policy_identity,
+          revision: plan.provenance.policy_version,
+        },
+        catalog: { identity: plan.provenance.verification_catalog_identity },
+        shadow,
+        authoritative_results: authoritativeResults,
+      },
+    },
+  };
+}
+
 export function operatorIndicator(plan) {
   const all = [...plan.selected_checks, ...plan.skipped_checks];
   const availableTests = all.filter(isTest).reduce((sum, item) => sum + item.test_executions, 0);

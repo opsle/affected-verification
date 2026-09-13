@@ -21,6 +21,8 @@
     "analysis_error",
     "verification_results",
     "fallback",
+    "trust_stage",
+    "shadow",
     "limitations"
   ],
   "properties": {
@@ -71,7 +73,7 @@
         }
       }
     },
-    "status": {
+        "status": {
       "enum": [
         "ANALYSIS_FAILED",
         "ANALYZED",
@@ -81,7 +83,13 @@
         "VERIFICATION_RUNNING",
         "VERIFICATION_FAILED",
         "NO_AUTOMATED_VERIFICATION",
-        "VERIFICATION_PENDING"
+        "VERIFICATION_PENDING",
+        "SHADOW_HEALTHY",
+        "FULL_VERIFICATION_REQUIRED",
+        "SHADOW_BROADENED",
+        "SHADOW_MISS_REVIEW_REQUIRED",
+        "SHADOW_INDETERMINATE",
+        "AV_INVALID_DEGRADED"
       ]
     },
     "mechanism": {
@@ -292,6 +300,14 @@
               "FAILED"
             ]
           },
+          "command_outcome": {
+            "enum": [
+              "PASSED",
+              "FAILED",
+              "SIGNALED",
+              "INTERRUPTED"
+            ]
+          },
           "exit_code": {
             "anyOf": [
               {
@@ -302,7 +318,7 @@
               }
             ]
           },
-          "signal": {
+        "signal": {
             "anyOf": [
               {
                 "type": "string",
@@ -311,8 +327,22 @@
               {
                 "type": "null"
               }
-            ]
-          },
+          ]
+        },
+        "interrupted": {
+          "type": "boolean"
+        },
+        "interruption_reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
           "duration_ms": {
             "anyOf": [
               {
@@ -346,7 +376,7 @@
               }
             ]
           },
-          "evidence_path": {
+        "evidence_path": {
             "anyOf": [
               {
                 "type": "string",
@@ -355,8 +385,29 @@
               {
                 "type": "null"
               }
-            ]
-          }
+          ]
+        },
+        "evidence_status": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence_limitation": {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
         }
       }
     },
@@ -394,6 +445,18 @@
         {
           "type": "null"
         }
+      ]
+    },
+    "trust_stage": {
+      "anyOf": [
+        { "enum": ["OBSERVE_SHADOW", "UNKNOWN"] },
+        { "type": "null" }
+      ]
+    },
+    "shadow": {
+      "anyOf": [
+        { "type": "object" },
+        { "type": "null" }
       ]
     },
     "limitations": {
