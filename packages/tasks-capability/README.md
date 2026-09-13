@@ -62,7 +62,7 @@ An absent required authority blocks verification, including after a revoke.
 ## Compatibility and schemas
 
 The real generic runtime compatibility target is Opsle Tasks revision
-`b76d6253b405469b79d30b260f7ad09827052a4a` (Node 24+ for its complete regression
+`3603c09dd01bfe5bb8f89cfd3e28cebbd4bdf2ec` (Node 24+ for its complete regression
 suite). Its `src/capabilities.js` SHA-256 is
 `62dca002d729c82ca00a66fdb6edcbac692eca770ca6f771dea0c7e68ffd3408`.
 Tests import that unmodified runtime only as a compatibility test dependency;
