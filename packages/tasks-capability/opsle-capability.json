@@ -2,7 +2,7 @@
   "schema": "opsle.capability-manifest.v1",
   "id": "opsle.affected-verification",
   "name": "Affected Verification",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "adapter": "adapter.js",
   "default_enabled": false,
   "configuration_schema": "opsle.affected-verification.tasks-config.v2",

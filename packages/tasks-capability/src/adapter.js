@@ -26,7 +26,7 @@ export function createAdapter({ manifest, configuration, services }, packageIden
       // retained worktree are lifecycle state: Tasks may advance them after a
       // verified merge or restore them during same-attempt continuation.
       // Planning/finalization bind their exact source tree independently.
-      for (const key of ['id', 'repo_id', 'repo_name', 'repo_path', 'ssh_host', 'ssh_user', 'sshHost', 'sshUser']) {
+      for (const key of ['id', 'repo_id', 'repo_name', 'repo_path', 'ssh_host', 'ssh_user', 'sshHost', 'sshUser', 'execution_transport', 'executionTransport']) {
         if (payload.task[key] !== binding[key]) {
           throw new Error(`Verification request has a different task binding: ${key}`);
         }

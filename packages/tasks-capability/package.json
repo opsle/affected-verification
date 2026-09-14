@@ -1,6 +1,6 @@
 {
   "name": "@opsle/affected-verification-tasks-capability",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Independent Affected Verification authority for the generic Opsle Tasks capability contract",
   "type": "module",
   "license": "Apache-2.0",

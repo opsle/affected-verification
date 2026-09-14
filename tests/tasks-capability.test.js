@@ -39,7 +39,7 @@ before(() => {
   // Build a second, synthetic compatible patch tarball for the restart contract.
   for (const name of ['package.json', 'opsle-capability.json']) {
     const path = resolve(packagePath, name);
-    const value = JSON.parse(readFileSync(path)); value.version = '0.2.1';
+    const value = JSON.parse(readFileSync(path)); value.version = '0.2.2';
     writeFileSync(path, JSON.stringify(value));
   }
   upgradeTarball = resolve(temp, JSON.parse(run('npm', ['pack', '--json', '--pack-destination', temp], packagePath))[0].filename);
@@ -80,7 +80,7 @@ async function direct(directory, f) {
   const { createCapability } = await import(pathToFileURL(resolve(directory, 'adapter.js')));
   const manifest = JSON.parse(readFileSync(resolve(directory, 'opsle-capability.json')));
   return createCapability({ manifest, configuration: {}, services: { task: f.task, attemptId: 1,
-    executionId: 'exec-1', executionConfig: { logsDir: f.logsDir } } });
+    executionId: 'exec-1', executionConfig: { logsDir: f.logsDir, ...f.executionConfig } } });
 }
 const request = f => ({ schema, task: f.task, attemptId: 1, executionId: 'exec-1', generation: 1 });
 const shadowRequest = (f, plan, overrides = {}) => ({
@@ -343,7 +343,7 @@ const runtime = await createCapabilityRuntime(context);
 const value = await runtime.authority('verification.capture', {schema:'opsle.execution.change-capture-request.v1',task:context.task});
 process.stdout.write(JSON.stringify({version:runtime.status[0].version,value}));`);
   const restarted = JSON.parse(run(process.execPath, [restart, JSON.stringify({ config: { ...config, capabilityRoots: [upgraded] }, task: f.task, attemptId: 1, executionId: 'exec-1', selection: emptySelection })], temp));
-  assert.equal(restarted.version, '0.2.1');
+  assert.equal(restarted.version, '0.2.2');
   assert.equal(restarted.value.identity, capture.identity);
   assert.deepEqual(readFileSync(analysis.evidencePath), history);
   assert.equal(git(tasksRoot, ['diff', 'HEAD', '--', 'src']), before);
@@ -351,4 +351,34 @@ process.stdout.write(JSON.stringify({version:runtime.status[0].version,value}));
   t.diagnostic(JSON.stringify({ tasks_revision: compatRevision, runtime_sha256: sourceHash,
     artifact_version: packed.version, artifact_sha256: hash(readFileSync(tarball)),
     upgrade_artifact_sha256: hash(readFileSync(upgradeTarball)), central_source_unchanged: true }));
+});
+
+test('explicit LOCAL production planning uses the bounded deploy wrapper and binds its transport', async t => {
+  const directory = install('local-production');
+  const f = fixture(t, 'local-production-project');
+  f.task.execution_transport = 'LOCAL';
+  f.task.ssh_user = 'deploy';
+  const calls = resolve(temp, 'local-wrapper-calls');
+  const sudo = resolve(temp, 'fixture-sudo');
+  writeFileSync(sudo, '#!/bin/sh\n[ "$1 $2 $3 $4 $5 $6" = "-n -H -u deploy -- /fixture/project-exec" ] || exit 90\nprintf "%s\\n" "$7" >> ' + JSON.stringify(calls) + '\nexec /bin/sh -c "$8"\n', { mode: 0o700 });
+  f.executionConfig = { sudoBin: sudo, localExecBin: '/fixture/project-exec' };
+  const adapter = await direct(directory, f);
+  const previous = process.env.NODE_ENV;
+  delete process.env.NODE_ENV;
+  try {
+    const plan = adapter.invoke('verification.plan', request(f)).value;
+    assert.equal(plan.error, null);
+    assert.ok(plan.decision);
+    assert.ok(readFileSync(calls, 'utf8').trim().split('\n').every(value => Number(value) > 0));
+    assert.throws(() => adapter.invoke('verification.plan', {
+      ...request(f), task: { ...f.task, execution_transport: 'SSH' },
+    }), /different task binding: execution_transport/);
+    const { executionTarget } = await import(pathToFileURL(resolve(directory, 'runtime/execution.js')));
+    assert.throws(() => executionTarget({ ...f.task, execution_transport: '', ssh_host: '' }), /execution host/);
+    assert.throws(() => executionTarget({ ...f.task, ssh_user: 'deploy;id' }), /local execution user/);
+    assert.throws(() => executionTarget({ ...f.task, repo_path: '/' }), /absolute path/);
+  } finally {
+    if (previous === undefined) delete process.env.NODE_ENV;
+    else process.env.NODE_ENV = previous;
+  }
 });
