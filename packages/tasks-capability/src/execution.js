@@ -6,14 +6,27 @@ import { writeFileSync } from 'node:fs';
 export const quote = value => `'${String(value).replaceAll("'", "'\\''")}'`;
 const argv = args => args.map(quote).join(' ');
 export function executionTarget(project = {}) {
+  const transport = project.execution_transport ?? project.executionTransport ?? '';
   const host = project.ssh_host ?? project.sshHost ?? '';
   const user = project.ssh_user ?? project.sshUser ?? '';
   const path = project.repo_path ?? project.path;
   if (!host && !user && process.env.NODE_ENV === 'test') return { kind: 'test-local', path };
+  if (transport === 'LOCAL') {
+    if (!/^[a-z_][a-z0-9_-]{0,63}$/.test(user)) throw new Error('Project local execution user is required or invalid.');
+    if (typeof path !== 'string' || !path.startsWith('/') || /[\x00-\x1f]/.test(path) || path === '/') throw new Error('Project repository path must be an absolute path inside the Opsle instance.');
+    return { kind: process.env.NODE_ENV === 'test' ? 'test-local' : 'local', user, path };
+  }
+  if (transport && transport !== 'SSH') throw new Error('Project execution transport must be LOCAL or SSH.');
   if (!/^[a-zA-Z0-9][a-zA-Z0-9.-]{0,252}$/.test(host)) throw new Error('Project execution host is required: configure its private Incus hostname. Local execution is disabled.');
   if (!/^[a-z_][a-z0-9_-]{0,63}$/.test(user)) throw new Error('Project SSH user is required or invalid.');
   if (typeof path !== 'string' || !path.startsWith('/') || /[\x00-\x1f]/.test(path) || path === '/') throw new Error('Project repository path must be an absolute path inside its container.');
   return { kind: 'ssh', host, user, path };
+}
+
+export function localArguments(config, target, script, seconds = 30) {
+  if (target.kind !== 'local') throw new Error('Local execution requires an explicit local project target.');
+  return ['-n', '-H', '-u', target.user, '--', config.localExecBin,
+    String(Math.max(1, seconds)), script];
 }
 
 export function sshArguments(config, target, script, seconds = 30) {
@@ -32,7 +45,7 @@ export function sshArguments(config, target, script, seconds = 30) {
 
 export function executionError(result, target, label = 'Remote command') {
   const detail = String(result.stderr || result.error?.message || '').slice(-2000);
-  const where = target.kind === 'ssh' ? `${target.user}@${target.host}` : 'test-local';
+  const where = target.kind === 'ssh' ? `${target.user}@${target.host}` : target.kind === 'local' ? `${target.user}@local` : 'test-local';
   let reason;
   if (result.error?.code === 'ETIMEDOUT' || [124, 137].includes(result.status ?? result.code)) reason = 'command timeout';
   else if ((result.status ?? result.code) === 255 && /Permission denied|Authentication failed/i.test(detail)) reason = 'SSH authentication failure';
@@ -51,6 +64,7 @@ export function executionError(result, target, label = 'Remote command') {
 
 function invocation(config, target, script, seconds, cwd) {
   if (target.kind === 'test-local' && process.env.NODE_ENV === 'test') return { command: '/bin/sh', args: ['-c', script], cwd };
+  if (target.kind === 'local') return { command: config.sudoBin || 'sudo', args: localArguments(config, target, script, seconds) };
   return { command: config.sshBin || 'ssh', args: sshArguments(config, target, script, seconds) };
 }
 
