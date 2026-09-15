@@ -1,3 +1,5 @@
+import { contentIdentity } from './canonical.js';
+
 const RECEIPT_SCHEMA = 'opsle.value-receipt.v1';
 
 function measurement({ id, baseline, result, delta, unit, direction, operatorDisplay, limitation = [] }) {
@@ -173,7 +175,12 @@ export function buildShadowValueReceipt(plan, shadow, {
       work_classification: 'DETERMINISTIC_VERIFICATION_SHADOW',
     },
     operation: {
-      id: shadow.observation_identity,
+      // The observation identity deliberately stays stable when the same plan
+      // and results are reproduced. A receipt operation is one execution of
+      // that observation, so include its execution generation to keep retries
+      // distinct within the same Visible Value run.
+      id: contentIdentity({ execution_id: executionId, generation,
+        observation_identity: shadow.observation_identity }),
       name: 'verification-shadow',
       configuration_id: plan.provenance.verification_catalog_identity,
       policy_id: plan.provenance.policy_identity,

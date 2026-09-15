@@ -139,6 +139,13 @@ test('installable artifact contains planner and schemas, plans deterministically
     result.value.decision.plan.plan_identity);
   const repeat = adapter.invoke('verification.plan', { ...request(f), generation: 2 });
   assert.deepEqual(repeat.value.decision, result.value.decision);
+  const repeatedShadow = adapter.invoke('verification.shadow',
+    shadowRequest(f, repeat.value.decision.plan, { generation: 2 }));
+  assert.equal(repeatedShadow.value.shadow.observation_identity,
+    finalized.value.shadow.observation_identity,
+    'the same plan and results retain their content identity');
+  assert.notEqual(repeatedShadow.receipts[0].operation.id, receipt.operation.id,
+    'each execution generation has a distinct receipt operation');
   const capture = () => adapter.invoke('verification.capture', { schema: 'opsle.execution.change-capture-request.v1', task: f.task }).value;
   assert.equal(capture().target_revision, result.value.change.target_revision);
   writeFileSync(resolve(f.task.repo_path, 'a.js'), 'drift\n');
