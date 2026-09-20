@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Canonical TEST stage for opsle/affected-verification. GitHub Actions and agents run this same command.
+#   ops/ci/test
+set -Eeuo pipefail
+cd "$(dirname "${BASH_SOURCE[0]}")/../.."
+
+step() { printf '\n==> %s\n' "$*"; }
+
+step "Run verification suite"
+npm run verify
+
+if command -v gitleaks >/dev/null 2>&1; then
+  step "Secret scan"
+  gitleaks dir --no-banner --redact .
+fi
